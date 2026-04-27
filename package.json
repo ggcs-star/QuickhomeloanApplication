@@ -1,0 +1,32 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.5.0",
+        "axios": "^1.6.4",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.5.10",
+        "tailwindcss": "^3.4.1",
+        "vite": "^5.0"
+    },
+    "dependencies": {
+        "@capacitor/android": "^8.3.1",
+        "@capacitor/core": "^8.3.1",
+        "@inertiajs/core": "^3.0.3",
+        "@inertiajs/react": "^3.0.3",
+        "@react-native-async-storage/async-storage": "^3.0.2",
+        "@react-native-community/slider": "^5.2.0",
+        "@vitejs/plugin-react": "^4.7.0",
+        "lucide-react": "^1.8.0",
+        "react": "^19.2.5",
+        "react-dom": "^19.2.5",
+        "react-hot-toast": "^2.6.0",
+        "react-icons": "^5.6.0",
+        "react-native-sound": "^0.13.0",
+        "react-native-vector-icons": "^10.3.0"
+    }
+}
