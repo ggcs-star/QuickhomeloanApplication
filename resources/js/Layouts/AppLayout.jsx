@@ -3,7 +3,8 @@ import { router } from "@inertiajs/react";
 import BottomNav from "../Components/BottomNav";
 import TopNav from "../Components/TopNav";
 import { Capacitor } from "@capacitor/core";
-export default function AppLayout({ children, showBottomNav = true, showTopNav = false }) {
+import Footer from "../Components/Common/Footer";
+export default function AppLayout({ children, showBottomNav = true, showTopNav = false, showFooter = true }) {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -43,11 +44,12 @@ export default function AppLayout({ children, showBottomNav = true, showTopNav =
   }
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen bg-[#f3f4f6] relative min-h-screen flex flex-col safe-bottom safe-top">
       {showTopNav && <TopNav user={user} />}
 
       <div className={showBottomNav ? "pb-24" : ""}>
         {children}
+        {showFooter && <Footer />}
       </div>
 
 

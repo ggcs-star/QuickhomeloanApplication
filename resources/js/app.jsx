@@ -34,51 +34,53 @@ createInertiaApp({
     }
 
     createRoot(el).render(
-   <GlobalAudioProvider>
-    <GlobalVideoProvider>
-    
-    <App {...props} initialPage={initialPage} />
+      <GlobalAudioProvider>
+        <GlobalVideoProvider>
 
-    <Toaster
-      position="top-center"
-      gutter={8}
-      containerStyle={{
-        top: "75%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-      toastOptions={{
-        duration: 2500,
-        style: {
-          background: "rgba(0, 0, 0, 0.75)",
-          color: "#fff",
-          padding: "14px 18px",
-          borderRadius: "14px",
-          fontSize: "14px",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          boxShadow: "0 8px 30px rgba(0,0,0,0.3)",
-          textAlign: "center",
-          maxWidth: "90%",
-        },
-        success: {
-          iconTheme: {
-            primary: "#fff",
-            secondary: "rgba(0,0,0,0.75)",
-          },
-        },
-        error: {
-          iconTheme: {
-            primary: "#fff",
-            secondary: "rgba(0,0,0,0.75)",
-          },
-        },
-      }}
-    />
+          {/* ✅ GLOBAL SAFE AREA WRAPPER */}
+          <div
+            className="
+        min-h-[100dvh]
+        w-full
+        flex flex-col
+        overflow-hidden
+        pt-[env(safe-area-inset-top)]
+        pb-[env(safe-area-inset-bottom)]
+        bg-white
+      "
+          >
+            <App {...props} initialPage={initialPage} />
+          </div>
 
-   </GlobalVideoProvider>
-  </GlobalAudioProvider>
-)
+          {/* ✅ TOASTER (SAFE AREA ADJUSTED) */}
+          <Toaster
+            position="top-center"
+            gutter={8}
+            containerStyle={{
+              top: "calc(75% - env(safe-area-inset-bottom))",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+            toastOptions={{
+              duration: 2500,
+              style: {
+                background: "rgba(0, 0, 0, 0.75)",
+                color: "#fff",
+                padding: "14px 18px",
+                borderRadius: "14px",
+                fontSize: "14px",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                boxShadow: "0 8px 30px rgba(0,0,0,0.3)",
+                textAlign: "center",
+                maxWidth: "90%",
+              },
+            }}
+          />
+
+        </GlobalVideoProvider>
+      </GlobalAudioProvider>
+    );
   },
-  
+
 })

@@ -27,7 +27,7 @@ export default function Courses() {
       <div className="px-4 py-5 bg-gray-100 min-h-screen space-y-5">
 
         {/* HEADER */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-4">
           <button onClick={() => window.history.back()}>
             <ArrowLeft size={22} />
           </button>

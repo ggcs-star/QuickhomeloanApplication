@@ -30,7 +30,7 @@ export default function Modules() {
             <div className="px-4 py-5 bg-gray-100 min-h-screen space-y-5">
 
                 {/* HEADER */}
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4 mt-4">
                     <button
                         onClick={() => window.history.back()}
                         className="p-2 rounded-full hover:bg-gray-200 active:scale-95 transition"

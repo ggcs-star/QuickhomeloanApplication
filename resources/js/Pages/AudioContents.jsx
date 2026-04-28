@@ -99,11 +99,11 @@ export default function AudioContents() {
 
     return (
         <AppLayout showTopNav={false} showBottomNav={false}>
-            <div className="min-h-screen bg-gray-100 px-4 py-5 pb-28">
+            <div className="min-h-screen bg-gray-100 px-4 py-5 pb-28 ">
                 {/* BACK */}
                 <button
                     onClick={() => window.history.back()}
-                    className="mb-4 text-gray-700"
+                    className="mb-4 text-gray-700 mt-4"
                 >
                     <FaArrowLeft size={18} />
                 </button>

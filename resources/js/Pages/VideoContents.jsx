@@ -90,7 +90,7 @@ export default function VideoContents() {
                 <div className="px-4 pt-4 pb-2">
                     <button
                         onClick={() => window.history.back()}
-                        className="text-gray-700 hover:bg-gray-200 p-2 rounded-full transition-colors"
+                        className="text-gray-700 hover:bg-gray-200 p-2 rounded-full transition-colors mt-4"
                     >
                         <ArrowLeft size={22} />
                     </button>

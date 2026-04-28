@@ -47,7 +47,7 @@ export default function Education() {
       <div className="min-h-screen bg-gray-100 px-4 py-5 pb-24">
 
         {/* HEADER */}
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6 mt-4">
           Academy
         </h1>
 
@@ -100,22 +100,7 @@ export default function Education() {
 
         </div>
 
-        {/* FOOTER */}
-        <div className="mt-14 text-center px-4">
-
-          <p className="text-sm text-gray-400">
-            Making home loans simple
-          </p>
-
-          <h2 className="text-3xl font-bold text-gray-600 mt-2">
-            For every Indian
-          </h2>
-
-          <p className="text-sm text-gray-400 mt-3 tracking-wide">
-            MADE WITH <span className="text-red-500">❤️</span> IN INDIA
-          </p>
-
-        </div>
+      
 
       </div>
     </AppLayout>

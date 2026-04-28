@@ -56,3 +56,36 @@ Route::get('/video-player', function () {
 Route::get('/reels', fn () => Inertia::render('Reels'));
 
 Route::get('/profile', fn() => Inertia::render('Profile'));
+
+
+Route::get('/tools', function () {
+    return Inertia::render('Tools');
+});
+
+Route::get('/tools/first-time', function () {
+    return Inertia::render('Tools/FirstTime');
+});
+
+Route::get('/tools/existing', function () {
+    return Inertia::render('Tools/Existing');
+});
+
+Route::get('/tools/calculator', function () {
+    return Inertia::render('Tools/Calculator');
+});
+
+Route::get('/tools/calendar', function () {
+    return Inertia::render('Tools/Calendar');
+});
+
+Route::get('/calculator/emi', function () {
+    return Inertia::render('Calculator/EMI');
+});
+
+Route::get('/calculator/loan-eligibility', function () {
+    return Inertia::render('Calculator/LoanEligibility');
+});
+
+Route::get('/calculator/interest-rate', function () {
+    return Inertia::render('Calculator/InterestRate');
+});
