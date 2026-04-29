@@ -1,0 +1,68 @@
+export const STAMP_DUTY_INSIGHTS = [
+  {
+    title: "What This Calculator Does",
+    icon: "calculator",
+    type: "list",
+    items: [
+      "Estimates one-time legal costs such as stamp duty, registration fees, and other applicable charges based on property value.",
+      "Calculates stamp duty using the selected percentage or slab-based rules (if applicable).",
+      "Applies registration fees either as a flat amount or as a percentage of the property value.",
+      "Includes optional charges like transfer fees, cess, or other government levies.",
+      "Computes the total upfront cost payable at the time of property registration.",
+      "Splits the net payable amount between buyers in case of a joint property purchase.",
+      "Generates a clear cost breakdown suitable for download, printing, or documentation.",
+    ],
+  },
+  {
+    title: "When to Use This Calculator",
+    icon: "clock",
+    type: "grid",
+    items: [
+      "Before signing a sale agreement to estimate total upfront payment",
+      "While budgeting for down-payment and closing costs",
+      "When comparing property costs across states or buyer categories",
+      "To decide between a joint vs individual purchase",
+      "During home loan or mortgage pre-approval planning",
+      "For real estate listings or negotiations",
+    ],
+  },
+  {
+    title: "How to Use – Step by Step",
+    icon: "steps",
+    type: "steps",
+    items: [
+      ["Enter Property Value", "Input the agreement or market value of the property."],
+      ["Select State / Enter Rates", "Choose your State or UT to auto-apply stamp duty and registration rates, or enter them manually."],
+      ["Choose Property & Buyer Type", "Select property type (residential, commercial, plot) and buyer category (individual, joint, female buyer, etc.)."],
+      ["Select Slab-Based Calculation", "Enable slab-based calculation if your state follows slab-wise stamp duty rules."],
+      ["Enter Other Charges", "Add any additional costs such as transfer fees, cess, or local charges."],
+      ["Calculate Charges", "Click Calculate to instantly view the full stamp duty and registration cost breakdown."],
+    ],
+  },
+  {
+    title: "Formulas & Logic Explained",
+    icon: "chart",
+    type: "list",
+    items: [
+      "Simple Percentage: Stamp Duty = Property Value × (Stamp Duty % ÷ 100)",
+      "Slab-Based Logic: Property value is split across predefined slabs. Each rate applies only to the portion within that slab.",
+      "Registration Fee: Property Value × (Registration % ÷ 100) OR a fixed flat fee defined by the state.",
+      "Total Upfront Cost: Stamp Duty + Registration Fee + Other Charges",
+      "Buyer Concessions: Deducts the concession (like female buyer discount) before finalizing the stamp duty amount.",
+      "Limitations: Rates vary by state and may change. Always verify final figures with the local sub-registrar.",
+    ],
+  },
+  {
+    title: "Practical Applications",
+    icon: "growth",
+    type: "bulb",
+    items: [
+      "Homebuyers: Estimate total closing and statutory costs while planning the overall budget.",
+      "Real Estate Agents: Display complete upfront costs in property listings to improve transparency.",
+      "Lenders: Assess disbursal requirements and borrower margin by factoring in statutory charges.",
+      "Brokers: Advise clients on purchase timing before a rate revision or policy change.",
+      "Developers: Present the net cost to buyers, including mandatory statutory charges.",
+      "Accountants & Tax Consultants: Verify property acquisition expenses for compliance purposes.",
+    ],
+  },
+];

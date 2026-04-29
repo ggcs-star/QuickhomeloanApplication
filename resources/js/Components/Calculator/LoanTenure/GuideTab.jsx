@@ -1,6 +1,6 @@
 import GuideLayout from "@/Components/Common/GuideLayout";
-import { EMI_GUIDE } from "./emiGuideData";
+import { TENURE_GUIDE } from "./tenureGuideData";
 
 export default function GuideTab() {
-  return <GuideLayout {...EMI_GUIDE} />;
+  return <GuideLayout {...TENURE_GUIDE} />;
 }

@@ -25,11 +25,7 @@ const items = [
     icon: BadgeCheck,
     route: "/calculator/loan-eligibility"
   },
-  {
-    title: "Loan Amount",
-    desc: "Find loan amount",
-    icon: Wallet,
-  },
+
   {
     title: "Interest Rate",
     desc: "Compare interest rates",
@@ -40,22 +36,39 @@ const items = [
     title: "Loan Tenure",
     desc: "Adjust loan duration",
     icon: CalendarDays,
+    route: "/calculator/LoanTenure"
   },
   {
     title: "Prepayment Impact",
     desc: "Reduce loan cost",
     icon: PieChart,
+    route: "/calculator/Prepayment"
   },
   {
-    title: "Comparison",
-    desc: "Compare loan options",
+    title: "Rent vs Buy",
+    desc: "Rent vs Buy analysis",
     icon: Scale,
+    route: "/calculator/RentVsBuy"
+  },
+  {
+    title: "Property Investment vs EMI",
+    desc: "Property Investment vs EMI comparison",
+    icon: Stamp,
+    route: "/calculator/PropertyInvestment"
+  },
+    {
+    title: "Under Construction vs Ready To Move",
+    desc: "Compare cost, risk, and returns of UC vs RTM properties.",
+    icon: Wallet,
+    route: "/calculator/FinancialComparison"
   },
   {
     title: "Stamp Duty",
-    desc: "Estimate stamp charges",
+    desc: "Estimate stamp duty and registration charges on property purchase.",
     icon: Stamp,
-  },
+    route: "/calculator/StampDuty"
+  }
+
 ];
 
 export default function CalculatorPage() {

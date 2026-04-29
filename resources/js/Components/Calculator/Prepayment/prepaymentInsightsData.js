@@ -1,0 +1,66 @@
+export const PREPAYMENT_INSIGHTS = [
+  {
+    title: "What This Calculator Does",
+    icon: "calculator",
+    type: "list",
+    items: [
+      "Shows exactly how much interest you save via prepayment.",
+      "Shows how many months you reduce (if you keep EMI the same).",
+      "Shows how much your EMI reduces (if you keep tenure the same).",
+      "Calculates the new total interest payable.",
+      "Provides the total savings over the entire loan timeline.",
+      "Supports Home Loan prepayment analysis & balance transfer planning.",
+      "Helps compare part-payment vs full-payment scenarios.",
+      "Uses core amortization principles followed by Indian banks.",
+    ],
+  },
+  {
+    title: "When to Use This Calculator",
+    icon: "clock",
+    type: "grid",
+    items: [
+      "When you receive a bonus or inheritance",
+      "To check how to become debt-free faster",
+      "When you want to lower your monthly EMI",
+      "To compare multiple prepayment amounts",
+      "To compare EMI reduction vs Tenure reduction",
+      "To check balance transfer benefits",
+      "To check impact of early vs late prepayment",
+    ],
+  },
+  {
+    title: "How to Use – Step by Step",
+    icon: "steps",
+    type: "steps",
+    items: [
+      ["Enter Current Loan Details", "Enter your outstanding loan amount, current EMI, interest rate, and remaining tenure."],
+      ["Enter Prepayment Amount", "Specify the lump sum amount you plan to prepay (e.g., ₹2,00,000)."],
+      ["Choose Prepayment Type", "Select whether you want to reduce your EMI or reduce your loan tenure."],
+      ["Calculate Impact", "Click calculate to instantly see how your loan changes."],
+      ["Understand the Recommendation", "Analyze the interest saved to decide if prepayment makes financial sense for you."],
+    ],
+  },
+  {
+    title: "How Banks Calculate the Reduction",
+    icon: "chart",
+    type: "formula",
+    formula: "n = log( EMI / (EMI − P×r) ) / log(1 + r)",
+    meta: [
+      "The calculator uses this reverse EMI formula to find the new tenure.",
+      "n = Remaining months",
+      "P = New Principal (Outstanding Loan - Prepayment)",
+      "r = Monthly interest rate",
+    ],
+  },
+  {
+    title: "Real World Examples",
+    icon: "growth",
+    type: "bulb",
+    items: [
+      "Example A (₹35L Loan, Prepay ₹2L): Tenure reduction saves ₹6.23L (reduces 17 months). EMI reduction saves only ₹2.81L.",
+      "Example B (₹10L Loan, Prepay ₹1L): Tenure reduction saves ₹89,000. EMI reduction saves only ₹29,000.",
+      "Example C (₹6.5L Loan, Prepay ₹50K): Tenure reduction saves ₹52,000. EMI reduction saves only ₹19,000.",
+      "Conclusion: Tenure Reduction almost always gives double the total interest savings compared to EMI reduction.",
+    ],
+  },
+];

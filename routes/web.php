@@ -89,3 +89,36 @@ Route::get('/calculator/loan-eligibility', function () {
 Route::get('/calculator/interest-rate', function () {
     return Inertia::render('Calculator/InterestRate');
 });
+
+Route::get('/calculator/LoanTenure', function () {
+    return Inertia::render('Calculator/LoanTenure');
+});
+Route::get('/calculator/Prepayment', function () {
+    return Inertia::render('Calculator/Prepayment');
+});
+
+Route::get('/calculator/RentVsBuy', function () {
+    return Inertia::render('Calculator/RentVsBuy');
+});
+
+Route::get('/calculator/PropertyInvestment', function () {
+    return Inertia::render('Calculator/PropertyInvestment');
+});
+
+Route::get('/calculator/FinancialComparison', function () {
+    return Inertia::render('Calculator/FinancialComparison');
+});
+
+Route::get('/calculator/StampDuty', function () {
+    return Inertia::render('Calculator/StampDuty');
+});
+
+Route::get('/existing/InterestReview', function () {
+    return Inertia::render('Existing/InterestReview');
+});
+
+Route::get('/calculator/audio/{slug}', function ($slug) {
+    return Inertia::render('Calculator/Audio/CalculatorAudio', [
+        'slug' => $slug
+    ]);
+});
