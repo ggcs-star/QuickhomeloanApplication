@@ -1,36 +1,18 @@
+import { useAuth } from "@/Context/AuthContext";
 import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 import BottomNav from "../Components/BottomNav";
 import TopNav from "../Components/TopNav";
-import { Capacitor } from "@capacitor/core";
 import Footer from "../Components/Common/Footer";
-export default function AppLayout({ children, showBottomNav = true, showTopNav = false, showFooter = true }) {
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-
-    if (!token) {
-      router.visit("/login");
-    } else {
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-      setLoading(false);
-    }
-  }, []);
-  useEffect(() => {
-    const requestPermission = async () => {
-      if (Capacitor.getPlatform() === "android") {
-        const permission = await Notification.requestPermission();
-        console.log("Notification permission:", permission);
-      }
-    };
-
-    requestPermission();
-  }, []);
+import { Capacitor } from "@capacitor/core";
+import api from "@/api";
+export default function AppLayout({
+  children,
+  showBottomNav = true,
+  showTopNav = false,
+  showFooter = true,
+}) {
+  const { user, isProUser, loading } = useAuth();
 
   if (loading) {
     return (
@@ -44,16 +26,16 @@ export default function AppLayout({ children, showBottomNav = true, showTopNav =
   }
 
   return (
-    <div className="min-h-screen bg-[#f3f4f6] relative min-h-screen flex flex-col safe-bottom safe-top">
-      {showTopNav && <TopNav user={user} />}
+    <div className="min-h-screen bg-[#f3f4f6] flex flex-col">
+
+      {showTopNav && <TopNav user={user} isProUser={isProUser} />}
 
       <div className={showBottomNav ? "pb-24" : ""}>
         {children}
         {showFooter && <Footer />}
       </div>
 
-
-      {showBottomNav && <BottomNav />}
+      {showBottomNav && <BottomNav isProUser={isProUser} />}
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', fn() => Inertia::render('Home'));
@@ -117,8 +117,23 @@ Route::get('/existing/InterestReview', function () {
     return Inertia::render('Existing/InterestReview');
 });
 
-Route::get('/calculator/audio/{slug}', function ($slug) {
-    return Inertia::render('Calculator/Audio/CalculatorAudio', [
+Route::get('/existing/audio/{slug}', function ($slug) {
+    return Inertia::render('Existing/Audio/CalculatorAudio', [
         'slug' => $slug
     ]);
+});
+
+
+
+Route::get('/existing/video/{slug}', function ($slug) {
+    return Inertia::render('Existing/Video/CalculatorVideo', [
+        'slug' => $slug
+    ]);
+});
+
+
+Route::get('/profile', fn() => Inertia::render('Profile/Profile'));
+
+Route::get('/membership', function () {
+    return Inertia::render('Membership/Membership');
 });

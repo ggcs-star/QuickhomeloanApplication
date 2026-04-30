@@ -44,44 +44,25 @@ export default function InterestReviewCalculator() {
         };
     }, []);
 
-    const checkProAccess = async () => {
+    const checkProAccess = () => {
         setIsCheckingAccess(true);
+
         try {
-            const isProLocal = localStorage.getItem("is_pro_user") === "true";
-            if (isProLocal) {
-                setIsProUser(true);
-                setIsCheckingAccess(false);
-                return;
-            }
 
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setIsProUser(false);
-                setIsCheckingAccess(false);
-                return;
-            }
+            const isProLocal =
+                sessionStorage.getItem("is_pro_user") === "true";
 
-            // Using your api instance
-            const response = await api.get("/check-access");
-
-            if (response.data && response.data.access === true) {
-                setIsProUser(true);
-                localStorage.setItem("is_pro_user", "true");
-            } else {
-                setIsProUser(false);
-                localStorage.setItem("is_pro_user", "false");
-            }
-        } catch (error) {
-            console.error("Error checking pro access:", error);
-            // If 401, the interceptor will handle redirect
-            const isProLocal = localStorage.getItem("is_pro_user") === "true";
             setIsProUser(isProLocal);
+
+        } catch (error) {
+            console.error("Pro check error:", error);
+            setIsProUser(false);
         } finally {
             setIsCheckingAccess(false);
         }
     };
 
-    // Calculate results when loan data changes
+
     useEffect(() => {
         if (isProUser) {
             calculateResults();
