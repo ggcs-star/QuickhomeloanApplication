@@ -3,7 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import api from "../api";
 import { router } from "@inertiajs/react";
-
+import { useAuth } from "@/Context/AuthContext";
 export default function Login() {
   const [form, setForm] = useState({
     email: "",
@@ -12,6 +12,7 @@ export default function Login() {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const { refreshAuth } = useAuth();
 
   const handleLogin = async () => {
     setErrors({});
@@ -35,7 +36,7 @@ export default function Login() {
       console.log("Saved User:", data.user);
 
       toast.success(data.message || "Login Successful");
-
+      await refreshAuth();
       setTimeout(() => {
         router.visit("/");
       }, 800);

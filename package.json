@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@capacitor/android": "^8.3.1",
+        "@capacitor/app": "^8.1.0",
         "@capacitor/core": "^8.3.1",
         "@inertiajs/core": "^3.0.3",
         "@inertiajs/react": "^3.0.3",

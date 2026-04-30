@@ -2,14 +2,14 @@ import { useState } from "react";
 import api from "@/api";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { router } from "@inertiajs/react";
-
+import { useAuth } from "@/Context/AuthContext";
 export default function RazorpaySubscribeButton({
   amountText = "₹ 999/year",
   className = "",
 }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  const { refreshAuth } = useAuth();
 
   const loadRazorpay = () => {
     return new Promise((resolve) => {
@@ -54,14 +54,12 @@ export default function RazorpaySubscribeButton({
           color: "#1e293b",
         },
 
-        handler: function () {
+        handler: async function () {
 
           sessionStorage.setItem("is_pro_user", "true");
           sessionStorage.setItem("pro_checked", "true");
 
-
           setSuccess(true);
-
 
           window.dispatchEvent(
             new CustomEvent("subscriptionUpdated", {
@@ -69,6 +67,8 @@ export default function RazorpaySubscribeButton({
             })
           );
 
+          // 🔥 IMPORTANT: same as login
+          await refreshAuth();
 
           setTimeout(() => {
             router.visit("/");
