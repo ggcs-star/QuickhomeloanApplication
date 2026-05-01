@@ -3,7 +3,8 @@ import { usePage, router } from "@inertiajs/react";
 import { ArrowLeft, Play, Pause, BookOpen, Clock } from "lucide-react";
 import api from "@/api";
 import { useGlobalAudio } from "@/Context/GlobalAudioContext";
-
+import { useAuth } from "@/Context/AuthContext";
+import ProUpgradeBanner from "@/Components/Common/ProUpgradeBanner";
 export default function CalculatorAudio() {
   const { slug } = usePage().props;
 
@@ -19,7 +20,7 @@ export default function CalculatorAudio() {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const { isProUser } = useAuth();
   useEffect(() => {
     if (slug) fetchAudio();
   }, [slug]);
@@ -44,13 +45,25 @@ export default function CalculatorAudio() {
 
   /* ================= PLAY ================= */
   const handlePlay = (item, index) => {
+    if (!isProUser) {
+      router.visit("/membership");
+      return;
+    }
+
     playAudio(item, data, index);
     setAudioList(data);
     setCurrentIndex(index);
   };
 
+
+
   const handleToggle = (e, item, index) => {
     e.stopPropagation();
+
+    if (!isProUser) {
+      router.visit("/membership");
+      return;
+    }
 
     if (currentAudio?.id === item.id) {
       togglePlay();
@@ -79,13 +92,13 @@ export default function CalculatorAudio() {
 
         {/* IMAGE */}
         <div className="w-full flex justify-center mb-6">
-          <div className="bg-[#e8f1fc] rounded-[32px] p-4 w-48 h-48 flex items-center justify-center">
+          <div className="w-48 h-48 flex items-center justify-center">
             {loading ? (
               <div className="w-full h-full bg-gray-200 rounded-2xl animate-pulse" />
             ) : (
               <img
                 src="/images/CalculatorAudio.png"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain drop-shadow-md"
               />
             )}
           </div>
@@ -128,15 +141,27 @@ export default function CalculatorAudio() {
           data.length > 0 && (
             <button
               onClick={() => handlePlay(data[0], 0)}
-              className="mt-4 w-full bg-[#1e2330] text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold active:scale-95"
+              disabled={!isProUser}
+              className={`mt-4 w-full py-3 rounded-xl flex items-center justify-center gap-2 font-semibold
+           ${isProUser
+                  ? "bg-[#1e2330] text-white active:scale-95"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+                }`}
             >
               <Play size={16} />
-              Listen Now
+              {isProUser ? "Listen Now" : "Upgrade to Listen"}
             </button>
           )
         )}
       </div>
+      <div className="mt-7">
+        {!isProUser && (
+          <ProUpgradeBanner
 
+
+          />
+        )}
+      </div>
       {/* ================= LIST ================= */}
       <div className="mt-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -153,9 +178,10 @@ export default function CalculatorAudio() {
               <div
                 key={index}
                 onClick={() => !loading && handlePlay(item, index)}
-                className={`py-4 flex items-start gap-4 border-b border-gray-100 ${
-                  isActive ? "bg-blue-50 px-4 rounded-xl -mx-4" : ""
-                }`}
+                className={`py-4 flex items-start gap-4 border-b border-gray-100 
+                  ${!isProUser ? "opacity-70" : ""}
+                  ${isActive ? "bg-blue-50 px-4 rounded-xl -mx-4" : ""}
+                `}
               >
                 {/* NUMBER */}
                 <span className="text-blue-600 font-semibold">
@@ -176,9 +202,8 @@ export default function CalculatorAudio() {
                   ) : (
                     <>
                       <p
-                        className={`font-semibold ${
-                          isActive ? "text-blue-600" : "text-gray-800"
-                        }`}
+                        className={`font-semibold ${isActive ? "text-blue-600" : "text-gray-800"
+                          }`}
                       >
                         {item.title}
                       </p>
@@ -211,13 +236,14 @@ export default function CalculatorAudio() {
 
                       <button
                         onClick={(e) => handleToggle(e, item, index)}
-                        className="bg-[#1e2330] text-white p-2 rounded-full"
+                        disabled={!isProUser}
+                        className={`p-2 rounded-full
+                   ${isProUser
+                            ? "bg-[#1e2330] text-white"
+                            : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                          }`}
                       >
-                        {isActive && isPlaying ? (
-                          <Pause size={12} />
-                        ) : (
-                          <Play size={12} />
-                        )}
+                        {isActive && isPlaying ? <Pause size={12} /> : <Play size={12} />}
                       </button>
                     </>
                   )}
@@ -232,8 +258,16 @@ export default function CalculatorAudio() {
       {/* ================= MINI PLAYER ================= */}
       {currentAudio && (
         <div
-          onClick={() => router.visit("/audio-player")}
-          className="fixed bottom-4 left-4 right-4 bg-white rounded-2xl p-4 flex justify-between items-center shadow-lg border cursor-pointer"
+          onClick={() => {
+            if (!isProUser) {
+              router.visit("/membership");
+              return;
+            }
+            router.visit("/audio-player");
+          }}
+          className={`fixed bottom-4 left-4 right-4 rounded-2xl p-4 flex justify-between items-center shadow-lg border cursor-pointer
+      ${isProUser ? "bg-white" : "bg-gray-100 opacity-80"}
+    `}
         >
           <div className="flex-1">
             <p className="text-blue-600 font-semibold truncate">
@@ -251,9 +285,20 @@ export default function CalculatorAudio() {
           <button
             onClick={(e) => {
               e.stopPropagation();
+
+              if (!isProUser) {
+                router.visit("/membership");
+                return;
+              }
+
               togglePlay();
             }}
-            className="bg-[#1e2330] text-white p-3 rounded-full ml-3"
+            className={`p-3 rounded-full ml-3
+        ${isProUser
+                ? "bg-[#1e2330] text-white"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }
+      `}
           >
             {isPlaying ? <Pause size={16} /> : <Play size={16} />}
           </button>

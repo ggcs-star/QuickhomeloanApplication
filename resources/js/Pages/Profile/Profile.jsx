@@ -1,6 +1,6 @@
 import React from "react";
 import { router } from "@inertiajs/react";
-import { useAuth } from "@/Context/AuthContext"; 
+import { useAuth } from "@/Context/AuthContext";
 import AppLayout from "@/Layouts/AppLayout";
 
 import {
@@ -24,13 +24,15 @@ import {
   LogOut,
   ChevronRight,
   Lock,
+  Sparkles,
+  Crown
 } from "lucide-react";
 
 function ProfileContent() {
-  const { user, isProUser } = useAuth(); 
+  const { user, isProUser } = useAuth();
 
   return (
-    <div className="bg-[#f9fafc] min-h-screen px-5 pt-6 pb-12 font-sans">
+    <div className="bg-[#f3f4f6] min-h-screen px-5 pt-6 pb-12 font-sans">
 
       {/* HEADER */}
       <div className="mb-6">
@@ -43,17 +45,17 @@ function ProfileContent() {
       {/* PROFILE INFO */}
       <div className="flex flex-col items-center mb-8">
         <div className="relative w-20 h-20 mb-4">
-            <div className="relative w-20 h-20 mb-4">
-                    <img
-                        src={user.avatar || "/images/default-avatar.jpg"}
-                        alt={user.full_name}
-                        className="w-full h-full rounded-full object-cover shadow-sm border border-gray-200"
-                    />
-                    {/* Edit Button */}
-                    <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-[2px] border-white shadow-sm active:scale-95 transition-transform">
-                        <Pencil size={12} className="text-gray-700" />
-                    </button>
-                </div>
+          <div className="relative w-20 h-20 mb-4">
+            <img
+              src={user.avatar || "/images/default-avatar.jpg"}
+              alt={user.full_name}
+              className="w-full h-full rounded-full object-cover shadow-sm border border-gray-200"
+            />
+            {/* Edit Button */}
+            <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-[2px] border-white shadow-sm active:scale-95 transition-transform">
+              <Pencil size={12} className="text-gray-700" />
+            </button>
+          </div>
 
           <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-2 border-white shadow-sm active:scale-95">
             <Pencil size={12} />
@@ -73,41 +75,74 @@ function ProfileContent() {
         </p>
       </div>
 
-      {/* PLAN CARD */}
-      <div className="bg-white rounded-2xl p-5 border mb-6">
 
-        <div className="flex items-center gap-2 mb-4">
-          <Briefcase size={16} className="text-gray-500" />
-          <span className="text-xs text-gray-500 uppercase">
-            {isProUser ? "Premium Plan" : "Free Plan"}
-          </span>
+
+      <div className={`rounded-2xl p-5 mb-6 border relative overflow-hidden
+  ${isProUser
+          ? 'bg-gradient-to-br from-yellow-50 via-white to-yellow-100 border-yellow-300 shadow-lg'
+          : 'bg-white border-gray-200'}`}>
+
+        {/* Badge */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Briefcase size={16} className={isProUser ? "text-yellow-600" : "text-gray-500"} />
+            <span className={`text-xs uppercase font-medium tracking-wide
+        ${isProUser ? "text-yellow-700" : "text-gray-500"}`}>
+              {isProUser ? "Premium Plan" : "Free Plan"}
+            </span>
+          </div>
+
+          {isProUser && (
+            <div className="flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-yellow-500 text-white font-semibold">
+              <Crown size={12} />
+              PRO
+            </div>
+          )}
         </div>
 
+        {/* Content */}
         <div className="text-center">
           {isProUser ? (
             <>
-              <h3 className="text-green-600 font-semibold">
-                ✅ You are a Premium Member
+              <h3 className="text-yellow-700 font-semibold text-lg mb-1 flex items-center justify-center gap-2">
+                <Crown size={18} />
+                Premium Active
               </h3>
-              <p className="text-sm text-gray-500">
-                Enjoy all premium features
+
+              <p className="text-sm text-gray-600 mb-3">
+                You have full access to all premium features
               </p>
+
+              <div className="bg-yellow-200/50 text-yellow-800 text-xs px-3 py-2 rounded-lg inline-flex items-center gap-2">
+                <Sparkles size={14} />
+                Priority access enabled
+              </div>
             </>
           ) : (
             <>
-              <h3 className="text-gray-900 font-semibold mb-4">
-                Upgrade to unlock full access
+              <h3 className="text-gray-900 font-semibold mb-4 text-lg">
+                Upgrade to Premium
               </h3>
+
+              <p className="text-sm text-gray-500 mb-4">
+                Unlock all features and boost your experience
+              </p>
 
               <button
                 onClick={() => router.visit("/membership")}
-                className="w-full bg-[#1e2330] text-white py-3.5 rounded-xl"
-              >
-                Upgrade to Premium
+                className="w-full bg-gradient-to-r from-[#1e2330] to-[#2f3a52] 
+          text-white py-3.5 rounded-xl font-medium hover:opacity-90 transition flex items-center justify-center gap-2">
+                <Crown size={18} />
+                Upgrade Now
               </button>
             </>
           )}
         </div>
+
+        {/* Glow effect */}
+        {isProUser && (
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300 opacity-20 rounded-full blur-2xl"></div>
+        )}
       </div>
 
       {/* CONTENT */}
@@ -160,7 +195,7 @@ function ProfileContent() {
 
 export default function Profile() {
   return (
-    <AppLayout showTopNav={false} showBottomNav={true}>
+    <AppLayout showTopNav={false} showBottomNav={false}>
       <ProfileContent />
     </AppLayout>
   );

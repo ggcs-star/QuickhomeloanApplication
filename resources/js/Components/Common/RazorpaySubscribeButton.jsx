@@ -67,7 +67,7 @@ export default function RazorpaySubscribeButton({
             })
           );
 
-          // 🔥 IMPORTANT: same as login
+        
           await refreshAuth();
 
           setTimeout(() => {

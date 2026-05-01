@@ -7,9 +7,13 @@ import {
     Lock
 } from "lucide-react";
 import api from '../../../api';
-
+import { useAuth } from "@/Context/AuthContext";
+import { router } from "@inertiajs/react";
+import ProUpgradeBanner from "@/Components/Common/ProUpgradeBanner";
 export default function InterestReviewCalculator() {
-    const [isProUser, setIsProUser] = useState(false);
+
+
+    const { isProUser } = useAuth();
     const [isCheckingAccess, setIsCheckingAccess] = useState(true);
 
     const [data, setData] = useState({
@@ -27,14 +31,12 @@ export default function InterestReviewCalculator() {
         annualROI: 7.02
     });
 
-    // Check pro access on component mount
-    useEffect(() => {
-        checkProAccess();
 
-        const handleSubscriptionUpdate = (event) => {
-            if (event.detail?.isPro === true) {
-                checkProAccess();
-            }
+    useEffect(() => {
+        setIsCheckingAccess(false);
+
+        const handleSubscriptionUpdate = () => {
+
         };
 
         window.addEventListener("subscriptionUpdated", handleSubscriptionUpdate);
@@ -43,24 +45,6 @@ export default function InterestReviewCalculator() {
             window.removeEventListener("subscriptionUpdated", handleSubscriptionUpdate);
         };
     }, []);
-
-    const checkProAccess = () => {
-        setIsCheckingAccess(true);
-
-        try {
-
-            const isProLocal =
-                sessionStorage.getItem("is_pro_user") === "true";
-
-            setIsProUser(isProLocal);
-
-        } catch (error) {
-            console.error("Pro check error:", error);
-            setIsProUser(false);
-        } finally {
-            setIsCheckingAccess(false);
-        }
-    };
 
 
     useEffect(() => {
@@ -72,7 +56,6 @@ export default function InterestReviewCalculator() {
     const calculateResults = () => {
         const totalEMIPaid = data.emi * data.paid;
 
-        // Simple calculation for demonstration
         const monthlyRate = 0.0702 / 12;
         const interest = data.loan * monthlyRate * data.paid;
         const principal = totalEMIPaid - interest;
@@ -108,27 +91,9 @@ export default function InterestReviewCalculator() {
 
             {/* Upgrade Banner for non-pro users */}
             {!isProUser && !isCheckingAccess && (
-                <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-5 rounded-2xl border border-indigo-200">
-                    <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <Lock size={18} className="text-indigo-600" />
-                        </div>
-                        <div className="flex-1">
-                            <h4 className="text-sm font-bold text-indigo-900 mb-1">Unlock Full Calculator</h4>
-                            <p className="text-xs text-indigo-800 mb-3">
-                                Pro users get access to interactive inputs, detailed calculations, and complete financial insights.
-                            </p>
-                            <button
-                                className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-indigo-700 transition"
-                                onClick={() => {
-                                    window.dispatchEvent(new CustomEvent("openProModal"));
-                                }}
-                            >
-                                Upgrade to Pro
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ProUpgradeBanner
+
+                />
             )}
 
             {/* CARD */}

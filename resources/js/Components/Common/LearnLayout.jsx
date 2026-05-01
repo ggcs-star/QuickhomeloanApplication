@@ -48,22 +48,13 @@ export default function LearnLayout({ slug }) {
           >
 
             {/* LEFT IMAGE BOX */}
-            <div
-              className={`
-                w-[90px] h-[90px] 
-                rounded-2xl 
-                flex items-center justify-center
-                ${card.color === "blue"
-                  ? "bg-gradient-to-br from-blue-100 to-blue-50"
-                  : "bg-gradient-to-br from-orange-100 to-orange-50"}
-              `}
-            >
-              <img
-                src={card.image}
-                alt={card.title}
-                className="w-14 h-14 object-contain"
-              />
-            </div>
+            <div className="w-[90px] h-[90px] rounded-2xl overflow-hidden flex items-center justify-center">
+  <img
+    src={card.image}
+    alt={card.title}
+    className="w-full h-full object-cover"
+  />
+</div>
 
             {/* RIGHT CONTENT */}
             <div className="flex-1">

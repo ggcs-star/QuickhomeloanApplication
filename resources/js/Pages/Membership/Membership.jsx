@@ -1,5 +1,6 @@
 import { ArrowLeft, BadgeCheck } from "lucide-react";
 import RazorpaySubscribeButton from "@/Components/Common/RazorpaySubscribeButton";
+import { useAuth } from "@/Context/AuthContext";
 export default function Membership() {
     const benefits = [
         "All Audio Lessons",
@@ -9,7 +10,7 @@ export default function Membership() {
         "Certificate of Completion",
         "Exclusive Webinars",
     ];
-
+    const { isProUser } = useAuth();
     return (
         <div className="bg-gray-100 min-h-screen px-4 py-5 pb-24">
 
@@ -38,8 +39,10 @@ export default function Membership() {
                     </span>
 
                     <h2 className="text-3xl font-bold mt-3 text-black">
-                        ₹ 999{" "}
-                        <span className="text-lg font-medium text-gray-700">/ year</span>
+                        {isProUser ? "Premium Active" : "₹ 999"}
+                        {!isProUser && (
+                            <span className="text-lg font-medium text-gray-700"> / year</span>
+                        )}
                     </h2>
                 </div>
 
@@ -66,9 +69,15 @@ export default function Membership() {
             </div>
 
             {/* ================= CTA ================= */}
-         <div className="fixed bottom-4 left-4 right-4">
-  <RazorpaySubscribeButton />
-</div>
+            <div className="fixed bottom-4 left-4 right-4">
+                {isProUser ? (
+                    <div className="bg-green-100 text-green-700 py-4 rounded-xl text-center font-semibold border border-green-300">
+                        You are already a Pro Member
+                    </div>
+                ) : (
+                    <RazorpaySubscribeButton />
+                )}
+            </div>
 
         </div>
     );

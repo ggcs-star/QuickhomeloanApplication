@@ -137,3 +137,35 @@ Route::get('/profile', fn() => Inertia::render('Profile/Profile'));
 Route::get('/membership', function () {
     return Inertia::render('Membership/Membership');
 });
+
+
+Route::get('/existing/journeyCompletion', function () {
+    return Inertia::render('Existing/JourneyCompletion');
+});
+
+Route::get('/existing/rateTracker', function () {
+    return Inertia::render('Existing/RateTracker');
+});
+
+Route::get('/existing/benchmark-transmission', function () {
+    return Inertia::render('Existing/BenchmarkTransmission');
+});
+
+Route::get('/existing/hidden-costs-audit', function () {
+    return Inertia::render('Existing/HiddenCostsAudit');
+});
+
+
+Route::get('/existing/emi-stress-audit', function () {
+    return Inertia::render('Existing/EMIStressAudit');
+});
+
+
+Route::get('/existing/yearly-interest-projections', function () {
+    return Inertia::render('Existing/YearlyInterestProjections');
+});
+
+Route::get('/existing/prepayment-foreclosure', function () {
+    return Inertia::render('Existing/PrepaymentForeclosure');
+});
+

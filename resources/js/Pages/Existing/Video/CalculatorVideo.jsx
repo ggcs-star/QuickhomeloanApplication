@@ -4,7 +4,8 @@ import { ArrowLeft, Play, Pause, Clock, Eye } from "lucide-react";
 import api from "@/api";
 import { useGlobalVideo } from "@/Context/GlobalVideoContext";
 import GlobalMiniVideoPlayer from "@/Components/GlobalMiniVideoPlayer";
-
+import { useAuth } from "@/Context/AuthContext";
+import ProUpgradeBanner from "@/Components/Common/ProUpgradeBanner";
 export default function CalculatorVideo() {
   const { slug } = usePage().props;
 
@@ -17,7 +18,7 @@ export default function CalculatorVideo() {
     setVideoList,
     setCurrentIndex,
   } = useGlobalVideo();
-
+  const { isProUser } = useAuth();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +47,11 @@ export default function CalculatorVideo() {
 
   /* ================= PLAY HANDLER ================= */
   const handlePlay = (item, index) => {
+    if (!isProUser) {
+      router.visit("/membership");
+      return;
+    }
+
     playVideo(item, data, index);
     setVideoList(data);
     setCurrentIndex(index);
@@ -53,6 +59,11 @@ export default function CalculatorVideo() {
 
   const handleToggle = (e, item, index) => {
     e.stopPropagation();
+
+    if (!isProUser) {
+      router.visit("/membership");
+      return;
+    }
 
     if (currentVideo?.id === item.id) {
       togglePlay();
@@ -81,17 +92,31 @@ export default function CalculatorVideo() {
 
       {/* ================= LIST ================= */}
       <div className="space-y-5">
+        {!isProUser && (
+          <ProUpgradeBanner
 
+          />
+        )}
         {(loading ? Array.from({ length: 3 }) : data).map((item, index) => {
           const isActive = currentVideo?.id === item?.id;
 
           return (
             <div
               key={index}
-              onClick={() => !loading && handlePlay(item, index)}
-              className={`bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-200 transition ${
-                isActive ? "ring-2 ring-blue-500" : ""
-              }`}
+              onClick={() => {
+                if (loading) return;
+
+                if (!isProUser) {
+                  router.visit("/membership");
+                  return;
+                }
+
+                handlePlay(item, index);
+              }}
+              className={`bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-200 transition
+    ${isActive ? "ring-2 ring-blue-500" : ""}
+    ${!isProUser ? "opacity-80" : ""}
+  `}
             >
 
               {/* IMAGE */}
@@ -102,7 +127,8 @@ export default function CalculatorVideo() {
                 ) : (
                   <img
                     src={item.thumbnail_url}
-                    className="w-full h-44 object-cover"
+                    className={`w-full h-44 object-cover ${!isProUser ? "blur-[2px] brightness-75" : ""
+                      }`}
                   />
                 )}
 
@@ -112,7 +138,11 @@ export default function CalculatorVideo() {
                     onClick={(e) => handleToggle(e, item, index)}
                     className="absolute inset-0 flex items-center justify-center"
                   >
-                    <div className="bg-black/70 p-4 rounded-full">
+                    <div
+                      className={`p-4 rounded-full
+      ${isProUser ? "bg-black/70" : "bg-gray-400/70"}
+    `}
+                    >
                       {isActive && isPlaying ? (
                         <Pause className="text-white" size={24} />
                       ) : (
@@ -134,9 +164,8 @@ export default function CalculatorVideo() {
                 ) : (
                   <>
                     <h3
-                      className={`font-semibold text-[15px] ${
-                        isActive ? "text-blue-600" : "text-gray-800"
-                      }`}
+                      className={`font-semibold text-[15px] ${isActive ? "text-blue-600" : "text-gray-800"
+                        }`}
                     >
                       {item.title}
                     </h3>
@@ -180,7 +209,16 @@ export default function CalculatorVideo() {
       )}
 
       {/* ================= MINI PLAYER ================= */}
-      <GlobalMiniVideoPlayer onExpandClick={openFullPlayer} />
+      <GlobalMiniVideoPlayer
+        onExpandClick={() => {
+          if (!isProUser) {
+            router.visit("/membership");
+            return;
+          }
+          openFullPlayer();
+        }}
+        isLocked={!isProUser}
+      />
 
     </div>
   );
