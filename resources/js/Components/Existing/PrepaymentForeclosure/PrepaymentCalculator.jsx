@@ -150,34 +150,10 @@ export default function PrepaymentCalculator() {
         </div>
 
         {/* Rights Information */}
-        <div className="bg-[#1f2a3c] text-white p-5 rounded-xl shadow-md">
-          <div className="flex items-center gap-2 mb-2">
-            <ShieldCheck className="text-green-400 w-5 h-5" />
-            <h4 className="font-semibold">Floating Rate Right</h4>
-          </div>
-          <p className="text-sm text-gray-300 leading-relaxed">
-            Per RBI Master Circular, lenders cannot levy foreclosure penalties or prepayment charges on individual floating-rate loans.
-          </p>
-          <div className="bg-white/10 p-3 mt-3 rounded-lg">
-            <p className="text-xs text-gray-400 italic">
-              Applicable even if the purpose is business, provided the borrower is an individual.
-            </p>
-          </div>
-        </div>
+   
 
         {/* Recovery Action */}
-        <div className="bg-white p-4 rounded-xl border flex items-start gap-3">
-          <Zap className="text-yellow-500 shrink-0 mt-0.5 w-5 h-5" />
-          <div className="space-y-1">
-            <p className="text-xs font-bold uppercase text-gray-800">Recovery Action</p>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              If your bank charges illegal foreclosure fees, download our pre-filled legal notice formatted as per RBI guidelines.
-            </p>
-            <button className={`text-[11px] font-bold uppercase mt-2 flex items-center gap-1 ${isProUser ? 'text-black hover:underline' : 'text-gray-400 cursor-not-allowed'}`} disabled={!isProUser}>
-              Download Legal Notice <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
+        
       </div>
     </div>
   );

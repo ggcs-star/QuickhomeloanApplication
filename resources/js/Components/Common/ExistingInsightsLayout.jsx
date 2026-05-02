@@ -5,12 +5,22 @@ import {
   Landmark,
   ShieldAlert,
   CircleQuestionMark,
+  Info,
+  Lightbulb as Lightbulbs,
+  Target,
+  Map,
+
 } from "lucide-react";
 
 const ICONS = {
   Landmark,
   ShieldAlert,
   CircleQuestionMark,
+  Info,
+  Lightbulb,
+  Target,
+  Map,
+  ShieldCheck,
 };
 
 export default function ExistingInsightsLayout({
@@ -20,7 +30,7 @@ export default function ExistingInsightsLayout({
 }) {
   return (
     <div className="bg-gray-100 min-h-screen px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
-      
+
       {/* MAIN STACK */}
       <div className="space-y-4 sm:space-y-5 md:space-y-6 max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
 
@@ -147,7 +157,7 @@ export default function ExistingInsightsLayout({
                   <div className="bg-amber-100 p-2 rounded-lg flex-shrink-0">
                     <Lightbulb size={18} className="text-amber-600" />
                   </div>
-                  
+
                   <div className="flex-1 min-w-0">
                     <h4 className="text-sm sm:text-base font-semibold text-amber-900 mb-1">
                       {section.title}

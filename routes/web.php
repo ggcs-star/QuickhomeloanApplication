@@ -62,9 +62,7 @@ Route::get('/tools', function () {
     return Inertia::render('Tools');
 });
 
-Route::get('/tools/first-time', function () {
-    return Inertia::render('Tools/FirstTime');
-});
+
 
 Route::get('/tools/existing', function () {
     return Inertia::render('Tools/Existing');
@@ -169,3 +167,55 @@ Route::get('/existing/prepayment-foreclosure', function () {
     return Inertia::render('Existing/PrepaymentForeclosure');
 });
 
+Route::get('/existing/tax-intelligence', function () {
+    return Inertia::render('Existing/TaxIntelligence');
+});
+
+Route::get('/existing/emi-repayment-health', function () {
+    return Inertia::render('Existing/EMIRepaymentHealth');
+});
+
+
+Route::get('/existing/freedom-roadmap', function () {
+    return Inertia::render('Existing/FreedomRoadmap');
+});
+
+
+Route::get('/existing/freedom-roadmap', function () {
+    return Inertia::render('Existing/FreedomRoadmap');
+});
+
+
+Route::get('/tools/first-time', function () {
+    return Inertia::render('Tools/FirstTime');
+});
+
+Route::get('/first-time/safety-engine', function () {
+    return Inertia::render('FirstTime/SafetyEngine');
+});
+
+Route::get('/first-time/interest-truth', function () {
+    return Inertia::render('FirstTime/InterestTruth');
+});
+
+Route::get('/first-time/rate-shock-simulator', function () {
+    return Inertia::render('FirstTime/RateShockSimulator');
+});
+
+Route::get('/first-time/tenure-trap-detector', function () {
+    return Inertia::render('FirstTime/TenureTrapDetector');
+});
+
+Route::get('/first-time/offer-decoder', function () {
+    return Inertia::render('FirstTime/OfferDecoder');
+});
+
+Route::get('/news', function () {
+    return Inertia::render('News/NewsPage');
+});
+
+Route::get('/news/{slug}', function ($slug) {
+    return Inertia::render('News/PostDetails', [
+        'slug' => $slug
+    ]);
+});

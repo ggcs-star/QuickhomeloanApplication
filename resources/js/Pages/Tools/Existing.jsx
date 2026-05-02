@@ -10,58 +10,79 @@ import {
     Settings,
     CheckCircle,
     ArrowLeft,
+    TrendingDown,
+    FileText,
+    HeartPulse,
+    Map
 } from "lucide-react";
 
 const items = [
     {
         title: "Rate Risk",
-        desc: "Calculate monthly EMI",
-        icon: TrendingUp,
+        desc: "Check EMI impact",
+        icon: Percent,
         route: "/existing/InterestReview",
     },
     {
         title: "Journey Completion",
-        desc: "Journey Completion Audit",
-        icon: Calendar,
+        desc: "Track loan progress",
+        icon: CheckCircle,
         route: "/existing/journeyCompletion",
     },
     {
         title: "Rate Tracker",
-        desc: "Rate Tracker and Insights",
-        icon: Scale,
+        desc: "Track rate changes",
+        icon: TrendingUp,
         route: "/existing/rateTracker",
     },
     {
         title: "Benchmark Transmission",
-        desc: "Benchmark Transmission Audit",
-        icon: AlertCircle,
+        desc: "Rate change audit",
+        icon: Scale,
         route: "/existing/benchmark-transmission",
     },
     {
         title: "Hidden Costs Audit",
-        desc: "Uncover hidden costs in your loan",
+        desc: "Find extra charges",
         icon: Wallet,
         route: "/existing/hidden-costs-audit",
     },
     {
         title: "EMI Stress Audit",
-        desc: "Assess your EMI stress levels",
-        icon: Percent,
+        desc: "Check EMI burden",
+        icon: AlertCircle,
         route: "/existing/emi-stress-audit",
     },
     {
         title: "Yearly Interest Projections",
-        desc: "Visualize yearly interest breakdown and savings opportunities",
-        icon: Settings,
+        desc: "View yearly interest",
+        icon: Calendar,
         route: "/existing/yearly-interest-projections",
     },
     {
-        title: "Prepayment & Foreclosure Rights",
-        desc: "Calculate your savings and understand your rights when prepaying or foreclosing your loan",
-        icon: CheckCircle,
+        title: "Prepayment & Foreclosure",
+        desc: "Check savings",
+        icon: TrendingDown,
         route: "/existing/prepayment-foreclosure",
     },
-
+    {
+        title: "Tax Intelligence",
+        desc: "View tax benefits",
+        icon: FileText,
+        route: "/existing/tax-intelligence",
+    },
+    {
+        title: "EMI Health",
+        desc: "Check repayment health",
+        icon: HeartPulse,
+        route: "/existing/emi-repayment-health",
+    },
+    {
+        title: "Freedom Roadmap",
+        desc: "Plan debt-free journey",
+        icon: Map,
+        route: "/existing/freedom-roadmap",
+    }
 ];
 
 export default function ExistingPage() {
