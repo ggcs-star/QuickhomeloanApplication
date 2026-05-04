@@ -19,7 +19,7 @@ const tools = [
         icon: Calculator,
     },
     {
-        title: "Calendar",
+        title: "calendar",
         desc: "Track Loan Dates",
         icon: Calendar,
     },

@@ -12,7 +12,7 @@ export default function BottomNav() {
 
   const menus = [
     { icon: Home, path: "/" },
-    { icon: BarChart3, path: "" },
+    { icon: BarChart3, path: "/analysis" },
     { icon: Zap, path: "/reels", center: true },
     { icon: GraduationCap, path: "/education" },
     { icon: Newspaper, path: "/news" },
@@ -72,9 +72,8 @@ export default function BottomNav() {
 
               {/* DOT */}
               <div
-                className={`mt-1 h-1 w-1 rounded-full ${
-                  active ? "bg-black" : "bg-transparent"
-                }`}
+                className={`mt-1 h-1 w-1 rounded-full ${active ? "bg-black" : "bg-transparent"
+                  }`}
               />
             </button>
           );

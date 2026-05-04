@@ -32,7 +32,7 @@ export default function ApplyNowBanner() {
 
                     {/* BUTTON */}
                     <button
-                        onClick={() => router.visit("")}
+                        onClick={() => router.visit("/profile/smart-setup")}
                         className="
                             bg-gray-900 text-white px-6 py-3 rounded-xl
                             font-medium text-sm sm:text-base

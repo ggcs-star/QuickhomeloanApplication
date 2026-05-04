@@ -46,14 +46,14 @@ Route::get('/modules/{id}/video', function ($id) {
 
 Route::get('/audio-player', function () {
     return Inertia::render('AudioPlayer', [
-       
+
     ]);
 })->name('audio-player');
 Route::get('/video-player', function () {
     return Inertia::render('VideoPlayer');
 })->name('video-player');
 
-Route::get('/reels', fn () => Inertia::render('Reels'));
+Route::get('/reels', fn() => Inertia::render('Reels'));
 
 Route::get('/profile', fn() => Inertia::render('Profile'));
 
@@ -218,4 +218,29 @@ Route::get('/news/{slug}', function ($slug) {
     return Inertia::render('News/PostDetails', [
         'slug' => $slug
     ]);
+});
+
+// Route::get('/profile', fn() => Inertia::render('Profile'));
+Route::get('/profile', fn() => Inertia::render('Profile/Profile'));
+Route::get('/profile/smart-setup', fn() => Inertia::render('Profile/SmartProfileSetup'));
+
+Route::get('/tools/calendar', function () {
+    return Inertia::render('Tools/Calendar');
+});
+
+Route::get('/analysis', function () {
+    return Inertia::render('Analysis/AnalysisPage');
+});
+
+Route::get('/analysis/statement-analyzer', function () {
+    return Inertia::render('Analysis/StatementAnalyzer');
+});
+
+
+Route::get('/analysis/rate-change-risk', function () {
+    return Inertia::render('Analysis/RateChangeRisk');
+});
+
+Route::get('/analysis/rate-change-tracker', function () {
+    return Inertia::render('Analysis/RateChangeTracker');
 });
