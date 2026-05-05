@@ -354,4 +354,12 @@ return [
             'landscape_right' => false,
         ],
     ],
+    'permissions' => [
+    'biometric' => false,
+    'camera' => false,
+    'nfc' => false,
+    'push_notifications' => true,
+    'location' => false,
+    'vibrate' => false,
+]
 ];

@@ -8,13 +8,24 @@
     @vite(['resources/js/app.jsx', 'resources/css/app.css'])
 
     @inertiaHead
+
+    {{-- ✅ Livewire CSS --}}
+    @livewireStyles
 </head>
+
 <body>
     <style>
-    script[data-page] {
-        display: none;
-    }
-</style>
+        script[data-page] {
+            display: none;
+        }
+    </style>
+
     @inertia
+
+    {{-- ✅ TOKEN LISTENER --}}
+    <livewire:push-notification-handler />
+
+    {{-- ✅ Livewire JS --}}
+    @livewireScripts
 </body>
 </html>

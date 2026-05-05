@@ -1,11 +1,11 @@
 import { useAuth } from "@/Context/AuthContext";
-import { useEffect, useState } from "react";
-import { router } from "@inertiajs/react";
+import { useEffect } from "react";
 import BottomNav from "../Components/BottomNav";
 import TopNav from "../Components/TopNav";
 import Footer from "../Components/Common/Footer";
 import { Capacitor } from "@capacitor/core";
-import api from "@/api";
+
+
 export default function AppLayout({
   children,
   showBottomNav = true,
@@ -13,6 +13,9 @@ export default function AppLayout({
   showFooter = true,
 }) {
   const { user, isProUser, loading } = useAuth();
+
+
+
 
   if (loading) {
     return (
@@ -25,12 +28,14 @@ export default function AppLayout({
     );
   }
 
+
   return (
     <div className="min-h-screen bg-[#f3f4f6] flex flex-col">
 
       {showTopNav && <TopNav user={user} isProUser={isProUser} />}
 
-      <div className={showBottomNav ? "pb-24" : ""}>
+      {/* 🔥 SAFE AREA + CONTENT */}
+      <div className={`${showBottomNav ? "pb-24" : ""}`}>
         {children}
         {showFooter && <Footer />}
       </div>

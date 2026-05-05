@@ -43,7 +43,7 @@ createInertiaApp({
           <GlobalVideoProvider>
 
             {/* SAFE AREA WRAPPER */}
-            <div className="min-h-[100dvh] w-full flex flex-col overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] bg-white">
+            <div className="min-h-[100dvh] w-full flex flex-col overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] bg-[#f3f4f6]">
 
               <App {...props} initialPage={initialPage} />
 

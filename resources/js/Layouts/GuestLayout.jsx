@@ -5,7 +5,7 @@ import { router } from "@inertiajs/react";
 export default function GuestLayout({ children }) {
   useEffect(() => {
     if (isAuthenticated()) {
-      router.visit("/dashboard");
+      router.visit("/");
     }
   }, []);
 
