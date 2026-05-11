@@ -27,7 +27,7 @@ const items = [
     desc: "Connect, learn, grow together",
     icon: "/images/Home/community.png",
     color: "bg-purple-500",
-    route: "",
+    route: "/community",
   },
 ];
 
