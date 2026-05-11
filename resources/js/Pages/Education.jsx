@@ -28,9 +28,10 @@ export default function Education() {
       action: "Start Episode",
       color: "blue",
       image: "/images/Podcast.png",
-      route: "",
+      route: "/podcasts",
       bg: "bg-purple-50",
     },
+
     {
       title: "Quick Knowledge",
       desc: "Quick videos to boost knowledge",

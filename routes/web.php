@@ -225,7 +225,12 @@ Route::get('/news/{slug}', function ($slug) {
         'slug' => $slug
     ]);
 });
-
+Route::get('/community', function () {
+    return inertia('Community/CommunityPage');
+});
+Route::get('/podcasts', function () {
+    return inertia('Podcasts/PodcastPage');
+});
 // Route::get('/profile', fn() => Inertia::render('Profile'));
 Route::get('/profile', fn() => Inertia::render('Profile/Profile'));
 Route::get('/profile/smart-setup', fn() => Inertia::render('Profile/SmartProfileSetup'));
