@@ -1,251 +1,808 @@
 import React, { useState } from "react";
 
+import {
+  Pencil,
+  WalletCards,
+  TrendingUp,
+  BarChart3,
+  BadgeCheck,
+} from "lucide-react";
+
+import InsightsLayout from "@/Components/Common/InsightsLayout";
+
+import { STAMP_DUTY_INSIGHTS } from "./StampDutyInsightsData";
+
 /* ---------------------------------------------
-   CONSTANTS & STYLES
+   STATES
 --------------------------------------------- */
+
 const STATES = [
-  "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa",
-  "Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala",
-  "Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland",
-  "Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
-  "Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands",
-  "Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi",
-  "Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry"
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Punjab",
+  "Rajasthan",
+  "Tamil Nadu",
+  "Telangana",
+  "Uttar Pradesh",
+  "West Bengal",
 ];
 
-const inputBase = "w-full h-12 px-4 bg-gray-50 border border-gray-300 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-800";
-const selectBase = inputBase + " appearance-none bg-white";
-
 /* ---------------------------------------------
-   MAIN COMPONENT
+   COMPONENT
 --------------------------------------------- */
+
 export default function StampDutyCalculator() {
-  const [method, setMethod] = useState("percentage");
 
-  const [propertyValue, setPropertyValue] = useState(5000000);
-  const [state, setState] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [buyerCategory, setBuyerCategory] = useState("");
-  const [stampDutyRate, setStampDutyRate] = useState(6);
-  const [registrationFee, setRegistrationFee] = useState("30000");
-  const [otherCharges, setOtherCharges] = useState(0);
+  const [method, setMethod] =
+    useState("percentage");
 
-  const [result, setResult] = useState(null);
-  const [hasCalculated, setHasCalculated] = useState(false);
+  const [propertyValue, setPropertyValue] =
+    useState(5000000);
+
+  const [state, setState] =
+    useState("");
+
+  const [propertyType, setPropertyType] =
+    useState("");
+
+  const [buyerCategory, setBuyerCategory] =
+    useState("");
+
+  const [stampDutyRate, setStampDutyRate] =
+    useState(6);
+
+  const [registrationFee, setRegistrationFee] =
+    useState("30000");
+
+  const [otherCharges, setOtherCharges] =
+    useState(0);
 
   /* ---------------------------------------------
      CALCULATION
   --------------------------------------------- */
-  const calculateCharges = () => {
-    const stampDuty =
-      method === "percentage"
-        ? (propertyValue * stampDutyRate) / 100
-        : propertyValue * 0.05; // Default slab demo logic
 
-    const regFee =
-      registrationFee.toString().includes("%")
-        ? (propertyValue * parseFloat(registrationFee)) / 100
-        : Number(registrationFee);
+  const stampDuty =
+    method === "percentage"
+      ? (propertyValue *
+          stampDutyRate) /
+        100
+      : propertyValue * 0.05;
 
-    const total = stampDuty + regFee + Number(otherCharges);
+  const regFee =
+    registrationFee
+      .toString()
+      .includes("%")
+      ? (propertyValue *
+          parseFloat(
+            registrationFee
+          )) /
+        100
+      : Number(
+          registrationFee
+        );
 
-    setResult({ stampDuty, regFee, otherCharges, total });
-    setHasCalculated(true);
-  };
+  const total =
+    stampDuty +
+    regFee +
+    Number(otherCharges);
 
-  const format = (v) => `₹${Math.round(v).toLocaleString("en-IN")}`;
+  const format = (v) =>
+    `₹${Math.round(v).toLocaleString(
+      "en-IN"
+    )}`;
 
   /* ---------------------------------------------
-     DONUT MATH
+     DONUT
   --------------------------------------------- */
-  const radius = 70;
-  const circumference = 2 * Math.PI * radius;
-  const dash = hasCalculated && result ? (result.stampDuty / result.total) * circumference : 0;
+
+  const radius = 58;
+
+  const circumference =
+    2 * Math.PI * radius;
+
+  const progress =
+    total > 0
+      ? stampDuty / total
+      : 0;
+
+  const dash =
+    progress *
+    circumference;
 
   return (
-    <section className="bg-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-xl mb-12">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+    <section className="bg-[#f5f7fd] min-h-screen pb-24 max-w-[430px] mx-auto">
 
-        {/* ================= LEFT FORM ================= */}
-        <div className="lg:col-span-3 space-y-6">
-          <Field label="Property Value (₹)">
-            <input
-              type="number"
-              value={propertyValue}
-              onChange={(e) => setPropertyValue(Number(e.target.value))}
-              className={inputBase}
-            />
-          </Field>
+      {/* HERO */}
+      <div className="px-3 pt-3">
 
-          <Field label="State / UT">
-            <select
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-              className={selectBase}
-            >
-              <option value="">Select state</option>
-              {STATES.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
-          </Field>
+        <div className="relative overflow-hidden rounded-[16px] bg-gradient-to-r from-[#001B5E] to-[#0038b8] px-4 py-3 text-white h-[106px]">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Field label="Property Type">
-              <select
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                className={selectBase}
-              >
-                <option value="">Select</option>
-                <option>Resale</option>
-                <option>New (Under Construction)</option>
-                <option>Land</option>
-              </select>
-            </Field>
+          <div className="relative z-10 max-w-[68%]">
 
-            <Field label="Buyer Category">
-              <select
-                value={buyerCategory}
-                onChange={(e) => setBuyerCategory(e.target.value)}
-                className={selectBase}
-              >
-                <option value="">Select</option>
-                <option>Individual</option>
-                <option>Female Buyer</option>
-                <option>First-time Homebuyer</option>
-                <option>Joint Buyers</option>
-              </select>
-            </Field>
+            <p className="text-[10px] opacity-90 font-medium">
+              Estimated Charges
+            </p>
+
+            <div className="flex items-end gap-1 mt-1">
+
+              <h2 className="text-[28px] leading-none font-black tracking-[-1px]">
+
+                {format(total)}
+
+              </h2>
+
+            </div>
+
+            <div className="flex items-center gap-2 mt-2 text-[9px] opacity-95">
+
+              <span>
+                {stampDutyRate}% Duty
+              </span>
+
+              <span>•</span>
+
+              <span>
+                {method ===
+                "percentage"
+                  ? "Percentage"
+                  : "Slab"}
+              </span>
+
+            </div>
+
           </div>
 
-          {/* TOGGLE — METHOD */}
-          <div>
-            <label className="text-sm font-medium text-gray-700 mb-2 block">
-              Stamp Duty Method
-            </label>
-            <div className="grid grid-cols-2 rounded-lg border border-gray-300 overflow-hidden">
-              <button
-                type="button"
-                onClick={() => { setMethod("percentage"); setResult(null); setHasCalculated(false); }}
-                className={`h-12 font-semibold transition-colors ${
-                  method === "percentage" ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Percentage
-              </button>
-              <button
-                type="button"
-                onClick={() => { setMethod("slab"); setResult(null); setHasCalculated(false); }}
-                className={`h-12 font-semibold transition-colors ${
-                  method === "slab" ? "bg-gray-800 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Slab Based
-              </button>
-            </div>
-          </div>
+          <img
+            src="/images/house.png"
+            alt="house"
+            className="absolute right-0 bottom-0 h-[106px] w-auto object-contain"
+          />
 
-          <Field label="Stamp Duty Rate (%)">
-            <input
-              type="number"
-              disabled={method === "slab"}
-              value={stampDutyRate}
-              onChange={(e) => setStampDutyRate(Number(e.target.value))}
-              className={`${inputBase} disabled:bg-gray-200 disabled:text-gray-500`}
-            />
-          </Field>
-
-          <Field label="Registration Fee (₹ or %)">
-            <input
-              value={registrationFee}
-              onChange={(e) => setRegistrationFee(e.target.value)}
-              className={inputBase}
-            />
-          </Field>
-
-          <Field label="Other Charges (₹)">
-            <input
-              type="number"
-              value={otherCharges}
-              onChange={(e) => setOtherCharges(Number(e.target.value))}
-              className={inputBase}
-            />
-          </Field>
-
-          <button
-            onClick={calculateCharges}
-            className="w-full bg-gray-800 text-white py-4 rounded-lg font-bold hover:bg-gray-900 transition shadow-lg mt-4"
-          >
-            Calculate Charges
-          </button>
-        </div>
-
-        {/* ================= RIGHT PANEL ================= */}
-        <div className="lg:col-span-2 bg-gray-100 rounded-xl p-6 flex flex-col items-center justify-center min-h-[400px]">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">
-            Cost Breakdown
-          </h3>
-
-          {!hasCalculated ? (
-            <div className="w-44 h-44 rounded-full bg-gray-200 border-4 border-gray-300 flex items-center justify-center text-gray-500 text-center font-medium shadow-inner">
-              Calculate Stamp<br />Duty
-            </div>
-          ) : (
-            <>
-              {/* DONUT */}
-              <div className="relative w-[180px] h-[180px] mb-8">
-                <svg viewBox="0 0 180 180" className="drop-shadow-sm">
-                  <circle cx="90" cy="90" r={radius} stroke="#e5e7eb" strokeWidth="18" fill="none" />
-                  <circle
-                    cx="90"
-                    cy="90"
-                    r={radius}
-                    stroke="#374151"
-                    strokeWidth="18"
-                    fill="none"
-                    strokeDasharray={`${dash} ${circumference}`}
-                    transform="rotate(-90 90 90)"
-                    strokeLinecap="round"
-                  />
-                </svg>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-xs text-gray-500 font-medium">Total Cost</span>
-                  <span className="text-2xl font-bold text-gray-800">
-                    {format(result.total)}
-                  </span>
-                </div>
-              </div>
-
-              {/* STATS */}
-              <div className="w-full space-y-3">
-                <Stat label="Stamp Duty" value={format(result.stampDuty)} />
-                <Stat label="Registration Fee" value={format(result.regFee)} />
-                <Stat label="Other Charges" value={format(result.otherCharges)} />
-              </div>
-            </>
-          )}
         </div>
 
       </div>
+
+      {/* INPUTS */}
+      <div className="px-3 mt-3 space-y-2">
+
+        <InputField
+          label="Property Value"
+          value={propertyValue}
+          onChange={
+            setPropertyValue
+          }
+          min={100000}
+          max={100000000}
+          step={50000}
+          format="currency"
+        />
+
+        <SelectField
+          label="State / UT"
+          value={state}
+          onChange={setState}
+          options={STATES}
+        />
+
+        <SelectField
+          label="Property Type"
+          value={propertyType}
+          onChange={
+            setPropertyType
+          }
+          options={[
+            "Resale",
+            "New (Under Construction)",
+            "Land",
+          ]}
+        />
+
+        <SelectField
+          label="Buyer Category"
+          value={buyerCategory}
+          onChange={
+            setBuyerCategory
+          }
+          options={[
+            "Individual",
+            "Female Buyer",
+            "First-time Homebuyer",
+            "Joint Buyers",
+          ]}
+        />
+
+      </div>
+
+      {/* METHOD */}
+      <div className="px-3 mt-3">
+
+        <div className="bg-white rounded-[14px] p-2 border border-[#edf1f7] shadow-sm">
+
+          <div className="grid grid-cols-2 gap-2">
+
+            <button
+              onClick={() =>
+                setMethod(
+                  "percentage"
+                )
+              }
+              className={`
+                h-[42px]
+                rounded-full
+                text-[12px]
+                font-semibold
+                transition-all
+                ${
+                  method ===
+                  "percentage"
+                    ? "bg-[#001B5E] text-white"
+                    : "bg-[#f5f7fd] text-[#081c4b]"
+                }
+              `}
+            >
+              Percentage
+            </button>
+
+            <button
+              onClick={() =>
+                setMethod("slab")
+              }
+              className={`
+                h-[42px]
+                rounded-full
+                text-[12px]
+                font-semibold
+                transition-all
+                ${
+                  method ===
+                  "slab"
+                    ? "bg-[#001B5E] text-white"
+                    : "bg-[#f5f7fd] text-[#081c4b]"
+                }
+              `}
+            >
+              Slab Based
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* EXTRA INPUTS */}
+      <div className="px-3 mt-3 space-y-2">
+
+        <InputField
+          label="Stamp Duty Rate"
+          value={
+            stampDutyRate
+          }
+          onChange={
+            setStampDutyRate
+          }
+          min={1}
+          max={20}
+          step={0.1}
+          format="percent"
+          disabled={
+            method === "slab"
+          }
+        />
+
+        <TextField
+          label="Registration Fee"
+          value={
+            registrationFee
+          }
+          onChange={
+            setRegistrationFee
+          }
+        />
+
+        <InputField
+          label="Other Charges"
+          value={otherCharges}
+          onChange={
+            setOtherCharges
+          }
+          min={0}
+          max={1000000}
+          step={1000}
+          format="currency"
+        />
+
+      </div>
+
+      {/* SUMMARY */}
+      <div className="px-3 mt-3">
+
+        <div className="bg-white rounded-[16px] px-3 py-[12px] border border-[#edf1f7] shadow-sm">
+
+          <div className="flex items-center justify-between mb-3">
+
+            <h3 className="text-[15px] font-bold text-[#081c4b]">
+              Cost Breakdown
+            </h3>
+
+            <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded-full text-[10px] font-semibold">
+
+              <BadgeCheck size={12} />
+
+              Calculated
+
+            </div>
+
+          </div>
+
+          <div className="flex gap-3">
+
+            {/* DONUT */}
+            <div className="relative w-[118px] h-[118px] shrink-0">
+
+              <svg
+                viewBox="0 0 180 180"
+                className="w-full h-full"
+              >
+
+                <circle
+                  cx="90"
+                  cy="90"
+                  r={radius}
+                  stroke="#e5e7eb"
+                  strokeWidth="16"
+                  fill="none"
+                />
+
+                <circle
+                  cx="90"
+                  cy="90"
+                  r={radius}
+                  stroke="#2563eb"
+                  strokeWidth="16"
+                  fill="none"
+                  strokeDasharray={`${dash} ${circumference}`}
+                  transform="rotate(-90 90 90)"
+                  strokeLinecap="round"
+                />
+
+              </svg>
+
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3">
+
+                <span className="text-[8px] text-gray-500">
+                  Total Cost
+                </span>
+
+                <h4 className="text-[14px] font-black text-[#081c4b] leading-tight mt-1">
+
+                  {format(total)}
+
+                </h4>
+
+              </div>
+
+            </div>
+
+            {/* STATS */}
+            <div className="flex-1 min-w-0">
+
+              <div className="grid grid-cols-2 gap-2">
+
+                <SummaryStat
+                  icon={
+                    <WalletCards
+                      size={14}
+                      className="text-blue-600"
+                    />
+                  }
+                  iconBg="bg-blue-50"
+                  label="Stamp Duty"
+                  value={format(
+                    stampDuty
+                  )}
+                />
+
+                <SummaryStat
+                  icon={
+                    <TrendingUp
+                      size={14}
+                      className="text-green-600"
+                    />
+                  }
+                  iconBg="bg-green-50"
+                  label="Registration"
+                  value={format(
+                    regFee
+                  )}
+                />
+
+                <SummaryStat
+                  icon={
+                    <BarChart3
+                      size={14}
+                      className="text-orange-500"
+                    />
+                  }
+                  iconBg="bg-orange-50"
+                  label="Other"
+                  value={format(
+                    otherCharges
+                  )}
+                />
+
+                <SummaryStat
+                  icon={
+                    <BadgeCheck
+                      size={14}
+                      className="text-purple-600"
+                    />
+                  }
+                  iconBg="bg-purple-50"
+                  label="Total"
+                  value={format(
+                    total
+                  )}
+                />
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* INFO */}
+      <div className="px-3 mt-3">
+
+        <div className="bg-green-50 border border-green-100 rounded-[16px] p-4">
+
+          <h3 className="text-[13px] font-bold text-green-800">
+            Important Note
+          </h3>
+
+          <p className="text-[11px] text-green-700 mt-1 leading-5">
+
+            Stamp duty rates vary
+            by state, buyer
+            category, and property
+            type. Actual charges may
+            differ based on local
+            regulations.
+
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* INSIGHTS */}
+      <div className="mt-3">
+
+        <InsightsLayout
+          title=""
+          sections={
+            STAMP_DUTY_INSIGHTS
+          }
+        />
+
+      </div>
+
     </section>
   );
 }
 
 /* ---------------------------------------------
-   HELPERS
+   INPUT FIELD
 --------------------------------------------- */
-const Field = ({ label, children }) => (
-  <div className="space-y-1.5">
-    <label className="text-sm font-semibold text-gray-700 block">{label}</label>
-    {children}
-  </div>
-);
 
-const Stat = ({ label, value }) => (
-  <div className="flex justify-between bg-white p-3.5 rounded-lg shadow-sm border border-gray-200">
-    <span className="text-gray-600 text-sm font-medium">{label}</span>
-    <span className="font-bold text-gray-900">{value}</span>
-  </div>
-);
+function InputField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format,
+  disabled = false,
+}) {
+
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  const displayValue = () => {
+
+    if (format === "currency") {
+
+      return `₹${Number(
+        value
+      ).toLocaleString("en-IN")}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+
+    let finalValue =
+      Number(tempValue);
+
+    if (isNaN(finalValue))
+      finalValue = min;
+
+    if (finalValue < min)
+      finalValue = min;
+
+    if (finalValue > max)
+      finalValue = max;
+
+    onChange(finalValue);
+
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+
+            <h3 className="text-[16px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+
+              {displayValue()}
+
+            </h3>
+
+          ) : (
+
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                disabled={disabled}
+                onChange={(e) =>
+                  setTempValue(
+                    e.target.value
+                  )
+                }
+                className="
+                  h-9 flex-1 rounded-xl
+                  border border-[#d9e2f2]
+                  px-3 text-[14px]
+                  font-semibold outline-none
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3 rounded-xl
+                  bg-[#001B5E]
+                  text-white text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+        {!editing &&
+          !disabled && (
+
+            <button
+              onClick={() => {
+                setEditing(
+                  true
+                );
+
+                setTempValue(
+                  value
+                );
+              }}
+              className="
+                w-8 h-8 rounded-xl
+                bg-[#f5f7fd]
+                flex items-center justify-center
+                text-gray-500 shrink-0
+              "
+            >
+              <Pencil size={14} />
+            </button>
+
+          )}
+
+      </div>
+
+      {!disabled && (
+
+        <input
+          type="range"
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={(e) =>
+            onChange(
+              Number(
+                e.target.value
+              )
+            )
+          }
+          className="w-full mt-3 accent-blue-600"
+        />
+
+      )}
+
+    </div>
+  );
+}
+
+/* ---------------------------------------------
+   TEXT FIELD
+--------------------------------------------- */
+
+function TextField({
+  label,
+  value,
+  onChange,
+}) {
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <p className="text-[11px] text-gray-500 mb-2">
+        {label}
+      </p>
+
+      <input
+        value={value}
+        onChange={(e) =>
+          onChange(
+            e.target.value
+          )
+        }
+        className="
+          w-full h-[42px]
+          rounded-xl
+          border border-[#d9e2f2]
+          px-3
+          text-[14px]
+          font-semibold
+          outline-none
+        "
+      />
+
+    </div>
+  );
+}
+
+/* ---------------------------------------------
+   SELECT FIELD
+--------------------------------------------- */
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+}) {
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <p className="text-[11px] text-gray-500 mb-2">
+        {label}
+      </p>
+
+      <select
+        value={value}
+        onChange={(e) =>
+          onChange(
+            e.target.value
+          )
+        }
+        className="
+          w-full h-[42px]
+          rounded-xl
+          border border-[#d9e2f2]
+          px-3
+          text-[14px]
+          font-semibold
+          outline-none
+          bg-white
+        "
+      >
+
+        <option value="">
+          Select
+        </option>
+
+        {options.map((o) => (
+
+          <option
+            key={o}
+            value={o}
+          >
+            {o}
+          </option>
+
+        ))}
+
+      </select>
+
+    </div>
+  );
+}
+
+/* ---------------------------------------------
+   SUMMARY STAT
+--------------------------------------------- */
+
+function SummaryStat({
+  label,
+  value,
+  icon,
+  iconBg,
+}) {
+  return (
+    <div className="text-center relative">
+
+      <div
+        className={`
+          w-8 h-8 rounded-[10px]
+          ${iconBg}
+          flex items-center justify-center
+          mx-auto mb-1
+        `}
+      >
+        {icon}
+      </div>
+
+      <p className="text-[8px] text-gray-500 leading-tight whitespace-nowrap">
+        {label}
+      </p>
+
+      <h4 className="text-[11px] font-black text-[#081c4b] mt-[3px] leading-tight">
+        {value}
+      </h4>
+
+    </div>
+  );
+}

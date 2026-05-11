@@ -1,8 +1,22 @@
 import React, { useState, useMemo } from "react";
 
-/* -------------------------------------------
-   SCENARIO PRESETS
-------------------------------------------- */
+import {
+  Pencil,
+  TrendingUp,
+  WalletCards,
+  BarChart3,
+  CalendarDays,
+  BadgeCheck,
+} from "lucide-react";
+
+import InsightsLayout from "@/Components/Common/InsightsLayout";
+
+import { PROPERTY_INVESTMENT_INSIGHTS } from "./PropertyInvestmentInsightsData";
+
+/* ---------------------------------------------
+   SCENARIOS
+--------------------------------------------- */
+
 const SCENARIOS = {
   base: {
     label: "Base",
@@ -13,11 +27,11 @@ const SCENARIOS = {
       loanAmount: 4000000,
       interestRate: 9.5,
       tenure: 20,
-      emiFrequency: 12,
     },
   },
+
   conservative: {
-    label: "Conservative",
+    label: "Safe",
     inputs: {
       propertyValue: 5000000,
       appreciation: 10,
@@ -25,11 +39,11 @@ const SCENARIOS = {
       loanAmount: 4000000,
       interestRate: 8,
       tenure: 20,
-      emiFrequency: 12,
     },
   },
+
   aggressive: {
-    label: "Aggressive",
+    label: "Growth",
     inputs: {
       propertyValue: 5000000,
       appreciation: 7,
@@ -37,238 +51,739 @@ const SCENARIOS = {
       loanAmount: 4000000,
       interestRate: 8.5,
       tenure: 20,
-      emiFrequency: 12,
     },
   },
 };
 
-/* -------------------------------------------
-   CALCULATION LOGIC
-------------------------------------------- */
+/* ---------------------------------------------
+   HELPERS
+--------------------------------------------- */
+
+const formatCurrency = (value) =>
+  `₹${Math.round(value).toLocaleString(
+    "en-IN"
+  )}`;
+
 function calculateResults(inputs) {
+
   const exitValue =
     inputs.propertyValue *
-    Math.pow(1 + inputs.appreciation / 100, inputs.years);
+    Math.pow(
+      1 +
+        inputs.appreciation /
+          100,
+      inputs.years
+    );
 
-  const totalEmiPaid = inputs.loanAmount * 1.25; // Note: using your simplified logic here
-  const totalInterest = totalEmiPaid - inputs.loanAmount;
-  const totalInvested = inputs.propertyValue - inputs.loanAmount + totalEmiPaid;
-  const netProfit = exitValue - totalInvested;
+  const totalEmiPaid =
+    inputs.loanAmount * 1.25;
 
-  const cagr = Math.pow(exitValue / inputs.propertyValue, 1 / inputs.years) - 1;
+  const totalInterest =
+    totalEmiPaid -
+    inputs.loanAmount;
+
+  const totalInvested =
+    inputs.propertyValue -
+    inputs.loanAmount +
+    totalEmiPaid;
+
+  const netProfit =
+    exitValue -
+    totalInvested;
+
+  const cagr =
+    Math.pow(
+      exitValue /
+        inputs.propertyValue,
+      1 / inputs.years
+    ) - 1;
 
   return {
-    exitValue: Math.round(exitValue),
-    netProfit: Math.round(netProfit),
-    totalInterest: Math.round(totalInterest),
-    totalInvested: Math.round(totalInvested),
-    breakEvenYear: netProfit > 0 ? 1 : inputs.years,
-    cagr: (cagr * 100).toFixed(2),
-    roi: ((netProfit / totalInvested) * 100).toFixed(2),
+    exitValue:
+      Math.round(exitValue),
+
+    netProfit:
+      Math.round(netProfit),
+
+    totalInterest:
+      Math.round(totalInterest),
+
+    totalInvested:
+      Math.round(totalInvested),
+
+    breakEvenYear:
+      netProfit > 0
+        ? 1
+        : inputs.years,
+
+    cagr: (
+      cagr * 100
+    ).toFixed(2),
+
+    roi: (
+      (netProfit /
+        totalInvested) *
+      100
+    ).toFixed(2),
   };
 }
 
-/* -------------------------------------------
-   MAIN COMPONENT
-------------------------------------------- */
+/* ---------------------------------------------
+   COMPONENT
+--------------------------------------------- */
+
 export default function PropertyInvestmentCalculator() {
-  const [activeScenario, setActiveScenario] = useState("base");
-  const [inputs, setInputs] = useState(SCENARIOS.base.inputs);
 
-  /* ACCORDION STATES */
-  const [showAnnualCosts, setShowAnnualCosts] = useState(false);
-  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [activeScenario, setActiveScenario] =
+    useState("base");
 
-  const handleScenarioSelect = (key) => {
-    setActiveScenario(key);
-    setInputs(SCENARIOS[key].inputs);
-  };
+  const [inputs, setInputs] =
+    useState(
+      SCENARIOS.base.inputs
+    );
 
-  const updateInput = (key, value) => {
-    setInputs((prev) => ({ ...prev, [key]: Number(value) }));
-  };
-
-  const results = useMemo(() => calculateResults(inputs), [inputs]);
-
-  return (
-    <div className="space-y-6 pb-12">
-      {/* QUICK SCENARIOS */}
-      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="font-semibold text-sm text-gray-700 mr-2">
-            Quick Scenarios:
-          </span>
-
-          {Object.keys(SCENARIOS).map((key) => (
-            <button
-              key={key}
-              onClick={() => handleScenarioSelect(key)}
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200
-                ${
-                  activeScenario === key
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-            >
-              {SCENARIOS[key].label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* MAIN GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* LEFT PANEL */}
-        <div className="lg:col-span-5 space-y-6">
-          {/* PROPERTY & LOAN */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-            <div className="flex items-center mb-4 border-b pb-4">
-              <div className="bg-gray-200 p-2 rounded-lg mr-3">
-                <svg className="w-5 h-5 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-              </div>
-              <h2 className="text-lg font-bold text-gray-800">Property & Loan</h2>
-            </div>
-
-            <div className="space-y-4">
-              <Input label="Current Property Value" prefix="₹" value={inputs.propertyValue} onChange={(v) => updateInput("propertyValue", v)} />
-              <Input label="Expected Annual Appreciation" prefix="%" value={inputs.appreciation} onChange={(v) => updateInput("appreciation", v)} />
-              <Input label="Number of Years to Hold" prefix="Yrs" value={inputs.years} onChange={(v) => updateInput("years", v)} />
-              <Input label="Loan Amount" prefix="₹" value={inputs.loanAmount} onChange={(v) => updateInput("loanAmount", v)} />
-              <Input label="Annual Interest Rate" prefix="%" value={inputs.interestRate} onChange={(v) => updateInput("interestRate", v)} />
-              <Input label="Loan Tenure" prefix="Yrs" value={inputs.tenure} onChange={(v) => updateInput("tenure", v)} />
-            </div>
-          </div>
-
-          {/* ANNUAL COSTS + ADVANCED OPTIONS */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 divide-y">
-            {/* ANNUAL COSTS */}
-            <div>
-              <button
-                onClick={() => setShowAnnualCosts(!showAnnualCosts)}
-                className="w-full flex justify-between items-center p-5 font-bold text-gray-800 hover:bg-gray-50 rounded-t-xl transition-colors"
-              >
-                Annual Costs
-                <span className={`transition-transform text-gray-500 ${showAnnualCosts ? "rotate-180" : ""}`}>
-                  ▼
-                </span>
-              </button>
-
-              {showAnnualCosts && (
-                <div className="p-5 border-t bg-gray-50">
-                  <table className="w-full text-sm border bg-white rounded-lg overflow-hidden">
-                    <tbody>
-                      <tr className="border-b">
-                        <td className="p-3 text-gray-600">Maintenance</td>
-                        <td className="p-3 text-right font-medium">₹50,000</td>
-                      </tr>
-                      <tr className="border-b">
-                        <td className="p-3 text-gray-600">Property Tax</td>
-                        <td className="p-3 text-right font-medium">₹30,000</td>
-                      </tr>
-                      <tr className="font-bold bg-gray-100 text-gray-800">
-                        <td className="p-3">Total / Year</td>
-                        <td className="p-3 text-right">₹80,000</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-
-            {/* ADVANCED OPTIONS */}
-            <div>
-              <button
-                onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
-                className="w-full flex justify-between items-center p-5 font-bold text-gray-800 hover:bg-gray-50 rounded-b-xl transition-colors"
-              >
-                Advanced Options
-                <span className={`transition-transform text-gray-500 ${showAdvancedOptions ? "rotate-180" : ""}`}>
-                  ▼
-                </span>
-              </button>
-
-              {showAdvancedOptions && (
-                <div className="p-5 border-t bg-gray-50 space-y-3 text-sm text-gray-700">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-gray-800 focus:ring-gray-800" />
-                    Include rental income
-                  </label>
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-gray-800 focus:ring-gray-800" />
-                    Include tax benefits
-                  </label>
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" className="w-4 h-4 rounded text-gray-800 focus:ring-gray-800" />
-                    Early loan prepayment
-                  </label>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT PANEL */}
-        <div className="lg:col-span-7">
-          <div className="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 sticky top-6">
-            <h3 className="text-xl font-bold mb-6 border-b pb-4 text-gray-800">Investment Summary & Takeaways</h3>
-
-            <ul className="space-y-3 text-base text-gray-600 mb-8 bg-blue-50/50 p-5 rounded-lg border border-blue-100">
-              <li className="flex justify-between items-center">
-                <span>Property Value at Exit:</span>
-                <b className="text-gray-900 text-lg">₹{results.exitValue.toLocaleString()}</b>
-              </li>
-              <li className="flex justify-between items-center border-t border-blue-200 pt-3">
-                <span>Net Profit:</span>
-                <b className="text-green-600 text-xl">₹{results.netProfit.toLocaleString()}</b>
-              </li>
-              <li className="flex justify-between items-center border-t border-blue-200 pt-3">
-                <span>Break-even Timeline:</span>
-                <b className="text-gray-900">Year {results.breakEvenYear}</b>
-              </li>
-            </ul>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <Metric label="Net Profit" value={`₹${results.netProfit.toLocaleString()}`} highlight />
-              <Metric label="CAGR" value={`${results.cagr}%`} />
-              <Metric label="ROI" value={`${results.roi}%`} />
-              <Metric label="Exit Value" value={`₹${results.exitValue.toLocaleString()}`} />
-              <Metric label="Total Invested" value={`₹${results.totalInvested.toLocaleString()}`} />
-              <Metric label="Interest Paid" value={`₹${results.totalInterest.toLocaleString()}`} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  const results = useMemo(
+    () =>
+      calculateResults(
+        inputs
+      ),
+    [inputs]
   );
-}
 
-/* -------------------------------------------
-   SMALL COMPONENTS
-------------------------------------------- */
-function Input({ label, prefix, value, onChange }) {
+  const updateInput = (
+    key,
+    value
+  ) => {
+
+    setInputs((prev) => ({
+      ...prev,
+      [key]: Number(value),
+    }));
+  };
+
+  /* CHART */
+
+  const radius = 58;
+
+  const circumference =
+    2 * Math.PI * radius;
+
+  const progress =
+    Math.min(
+      results.roi / 100,
+      1
+    );
+
+  const dash =
+    progress * circumference;
+
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
-      <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">{prefix}</span>
-        <input
-          type="number"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2.5 text-sm font-semibold focus:ring-2 focus:ring-gray-800 focus:border-gray-800 outline-none transition-all"
+    <section className="bg-[#f5f7fd] min-h-screen pb-24 max-w-[430px] mx-auto">
+
+      {/* HERO */}
+      <div className="px-3 pt-3">
+
+        <div className="relative overflow-hidden rounded-[16px] bg-gradient-to-r from-[#001B5E] to-[#0038b8] px-4 py-3 text-white h-[106px]">
+
+          <div className="relative z-10 max-w-[68%]">
+
+            <p className="text-[10px] opacity-90 font-medium">
+              Projected Net Profit
+            </p>
+
+            <div className="flex items-end gap-1 mt-1">
+
+              <h2 className="text-[28px] leading-none font-black tracking-[-1px]">
+
+                {formatCurrency(
+                  results.netProfit
+                )}
+
+              </h2>
+
+            </div>
+
+            <div className="flex items-center gap-2 mt-2 text-[9px] opacity-95">
+
+              <span>
+                ROI {results.roi}%
+              </span>
+
+              <span>•</span>
+
+              <span>
+                {inputs.years}Y Hold
+              </span>
+
+            </div>
+
+          </div>
+
+          <img
+            src="/images/house.png"
+            alt="house"
+            className="absolute right-0 bottom-0 h-[106px] w-auto object-contain"
+          />
+
+        </div>
+
+      </div>
+
+      {/* SCENARIOS */}
+      <div className="px-3 mt-3">
+
+        <div className="grid grid-cols-3 gap-[10px]">
+
+          {Object.keys(
+            SCENARIOS
+          ).map((key) => {
+
+            const active =
+              activeScenario ===
+              key;
+
+            return (
+              <button
+                key={key}
+                onClick={() => {
+                  setActiveScenario(
+                    key
+                  );
+
+                  setInputs(
+                    SCENARIOS[key]
+                      .inputs
+                  );
+                }}
+                className={`
+                  h-[42px]
+                  rounded-full
+                  text-[11px]
+                  font-semibold
+                  transition-all
+                  border
+                  ${
+                    active
+                      ? "bg-[#001B5E] text-white border-[#001B5E]"
+                      : "bg-white text-[#081c4b] border-[#edf1f7]"
+                  }
+                `}
+              >
+
+                {
+                  SCENARIOS[key]
+                    .label
+                }
+
+              </button>
+            );
+          })}
+
+        </div>
+
+      </div>
+
+      {/* INPUTS */}
+      <div className="px-3 mt-3 space-y-2">
+
+        <InputField
+          label="Property Value"
+          value={
+            inputs.propertyValue
+          }
+          onChange={(v) =>
+            updateInput(
+              "propertyValue",
+              v
+            )
+          }
+          min={100000}
+          max={100000000}
+          step={50000}
+          format="currency"
         />
+
+        <InputField
+          label="Annual Appreciation"
+          value={
+            inputs.appreciation
+          }
+          onChange={(v) =>
+            updateInput(
+              "appreciation",
+              v
+            )
+          }
+          min={1}
+          max={20}
+          step={0.5}
+          format="percent"
+        />
+
+        <InputField
+          label="Holding Years"
+          value={inputs.years}
+          onChange={(v) =>
+            updateInput(
+              "years",
+              v
+            )
+          }
+          min={1}
+          max={40}
+          step={1}
+          format="years"
+        />
+
+        <InputField
+          label="Loan Amount"
+          value={
+            inputs.loanAmount
+          }
+          onChange={(v) =>
+            updateInput(
+              "loanAmount",
+              v
+            )
+          }
+          min={100000}
+          max={100000000}
+          step={50000}
+          format="currency"
+        />
+
+        <InputField
+          label="Interest Rate"
+          value={
+            inputs.interestRate
+          }
+          onChange={(v) =>
+            updateInput(
+              "interestRate",
+              v
+            )
+          }
+          min={1}
+          max={20}
+          step={0.1}
+          format="percent"
+        />
+
+        <InputField
+          label="Loan Tenure"
+          value={inputs.tenure}
+          onChange={(v) =>
+            updateInput(
+              "tenure",
+              v
+            )
+          }
+          min={1}
+          max={30}
+          step={1}
+          format="years"
+        />
+
       </div>
+
+      {/* SUMMARY */}
+      <div className="px-3 mt-3">
+
+        <div className="bg-white rounded-[16px] px-3 py-[12px] border border-[#edf1f7] shadow-sm">
+
+          <div className="flex items-center justify-between mb-3">
+
+            <h3 className="text-[15px] font-bold text-[#081c4b]">
+              Investment Summary
+            </h3>
+
+            <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded-full text-[10px] font-semibold">
+
+              <BadgeCheck size={12} />
+
+              Profitable
+
+            </div>
+
+          </div>
+
+          <div className="flex gap-3">
+
+            {/* DONUT */}
+            <div className="relative w-[118px] h-[118px] shrink-0">
+
+              <svg
+                viewBox="0 0 180 180"
+                className="w-full h-full"
+              >
+
+                <circle
+                  cx="90"
+                  cy="90"
+                  r={radius}
+                  stroke="#e5e7eb"
+                  strokeWidth="16"
+                  fill="none"
+                />
+
+                <circle
+                  cx="90"
+                  cy="90"
+                  r={radius}
+                  stroke="#2563eb"
+                  strokeWidth="16"
+                  fill="none"
+                  strokeDasharray={`${dash} ${circumference}`}
+                  transform="rotate(-90 90 90)"
+                  strokeLinecap="round"
+                />
+
+              </svg>
+
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3">
+
+                <span className="text-[8px] text-gray-500">
+                  ROI
+                </span>
+
+                <h4 className="text-[15px] font-black text-[#081c4b] leading-tight mt-1">
+
+                  {results.roi}%
+
+                </h4>
+
+              </div>
+
+            </div>
+
+            {/* STATS */}
+            <div className="flex-1 min-w-0">
+
+              <div className="grid grid-cols-2 gap-2">
+
+                <SummaryStat
+                  icon={
+                    <TrendingUp
+                      size={14}
+                      className="text-green-600"
+                    />
+                  }
+                  iconBg="bg-green-50"
+                  label="Profit"
+                  value={formatCurrency(
+                    results.netProfit
+                  )}
+                />
+
+                <SummaryStat
+                  icon={
+                    <WalletCards
+                      size={14}
+                      className="text-blue-600"
+                    />
+                  }
+                  iconBg="bg-blue-50"
+                  label="Exit Value"
+                  value={formatCurrency(
+                    results.exitValue
+                  )}
+                />
+
+                <SummaryStat
+                  icon={
+                    <BarChart3
+                      size={14}
+                      className="text-orange-500"
+                    />
+                  }
+                  iconBg="bg-orange-50"
+                  label="CAGR"
+                  value={`${results.cagr}%`}
+                />
+
+                <SummaryStat
+                  icon={
+                    <CalendarDays
+                      size={14}
+                      className="text-purple-600"
+                    />
+                  }
+                  iconBg="bg-purple-50"
+                  label="Break Even"
+                  value={`Year ${results.breakEvenYear}`}
+                />
+
+              </div>
+
+              <div className="mt-3 bg-[#f5f7fd] rounded-xl px-3 py-2">
+
+                <p className="text-[10px] text-gray-500">
+                  Total Invested
+                </p>
+
+                <h4 className="text-[18px] font-black text-[#081c4b] mt-1">
+
+                  {formatCurrency(
+                    results.totalInvested
+                  )}
+
+                </h4>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* RECOMMENDATION */}
+      <div className="px-3 mt-3">
+
+        <div className="bg-green-50 border border-green-100 rounded-[16px] p-4">
+
+          <h3 className="text-[13px] font-bold text-green-800">
+            Investment Insight
+          </h3>
+
+          <p className="text-[11px] text-green-700 mt-1 leading-5">
+
+            Property value is projected to grow to{" "}
+
+            <span className="font-bold">
+
+              {formatCurrency(
+                results.exitValue
+              )}
+
+            </span>
+
+            {" "}with an estimated ROI of{" "}
+
+            <span className="font-bold">
+
+              {results.roi}%
+
+            </span>
+
+            {" "}over{" "}
+            {inputs.years} years.
+
+          </p>
+
+        </div>
+
+      </div>
+
+      {/* INSIGHTS */}
+      <div className="mt-3">
+
+        <InsightsLayout
+          title=""
+          sections={
+            PROPERTY_INVESTMENT_INSIGHTS
+          }
+        />
+
+      </div>
+
+    </section>
+  );
+}
+
+/* ---------------------------------------------
+   INPUT FIELD
+--------------------------------------------- */
+
+function InputField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format,
+}) {
+
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  const displayValue = () => {
+
+    if (format === "currency") {
+
+      return `₹${Number(
+        value
+      ).toLocaleString("en-IN")}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    if (format === "years") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+
+    let finalValue =
+      Number(tempValue);
+
+    if (isNaN(finalValue))
+      finalValue = min;
+
+    if (finalValue < min)
+      finalValue = min;
+
+    if (finalValue > max)
+      finalValue = max;
+
+    onChange(finalValue);
+
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+
+            <h3 className="text-[16px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+
+              {displayValue()}
+
+            </h3>
+
+          ) : (
+
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(
+                    e.target.value
+                  )
+                }
+                className="
+                  h-9 flex-1 rounded-xl
+                  border border-[#d9e2f2]
+                  px-3 text-[14px]
+                  font-semibold outline-none
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3 rounded-xl
+                  bg-[#001B5E]
+                  text-white text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+        {!editing && (
+
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8 rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500 shrink-0
+            "
+          >
+            <Pencil size={14} />
+          </button>
+
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(
+            Number(e.target.value)
+          )
+        }
+        className="w-full mt-3 accent-blue-600"
+      />
+
     </div>
   );
 }
 
-function Metric({ label, value, highlight }) {
+/* ---------------------------------------------
+   SUMMARY STAT
+--------------------------------------------- */
+
+function SummaryStat({
+  label,
+  value,
+  icon,
+  iconBg,
+}) {
   return (
-    <div className={`p-4 rounded-xl border ${highlight ? "bg-green-50 border-green-200" : "bg-gray-50 border-gray-200"}`}>
-      <p className="text-xs sm:text-sm text-gray-500 mb-1">{label}</p>
-      <p className={`text-lg sm:text-xl font-bold ${highlight ? "text-green-700" : "text-gray-900"}`}>{value}</p>
+    <div className="text-center relative">
+
+      <div
+        className={`
+          w-8 h-8 rounded-[10px]
+          ${iconBg}
+          flex items-center justify-center
+          mx-auto mb-1
+        `}
+      >
+        {icon}
+      </div>
+
+      <p className="text-[8px] text-gray-500 leading-tight whitespace-nowrap">
+        {label}
+      </p>
+
+      <h4 className="text-[11px] font-black text-[#081c4b] mt-[3px] leading-tight">
+        {value}
+      </h4>
+
     </div>
   );
 }
