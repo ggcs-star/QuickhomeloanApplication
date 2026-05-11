@@ -1,30 +1,31 @@
+import { ChevronRight } from "lucide-react";
 import { router } from "@inertiajs/react";
 
 const items = [
   {
-    title: "Media",
-    desc: "Learn through videos & audios",
+    title: "Courses",
+    desc: "Video & audio\nguides",
     icon: "/images/Home/media.png",
-    color: "bg-blue-500",
-    route: "/education", 
+    bg: "bg-blue-100",
+    route: "/education",
   },
   {
     title: "Tools",
-    desc: "Make smarter loan decisions",
+    desc: "Make smarter\ndecisions",
     icon: "/images/Home/tools.png",
-    color: "bg-orange-500",
+    bg: "bg-orange-100",
     route: "/tools",
   },
   {
     title: "News",
-    desc: "Stay informed, stay ahead",
+    desc: "Stay informed\n& ahead",
     icon: "/images/Home/news.png",
-    color: "bg-green-500",
+    bg: "bg-green-100",
     route: "/news",
   },
   {
     title: "Community",
-    desc: "Connect, learn, grow together",
+    desc: "Connect,grow\ntogether",
     icon: "/images/Home/community.png",
     color: "bg-purple-500",
     route: "/community",
@@ -32,72 +33,120 @@ const items = [
 ];
 
 export default function QuickActions() {
-  return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* 
-        RESPONSIVE GRID: 
-        - 2 columns on small mobile screens
-        - 3 columns on tablets (sm)
-        - 4 columns on laptops/desktops (lg)
-      */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-        
-        {items.map((item, i) => (
-          <div
-            key={i} // Added missing unique key for React
-            onClick={() => item.route && router.visit(item.route)}
-            className={`
-              relative bg-white rounded-3xl p-5 sm:p-6 
-              flex flex-col items-center text-center
-              border border-gray-100
-              shadow-[0_4px_12px_rgba(0,0,0,0.04)] 
-              transition-all duration-300 ease-out
-              group
-              ${item.route ? "cursor-pointer hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] hover:-translate-y-1 active:scale-95" : "opacity-80"}
-            `}
-          >
-            {/* ICON CONTAINER */}
-            <div className="mb-4 sm:mb-5 relative">
-              <div
-                className="
-                  w-14 h-14 sm:w-16 sm:h-16 
-                  rounded-2xl flex items-center justify-center 
-                  bg-gray-50 group-hover:bg-white
-                  transition-colors duration-300
-                  relative z-10
-                "
-              >
-                {/* Glow Effect (Scales up slightly on hover) */}
-                <div 
-                  className={`
-                    absolute inset-0 rounded-2xl blur-xl opacity-20 
-                    transition-transform duration-300 group-hover:scale-110 
-                    ${item.color}
-                  `} 
-                />
 
-                {/* Image (Slight bounce on hover) */}
-                <img
-                  src={item.icon}
-                  alt={item.title}
-                  className="w-8 h-8 sm:w-9 sm:h-9 object-contain relative z-20 transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
+  const handleNavigation = (route) => {
+    if (!route) return;
+
+    // External URL
+    if (route.startsWith("http")) {
+      window.location.href = route;
+      return;
+    }
+
+    // Internal Inertia route
+    router.visit(route);
+  };
+
+  return (
+    <section className="px-4 py-5 bg-[#F8F8FA]">
+
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-[18px] font-bold text-[#111827]">
+          Explore & Grow
+        </h2>
+
+        <button className="flex items-center gap-1 text-[#2563EB] text-[15px] font-medium">
+          View All
+          <ChevronRight size={18} strokeWidth={2.5} />
+        </button>
+      </div>
+
+      {/* GRID */}
+      <div className="grid grid-cols-2 gap-3">
+        {items.map((item, i) => (
+          <button
+            key={i}
+            onClick={() => handleNavigation(item.route)}
+            className="
+              bg-white
+              border
+              border-[#E5E7EB]
+              rounded-[18px]
+              px-4
+              py-4
+              flex
+              items-start
+              relative
+              active:scale-[0.98]
+              transition-all
+              duration-200
+              min-h-[84px]
+            "
+          >
+            {/* ICON */}
+            <div
+              className={`
+                w-11
+                h-11
+                rounded-full
+                flex
+                items-center
+                justify-center
+                shrink-0
+                ${item.bg}
+              `}
+            >
+              <img
+                src={item.icon}
+                alt={item.title}
+                className="w-5 h-5 object-contain"
+              />
             </div>
 
-            {/* TITLE */}
-            <h3 className="text-base sm:text-lg font-semibold text-gray-800 transition-colors group-hover:text-black">
-              {item.title}
-            </h3>
+            {/* CONTENT */}
+            <div className="ml-3 text-left">
+              <h3 className="text-[14px] font-bold text-[#111827] leading-[18px]">
+                {item.title}
+              </h3>
 
-            {/* DESC (Hidden on extremely small screens, visible on normal mobile and up) */}
-            <p className="text-xs sm:text-sm text-gray-500 mt-1.5 sm:mt-2 leading-relaxed px-1 sm:px-2 line-clamp-2">
-              {item.desc}
-            </p>
-          </div>
+              <p
+                className="
+                  mt-1
+                  text-[11px]
+                  leading-[15px]
+                  text-[#6B7280]
+                  whitespace-pre-line
+                "
+              >
+                {item.desc}
+              </p>
+            </div>
+
+            {/* ARROW */}
+            <div
+              className="
+                absolute
+                right-3
+                bottom-3
+                w-5
+                h-5
+                rounded-full
+                bg-[#EEF4FF]
+                flex
+                items-center
+                justify-center
+              "
+            >
+              <ChevronRight
+                size={12}
+                strokeWidth={2.8}
+                className="text-[#2563EB]"
+              />
+            </div>
+          </button>
         ))}
-
       </div>
-    </div>
+    </section>
   );
 }
