@@ -10,11 +10,28 @@ import { AuthProvider } from "@/Context/AuthContext";
 createInertiaApp({
   id: 'app',
 
-  resolve: name => {
-    const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true })
-    return pages[`./Pages/${name}.jsx`]
-  },
+resolve: (name) => {
 
+  const pages = import.meta.glob(
+    [
+      './Pages/**/*.jsx',
+      './Components/**/*.jsx',
+    ],
+    { eager: true }
+  )
+
+  const page =
+    pages[`./Pages/${name}.jsx`] ||
+    pages[`./Components/${name}.jsx`]
+
+  if (!page) {
+    throw new Error(
+      `Page not found: ${name}`
+    )
+  }
+
+  return page
+},
   setup({ el, App, props }) {
     let initialPage = props?.initialPage
 

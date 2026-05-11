@@ -16,7 +16,9 @@ Route::get('/education', fn() => Inertia::render('Education'));
 //         'category' => urldecode($category),
 //     ]);
 // });
-
+Route::get('/loan-by-profession', function () {
+    return Inertia::render('LoanByProfession');
+});
 Route::get('/education/modules/audio', fn() => Inertia::render('ModulesAudio'));
 Route::get('/education/audio-details', fn() => Inertia::render('AudioDetails'));
 Route::get('/courses', function () {
@@ -79,7 +81,11 @@ Route::get('/tools/calendar', function () {
 Route::get('/calculator/emi', function () {
     return Inertia::render('Calculator/EMI');
 });
-
+Route::get('/guide/emi', function () {
+    return Inertia::render(
+        'Calculator/EMI/GuideTab'
+    );
+});
 Route::get('/calculator/loan-eligibility', function () {
     return Inertia::render('Calculator/LoanEligibility');
 });
@@ -243,4 +249,9 @@ Route::get('/analysis/rate-change-risk', function () {
 
 Route::get('/analysis/rate-change-tracker', function () {
     return Inertia::render('Analysis/RateChangeTracker');
+});
+Route::get('/home-loan/details/{slug}', function ($slug) {
+    return Inertia::render('HomeLoan/Details', [
+        'slug' => $slug
+    ]);
 });

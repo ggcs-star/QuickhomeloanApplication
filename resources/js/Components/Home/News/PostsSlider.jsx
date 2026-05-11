@@ -7,8 +7,7 @@ import "swiper/css/pagination";
 
 export default function PostsSlider({ posts }) {
   return (
-    <div className="relative mt-6 sm:mt-8 lg:mt-10 pb-10">
-
+<div className="relative mt-2 pb-2">
       {/* Custom Pagination Styling */}
       <style
         dangerouslySetInnerHTML={{
@@ -53,14 +52,14 @@ export default function PostsSlider({ posts }) {
         pagination={{ clickable: true }}
         grabCursor={true}
         breakpoints={{
-          320: {
-            slidesPerView: 1.1,
-            spaceBetween: 12,
-          },
-          480: {
-            slidesPerView: 1.2,
-            spaceBetween: 14,
-          },
+     320: {
+  slidesPerView: 1,
+  spaceBetween: 16,
+},
+480: {
+  slidesPerView: 1,
+  spaceBetween: 16,
+},
           640: {
             slidesPerView: 2,
             spaceBetween: 18,
@@ -74,8 +73,7 @@ export default function PostsSlider({ posts }) {
             spaceBetween: 24,
           },
         }}
-        className="trending-swiper"
-      >
+className="trending-swiper px-[2px]"      >
         {posts.map((post) => (
           <SwiperSlide key={post.id} className="py-2">
             <PostCard post={post} />

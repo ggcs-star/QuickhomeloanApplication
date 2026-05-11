@@ -1,52 +1,117 @@
-import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  RotateCcw,
+  BookOpenText,
+} from "lucide-react";
 
 export default function CalculatorLayout({
   title,
+  subtitle = "Plan your loan repayments smartly",
+  guideLink = null,
+  onReset = null,
   CalculateComponent,
-  InsightsComponent,
-  GuideComponent,
 }) {
-  const [activeTab, setActiveTab] = useState("calculate");
-
   return (
-    <div className="px-4 py-4">
+    <div className="bg-[#f5f7fd] min-h-screen max-w-[430px] mx-auto">
 
-      {/* HEADER */}
-      <div className="flex items-center gap-3 mb-4">
-        <ArrowLeft
-          className="text-gray-700 cursor-pointer"
-          onClick={() => window.history.back()}
-        />
-        <h1 className="text-xl font-semibold text-gray-800">
-          {title}
-        </h1>
+      {/* STICKY HEADER */}
+      <div className="sticky top-0 z-30 bg-[#f5f7fd]/95 backdrop-blur-md px-3 pt-3 pb-2">
+
+        <div className="flex items-start justify-between">
+
+          {/* LEFT */}
+          <div className="flex items-start gap-2">
+
+            <button
+              onClick={() => window.history.back()}
+              className="
+                mt-[1px]
+                w-8 h-8
+                rounded-full
+                flex items-center justify-center
+                active:scale-95
+                transition-all
+              "
+            >
+              <ArrowLeft
+                size={22}
+                strokeWidth={2.4}
+                className="text-[#081c4b]"
+              />
+            </button>
+
+            <div>
+
+              <h1 className="text-[16px] font-bold text-[#081c4b] leading-none">
+                {title}
+              </h1>
+
+              <p className="text-gray-500 mt-[3px] text-[10px] leading-3">
+                {subtitle}
+              </p>
+
+            </div>
+
+          </div>
+
+          {/* RIGHT */}
+          <div className="flex items-center gap-2">
+
+            {/* RESET */}
+            {onReset && (
+              <button
+                onClick={onReset}
+                className="
+                  w-9 h-9 rounded-full
+                  flex items-center justify-center
+                  bg-white
+                  border border-[#e9eefb]
+                  shadow-sm
+                  active:scale-95
+                  transition-all
+                "
+              >
+                <RotateCcw
+                  size={18}
+                  strokeWidth={2.2}
+                  className="text-[#081c4b]"
+                />
+              </button>
+            )}
+
+            {/* GUIDE */}
+            {guideLink && (
+              <button
+                onClick={() => {
+                  window.location.href = guideLink;
+                }}
+                className="
+                  w-9 h-9 rounded-full
+                  flex items-center justify-center
+                  bg-white
+                  border border-[#e9eefb]
+                  shadow-sm
+                  active:scale-95
+                  transition-all
+                "
+              >
+                <BookOpenText
+                  size={18}
+                  strokeWidth={2.2}
+                  className="text-[#081c4b]"
+                />
+              </button>
+            )}
+
+          </div>
+
+        </div>
+
       </div>
 
-      {/* TABS */}
-      <div className="flex border-b border-gray-200 mb-4">
-
-        {["calculate", "insights", "guide"].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-2 text-sm font-medium capitalize ${
-              activeTab === tab
-                ? "text-black border-b-2 border-black"
-                : "text-gray-400"
-            }`}
-          >
-            {tab}
-          </button>
-        ))}
-
-      </div>
-
-      {/* CONTENT */}
+      {/* PAGE BODY */}
       <div>
-        {activeTab === "calculate" && <CalculateComponent />}
-        {activeTab === "insights" && <InsightsComponent />}
-        {activeTab === "guide" && <GuideComponent />}
+        <CalculateComponent />
       </div>
 
     </div>

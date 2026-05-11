@@ -32,69 +32,54 @@ export default function Banner() {
     };
 
     return (
-        <div className="w-full px-4 mt-10">
+        <section className="w-full px-4 mt-4">
 
-            {/* 🔥 SKELETON */}
+            {/* LOADING */}
             {loading && (
-                <div className="w-full h-52 rounded-2xl bg-gray-200 animate-pulse relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-shimmer" />
+                <div className="w-full animate-pulse">
+                    <div className="w-full h-[180px] rounded-[20px] bg-gray-200" />
                 </div>
             )}
 
-            {/* 🎯 BANNER */}
+            {/* BANNER */}
             {!loading && banners.length > 0 && (
-                <div className="relative">
+                <div className="relative w-full">
 
-                    {/* Slide */}
-                    <div className="relative h-52 rounded-2xl overflow-hidden shadow">
-
-                        <img
-                            src={banners[current].image_url}
-                            className="w-full h-full object-cover"
-                        />
-
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/60 to-transparent" />
-
-
-                    </div>
+                    <img
+                        src={banners[current].image_url}
+                        alt="Banner"
+                        className="
+                            w-full
+                            block
+                            object-contain
+                        "
+                        style={{
+                            height: "auto",
+                            maxHeight: "100%",
+                        }}
+                        loading="lazy"
+                    />
 
                     {/* DOTS */}
-                    <div className="flex justify-center gap-2 mt-3">
+                    <div className="flex items-center justify-center gap-2 mt-3">
                         {banners.map((_, i) => (
                             <div
                                 key={i}
-                                className={`w-2 h-2 rounded-full transition ${i === current ? "bg-black" : "bg-gray-300"
-                                    }`}
+                                className={`
+                                    rounded-full
+                                    transition-all
+                                    duration-300
+                                    ${
+                                        i === current
+                                            ? "w-4 h-1.5 bg-[#111827]"
+                                            : "w-1.5 h-1.5 bg-[#d1d5db]"
+                                    }
+                                `}
                             />
                         ))}
                     </div>
-
                 </div>
             )}
-
-            {/* ❗ EMPTY */}
-            {!loading && banners.length === 0 && (
-                <p className="text-center text-gray-400 text-sm">
-                    No banners available
-                </p>
-            )}
-
-            {/* ✨ SHIMMER CSS */}
-            <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 2s infinite;
-        }
-      `}</style>
-
-        </div>
+        </section>
     );
 }

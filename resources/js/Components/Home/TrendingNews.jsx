@@ -11,7 +11,6 @@ export default function TrendingNews() {
     const [activeCategory, setActiveCategory] = useState("ALL");
     const [loading, setLoading] = useState(true);
 
-    /* ---------- FETCH DATA ---------- */
     useEffect(() => {
         fetchData();
     }, []);
@@ -26,8 +25,9 @@ export default function TrendingNews() {
             setCategories(catRes?.data?.categories || []);
             setPosts(postRes?.data?.posts || []);
 
-            // Check if user previously selected a category
-            const savedCategory = sessionStorage.getItem("activeCategory");
+            const savedCategory =
+                sessionStorage.getItem("activeCategory");
+
             if (savedCategory) {
                 setActiveCategory(savedCategory);
             }
@@ -38,71 +38,97 @@ export default function TrendingNews() {
         }
     };
 
-    /* ---------- FILTER POSTS ---------- */
     useEffect(() => {
         if (activeCategory === "ALL") {
             setFilteredPosts(posts);
         } else {
             setFilteredPosts(
                 posts.filter(
-                    (p) => String(p.category_id) === String(activeCategory)
+                    (p) =>
+                        String(p.category_id) ===
+                        String(activeCategory)
                 )
             );
         }
     }, [activeCategory, posts]);
 
-    /* ---------- CATEGORY CHANGE ---------- */
     const handleCategoryChange = (id) => {
         sessionStorage.setItem("activeCategory", id);
         setActiveCategory(id);
     };
 
-    return (
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-[#1e293b]">
+return (
+    <section className="w-full mt-6 overflow-hidden">
+        {/* HEADER */}
+        <div className="px-4 sm:px-5 flex items-center justify-between mb-4">
+            <h2
+                className="
+                    text-[20px]
+                    sm:text-[24px]
+                    font-bold
+                    text-[#0f172a]
+                "
+            >
                 Trending News
             </h2>
-
-            {/* Category Slider Component */}
-            <div className="-mx-4 sm:mx-0 px-4 sm:px-0">
-                <CategorySlider
-                    categories={categories}
-                    active={activeCategory}
-                    onChange={handleCategoryChange}
-                />
-            </div>
-
-            {/* Content Section */}
-            <div className="mt-6 md:mt-8">
-                {loading ? (
-                    /* Skeleton Loader */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-                        {[1, 2, 3].map((i) => (
-                            <div
-                                key={i}
-                                className="bg-white rounded-[20px] md:rounded-[24px] border border-gray-100 p-2.5 md:p-3 h-[280px] md:h-[320px] shadow-sm animate-pulse"
-                            />
-                        ))}
-                    </div>
-                ) : filteredPosts.length === 0 ? (
-                    /* No Posts State */
-                    <div className="h-40 flex items-center justify-center text-sm md:text-base text-gray-500 bg-gray-50 rounded-[20px] border border-gray-100">
-                        No posts found in this category
-                    </div>
-                ) : filteredPosts.length <= 3 ? (
-                    /* GRID VIEW (If posts are 3 or less) */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-                        {filteredPosts.map((post) => (
-                            <PostCard key={post.id} post={post} />
-                        ))}
-                    </div>
-                ) : (
-                    /* SLIDER VIEW (If posts are more than 3) */
-                    <div className="-mx-4 sm:mx-0 px-4 sm:px-0 ">
-                        <PostsSlider posts={filteredPosts} />
-                    </div>
-                )}
-            </div>
         </div>
-    );
+
+        {/* CATEGORY SLIDER */}
+        <div className="px-4 sm:px-5">
+            <CategorySlider
+                categories={categories}
+                active={activeCategory}
+                onChange={handleCategoryChange}
+            />
+        </div>
+
+        {/* CONTENT */}
+        <div className="mt-5 px-4 sm:px-5">
+            {loading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {[1, 2, 3].map((i) => (
+                        <div
+                            key={i}
+                            className="
+                                bg-white
+                                rounded-[20px]
+                                border
+                                border-gray-100
+                                h-[250px]
+                                animate-pulse
+                            "
+                        />
+                    ))}
+                </div>
+            ) : filteredPosts.length === 0 ? (
+                <div
+                    className="
+                        h-32
+                        flex
+                        items-center
+                        justify-center
+                        text-sm
+                        text-gray-500
+                        bg-gray-50
+                        rounded-[18px]
+                        border
+                        border-gray-100
+                    "
+                >
+                    No posts found in this category
+                </div>
+            ) : filteredPosts.length <= 3 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredPosts.map((post) => (
+                        <PostCard key={post.id} post={post} />
+                    ))}
+                </div>
+            ) : (
+           <div className="w-full">
+    <PostsSlider posts={filteredPosts} />
+</div>
+            )}
+        </div>
+    </section>
+);
 }
