@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <div className="mt-14 text-center px-4 pb-6">
+    <div className="mt- text-center px-2 pb-4">
 
       <p className="text-sm text-gray-400">
         Making home loans simple

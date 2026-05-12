@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   ArrowLeft,
   RotateCcw,
@@ -7,10 +9,16 @@ import {
 export default function CalculatorLayout({
   title,
   subtitle = "Plan your loan repayments smartly",
-  guideLink = null,
   onReset = null,
+
   CalculateComponent,
+  InsightsComponent,
+  GuideComponent,
 }) {
+
+  const [activeTab, setActiveTab] =
+    useState("calculate");
+
   return (
     <div className="bg-[#f5f7fd] min-h-screen max-w-[430px] mx-auto">
 
@@ -23,7 +31,14 @@ export default function CalculatorLayout({
           <div className="flex items-start gap-2">
 
             <button
-              onClick={() => window.history.back()}
+              onClick={() => {
+                if (activeTab !== "calculate") {
+                  setActiveTab("calculate");
+                  return;
+                }
+
+                window.history.back();
+              }}
               className="
                 mt-[1px]
                 w-8 h-8
@@ -57,8 +72,7 @@ export default function CalculatorLayout({
           {/* RIGHT */}
           <div className="flex items-center gap-2">
 
-            {/* RESET */}
-            {onReset && (
+            {onReset && activeTab === "calculate" && (
               <button
                 onClick={onReset}
                 className="
@@ -79,30 +93,6 @@ export default function CalculatorLayout({
               </button>
             )}
 
-            {/* GUIDE */}
-            {guideLink && (
-              <button
-                onClick={() => {
-                  window.location.href = guideLink;
-                }}
-                className="
-                  w-9 h-9 rounded-full
-                  flex items-center justify-center
-                  bg-white
-                  border border-[#e9eefb]
-                  shadow-sm
-                  active:scale-95
-                  transition-all
-                "
-              >
-                <BookOpenText
-                  size={18}
-                  strokeWidth={2.2}
-                  className="text-[#081c4b]"
-                />
-              </button>
-            )}
-
           </div>
 
         </div>
@@ -110,9 +100,87 @@ export default function CalculatorLayout({
       </div>
 
       {/* PAGE BODY */}
-      <div>
-        <CalculateComponent />
+      <div className="pb-28">
+
+        {activeTab === "calculate" && (
+          <CalculateComponent />
+        )}
+
+        {activeTab === "insights" &&
+          InsightsComponent && (
+            <InsightsComponent />
+          )}
+
+        {activeTab === "guide" &&
+          GuideComponent && (
+            <GuideComponent />
+          )}
+
       </div>
+
+      {/* BOTTOM GUIDE BUTTON */}
+      {GuideComponent &&
+        activeTab === "calculate" && (
+
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-[430px] px-4 z-40">
+
+            <button
+              onClick={() =>
+                setActiveTab("guide")
+              }
+              className="
+                w-full
+                bg-[#5C9DF6]
+                rounded-2xl
+                px-4
+                py-4
+                flex
+                items-center
+                justify-between
+                shadow-[0_10px_30px_rgba(92,157,246,0.25)]
+                active:scale-[0.98]
+                transition-all
+              "
+            >
+
+              {/* LEFT */}
+              <div className="flex items-center gap-3">
+
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+                  <BookOpenText
+                    size={20}
+                    className="text-[#5C9DF6]"
+                  />
+                </div>
+
+                <div className="text-left">
+
+                  <p className="text-white font-semibold text-[16px] leading-none">
+                    Frequently Asked Questions
+                  </p>
+
+                  <p className="text-white/80 text-[11px] mt-1">
+                    EMI guide, tips & answers
+                  </p>
+
+                </div>
+
+              </div>
+
+              {/* RIGHT */}
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+
+                <ArrowLeft
+                  size={20}
+                  className="text-[#5C9DF6] rotate-180"
+                />
+
+              </div>
+
+            </button>
+
+          </div>
+        )}
 
     </div>
   );

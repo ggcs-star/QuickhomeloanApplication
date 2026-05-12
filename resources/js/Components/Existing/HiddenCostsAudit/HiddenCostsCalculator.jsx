@@ -79,86 +79,81 @@ export default function HiddenCostsCalculator() {
           </div>
         </div>
 
-        <div className="space-y-4 mb-5">
-          {/* Bounce Charges & Events */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs text-gray-500 uppercase">Bounce Charges</label>
-              {isProUser ? (
-                <div className="mt-1 border rounded-xl px-4 py-3 flex items-center">
-                  <span className="text-gray-500 font-semibold mr-2">₹</span>
-                  <input 
-                    type="number" 
-                    value={formData.bounceCharges}
-                    onChange={(e) => handleInputChange('bounceCharges', e.target.value)}
-                    className="w-full font-semibold bg-transparent outline-none" 
-                  />
-                </div>
-              ) : (
-                <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ 1,250</div>
-              )}
-            </div>
-            <div>
-              <label className="text-xs text-gray-500 uppercase">Bounce Events</label>
-              {isProUser ? (
-                <input 
-                  type="number" 
-                  value={formData.bounceEvents}
-                  onChange={(e) => handleInputChange('bounceEvents', e.target.value)}
-                  className="w-full mt-1 border rounded-xl px-4 py-3 font-semibold bg-transparent outline-none" 
-                />
-              ) : (
-                <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>3</div>
-              )}
-            </div>
-          </div>
+     <div className="space-y-4 mb-5">
 
-          {/* Penal Interest */}
-          <div>
-            <div className="flex justify-between items-center">
-              <label className="text-xs text-gray-500 uppercase">Penal Interest</label>
-              {isProUser && <span className="text-[10px] font-bold text-gray-500 uppercase">{calculations.penaltyRate}% Rate</span>}
-            </div>
-            {isProUser ? (
-              <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2">
-                <Percent size={16} className="text-gray-400" />
-                <input 
-                  type="number" 
-                  value={formData.penalInterest}
-                  onChange={(e) => handleInputChange('penalInterest', e.target.value)}
-                  className="w-full font-semibold bg-transparent outline-none" 
-                />
-              </div>
-            ) : (
-              <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold flex items-center gap-2 ${blurClass}`}>
-                <Percent size={16} className="text-gray-400" /> 450
-              </div>
-            )}
-          </div>
+  <EditableRangeField
+    label="Bounce Charges"
+    value={formData.bounceCharges}
+    onChange={(val) =>
+      handleInputChange(
+        "bounceCharges",
+        val
+      )
+    }
+    min={0}
+    max={10000}
+    step={50}
+    format="currency"
+  />
 
-          {/* GST on Penalties */}
-          <div>
-            <div className="flex justify-between items-center">
-              <label className="text-xs text-gray-500 uppercase">GST on Penalties</label>
-              {isProUser && <span className="text-[10px] font-bold text-gray-500 uppercase">{calculations.gstRate}% GST</span>}
-            </div>
-            {isProUser ? (
-              <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2">
-                <Receipt size={16} className="text-gray-400" />
-                <input 
-                  type="number" 
-                  value={formData.gstOnPenalties}
-                  onChange={(e) => handleInputChange('gstOnPenalties', e.target.value)}
-                  className="w-full font-semibold bg-transparent outline-none" 
-                />
-              </div>
-            ) : (
-              <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold flex items-center gap-2 ${blurClass}`}>
-                <Receipt size={16} className="text-gray-400" /> 306
-              </div>
-            )}
-          </div>
-        </div>
+  <EditableRangeField
+    label="Bounce Events"
+    value={formData.bounceEvents}
+    onChange={(val) =>
+      handleInputChange(
+        "bounceEvents",
+        val
+      )
+    }
+    min={0}
+    max={20}
+    step={1}
+    format="number"
+  />
+
+  <EditableRangeField
+    label="Penal Interest"
+    value={formData.penalInterest}
+    onChange={(val) =>
+      handleInputChange(
+        "penalInterest",
+        val
+      )
+    }
+    min={0}
+    max={10000}
+    step={10}
+    format="currency"
+    icon={
+      <Percent
+        size={16}
+        className="text-gray-400"
+      />
+    }
+  />
+
+  <EditableRangeField
+    label="GST on Penalties"
+    value={formData.gstOnPenalties}
+    onChange={(val) =>
+      handleInputChange(
+        "gstOnPenalties",
+        val
+      )
+    }
+    min={0}
+    max={5000}
+    step={10}
+    format="currency"
+    icon={
+      <Receipt
+        size={16}
+        className="text-gray-400"
+      />
+    }
+  />
+
+</div>
       </div>
 
       {/* RESULTS SECTION */}
@@ -207,6 +202,169 @@ export default function HiddenCostsCalculator() {
             </p>
           </div>
         </div>
+      </div>
+
+    </div>
+  );
+}
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  icon = null,
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <div className="flex items-center gap-2 mt-2">
+
+              {icon}
+
+              <h3 className="text-[16px] leading-tight font-black text-[#081c4b] break-words">
+                {displayValue()}
+              </h3>
+
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="
+          w-full
+          mt-3
+          accent-blue-600
+        "
+      />
+
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
       </div>
 
     </div>

@@ -258,7 +258,7 @@ export default function RentVsBuyCalculator() {
 
   /* CHART */
 
-  const radius = 58;
+  const radius = 72;
 
   const circumference =
     2 * Math.PI * radius;

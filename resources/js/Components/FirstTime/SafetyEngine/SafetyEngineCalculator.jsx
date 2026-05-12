@@ -139,131 +139,146 @@ export default function SafetyEngineCalculator() {
         </div>
       </div>
 
-      {/* INPUT SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card title="Your Financials">
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Monthly In-Hand Income (₹)</label>
-              {isProUser ? (
-                <input 
-                  type="number" 
-                  value={loanData.monthlyIncome} 
-                  onChange={(e) => setLoanData({...loanData, monthlyIncome: Number(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  120000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Existing Monthly EMIs (₹)</label>
-              {isProUser ? (
-                <input 
-                  type="number" 
-                  value={loanData.existingEmis} 
-                  onChange={(e) => setLoanData({...loanData, existingEmis: Number(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  25000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">City Type</label>
-              {isProUser ? (
-                <select 
-                  value={loanData.city} 
-                  onChange={(e) => setLoanData({...loanData, city: e.target.value})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                >
-                  <option value="Metro">Metro / Tier 1</option>
-                  <option value="Non-Metro">Non-Metro / Tier 2+</option>
-                </select>
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  Metro / Tier 1
-                </div>
-              )}
-              <p className="text-[10px] text-gray-500 mt-1 italic leading-tight">
-                {loanData.city === 'Metro' ? 'Metro: Higher living costs. Safety buffer adjusted (-5%).' : 'Non-Metro: Standard living costs. No safety buffer penalty.'}
-              </p>
-            </div>
-          </div>
-        </Card>
+     
+{/* INPUT SECTION */}
+<div className="space-y-3">
 
-        <Card title="Loan Parameters">
-          <div className="space-y-4">
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Proposed Loan Amount (₹)</label>
-              {isProUser ? (
-                <input 
-                  type="number" step="100000"
-                  value={loanData.loanAmount} 
-                  onChange={(e) => setLoanData({...loanData, loanAmount: Number(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  5000000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Interest Rate (%)</label>
-              {isProUser ? (
-                <input 
-                  type="number" step="0.1"
-                  value={loanData.interestRate} 
-                  onChange={(e) => setLoanData({...loanData, interestRate: Number(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  8.5
-                </div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Tenure (Years)</label>
-              {isProUser ? (
-                <input 
-                  type="number" 
-                  value={loanData.tenureYears} 
-                  onChange={(e) => setLoanData({...loanData, tenureYears: Number(e.target.value)})}
-                  className="w-full bg-white border border-gray-300 rounded-md px-3 py-2 text-sm font-medium text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-medium text-gray-900 ${blurClass}`}>
-                  20
-                </div>
-              )}
-            </div>
-          </div>
-        </Card>
+  {/* YOUR FINANCIALS */}
+  <Card title="Your Financials">
 
-        <Card title="Tier-Based Rules">
-          <div className="space-y-4 pt-2">
-            <div className="flex justify-between items-center bg-gray-50 p-3 rounded-md border border-gray-200">
-              <span className="text-[11px] uppercase text-gray-600 font-semibold tracking-wider">Safe Base Rule:</span>
-              <span className={`text-sm font-bold text-green-600 ${blurClass}`}>{safeLimitPercent}%</span>
-            </div>
-            <div className="flex justify-between items-center bg-gray-50 p-3 rounded-md border border-gray-200">
-              <span className="text-[11px] uppercase text-gray-600 font-semibold tracking-wider">Bank Max Limit:</span>
-              <span className={`text-sm font-bold text-red-600 ${blurClass}`}>{bankMaxLimitPercent}%</span>
-            </div>
-            <div className="pt-2 border-t border-gray-200">
-              <p className="text-[11px] text-gray-500 leading-relaxed italic">
-                Targets are calculated dynamically based on your income bracket and city living costs.
-              </p>
-            </div>
-          </div>
-        </Card>
+    <div className="space-y-3">
+
+      <EditableRangeField
+        label="Monthly In-Hand Income"
+        value={loanData.monthlyIncome}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            monthlyIncome: val,
+          })
+        }
+        min={10000}
+        max={1000000}
+        step={5000}
+        format="currency"
+      />
+
+      <EditableRangeField
+        label="Existing Monthly EMIs"
+        value={loanData.existingEmis}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            existingEmis: val,
+          })
+        }
+        min={0}
+        max={500000}
+        step={1000}
+        format="currency"
+      />
+
+      {/* CITY */}
+      <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+        <p className="text-[11px] text-gray-500">
+          City Type
+        </p>
+
+        <select
+          value={loanData.city}
+          onChange={(e) =>
+            setLoanData({
+              ...loanData,
+              city: e.target.value,
+            })
+          }
+          className="
+            w-full
+            mt-2
+            bg-white
+            border border-[#d9e2f2]
+            rounded-xl
+            px-3
+            h-9
+            text-[14px]
+            font-semibold
+            text-[#081c4b]
+            outline-none
+            focus:border-blue-500
+          "
+        >
+          <option value="Metro">
+            Metro / Tier 1
+          </option>
+
+          <option value="Non-Metro">
+            Non-Metro / Tier 2+
+          </option>
+
+        </select>
+
       </div>
+
+    </div>
+
+  </Card>
+
+  {/* LOAN PARAMETERS */}
+  <Card title="Loan Parameters">
+
+    <div className="space-y-3">
+
+      <EditableRangeField
+        label="Proposed Loan Amount"
+        value={loanData.loanAmount}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            loanAmount: val,
+          })
+        }
+        min={100000}
+        max={10000000}
+        step={100000}
+        format="currency"
+      />
+
+      <EditableRangeField
+        label="Interest Rate"
+        value={loanData.interestRate}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            interestRate: val,
+          })
+        }
+        min={1}
+        max={15}
+        step={0.1}
+        format="percent"
+      />
+
+      <EditableRangeField
+        label="Loan Tenure"
+        value={loanData.tenureYears}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            tenureYears: val,
+          })
+        }
+        min={1}
+        max={30}
+        step={1}
+        format="year"
+      />
+
+    </div>
+
+  </Card>
+
+</div>
 
       {/* RESULTS DISPLAY */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -298,69 +313,342 @@ export default function SafetyEngineCalculator() {
             <p className="text-[11px] text-gray-500 mt-1 relative z-10">Banks assume survival on basics. Expect high lifestyle sacrifice here.</p>
           </div>
         </div>
+<Card title="Visual Safety Audit">
 
-        <Card title="Visual Safety Audit">
-          <div className="space-y-8 mt-2">
-            <div className="flex justify-between items-end">
-              <div>
-                <div className="text-xs font-bold text-gray-800 uppercase tracking-tight">Debt Comparison: Salary Tier {bankMaxLimitPercent}% Bracket</div>
-                <div className={`text-[12px] text-gray-500 font-medium mt-1 ${blurClass}`}>Current Burden: {currentBurden.toFixed(1)}%</div>
-              </div>
-              <div className={`text-3xl font-bold ${status.color} ${blurClass}`}>{totalBurden.toFixed(1)}%</div>
+  <div className="space-y-4">
+
+    {/* TOP BURDEN CARD */}
+    <div className="bg-[#f8faff] rounded-[14px] p-3 border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between">
+
+        <div>
+
+          <p className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold">
+            Total Debt Burden
+          </p>
+
+          <h3 className={`text-[28px] leading-none font-black mt-2 ${status.color} ${blurClass}`}>
+            {totalBurden.toFixed(1)}%
+          </h3>
+
+          <p className={`text-[11px] text-gray-500 mt-2 ${blurClass}`}>
+            Current Burden: {currentBurden.toFixed(1)}%
+          </p>
+
+        </div>
+
+        <div
+          className={`
+            px-3 py-1.5
+            rounded-full
+            text-[10px]
+            font-bold
+            uppercase
+            tracking-widest
+            ${status.bg}
+            ${status.color}
+          `}
+        >
+          {status.label}
+        </div>
+
+      </div>
+
+    </div>
+
+    {/* PROGRESS BAR */}
+    <div className="bg-white rounded-[14px] p-3 border border-[#edf1f7]">
+
+      <div className="flex justify-between items-center mb-3">
+
+        <p className="text-[11px] font-semibold text-[#081c4b]">
+          Debt Safety Meter
+        </p>
+
+        <p className="text-[10px] text-gray-500">
+          Salary Tier {bankMaxLimitPercent}%
+        </p>
+
+      </div>
+
+      <div className="relative pt-5">
+
+        <div className="h-3 bg-gray-200 rounded-full overflow-hidden flex">
+
+          <div
+            className="bg-green-500 h-full"
+            style={{
+              width: `${safeLimitPercent}%`,
+            }}
+          />
+
+          <div
+            className="bg-yellow-400 h-full"
+            style={{
+              width: `${bankMaxLimitPercent - safeLimitPercent}%`,
+            }}
+          />
+
+          <div className="bg-red-500 h-full flex-1" />
+
+        </div>
+
+        {isProUser && (
+          <div
+            className="absolute top-0 z-10"
+            style={{
+              left: `${Math.min(95, totalBurden)}%`,
+            }}
+          >
+
+            <div className="w-[2px] h-8 bg-black mx-auto" />
+
+            <div className="bg-black text-white text-[9px] px-2 py-1 rounded-full whitespace-nowrap -translate-x-1/2">
+              YOU
             </div>
 
-            <div className="relative pt-6 pb-2">
-              <div className="h-4 bg-gray-200 rounded-full overflow-hidden flex border border-gray-300">
-                <div className="bg-green-500 h-full transition-all duration-1000" style={{ width: `${safeLimitPercent}%` }} />
-                <div className="bg-yellow-500 h-full transition-all duration-1000" style={{ width: `${bankMaxLimitPercent - safeLimitPercent}%` }} />
-                <div className="bg-red-500 h-full flex-1" />
-              </div>
-              
-              {/* Marker for total burden */}
-              {isProUser && (
-                <div 
-                  className="absolute top-2 w-0.5 h-12 bg-gray-800 z-10 transition-all duration-1000 shadow-sm" 
-                  style={{ left: `${Math.min(100, totalBurden)}%` }}
-                >
-                  <div className="absolute -top-7 left-1/2 -translate-x-1/2 text-[10px] font-bold text-white whitespace-nowrap bg-black px-2 py-1 rounded shadow-md">
-                    YOU: {formatCurrency(proposedEmi + loanData.existingEmis)}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-gray-200">
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 bg-green-500 rounded-full" />
-                  <span className={`text-[10px] text-gray-500 uppercase font-bold tracking-wider ${blurClass}`}>Safe ({safeLimitPercent}%)</span>
-                </div>
-                <div className={`text-base font-bold text-gray-900 ${blurClass}`}>{formatCurrency(safeEMICap)}</div>
-                <p className="text-[10px] text-gray-500">The tier-adjusted limit for a high-quality lifestyle.</p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full" />
-                  <span className={`text-[10px] text-gray-500 uppercase font-bold tracking-wider ${blurClass}`}>Ceiling ({bankMaxLimitPercent}%)</span>
-                </div>
-                <div className={`text-base font-bold text-gray-900 ${blurClass}`}>{formatCurrency(stretchEMICap)}</div>
-                <p className="text-[10px] text-gray-500">The technical limit of what you can borrow by law.</p>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 bg-red-500 rounded-full" />
-                  <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wider">Danger Zone</span>
-                </div>
-                <div className={`text-base font-bold text-red-600 ${blurClass}`}>{">"} {bankMaxLimitPercent}%</div>
-                <p className="text-[10px] text-gray-500">Financial insolvency risks are highest beyond this point.</p>
-              </div>
-            </div>
           </div>
-        </Card>
+        )}
+
+      </div>
+
+    </div>
+
+    {/* STATS */}
+    <div className="grid grid-cols-3 gap-2">
+
+      {/* SAFE */}
+      <div className="bg-[#f8faff] rounded-[14px] p-2.5 border border-[#edf1f7]">
+
+        <div className="flex items-center gap-1.5">
+
+          <div className="w-2 h-2 rounded-full bg-green-500" />
+
+          <span className="text-[9px] text-gray-500 uppercase font-bold">
+            Safe
+          </span>
+
+        </div>
+
+        <h4 className={`text-[13px] font-black text-[#081c4b] mt-2 ${blurClass}`}>
+          {formatCurrency(safeEMICap)}
+        </h4>
+
+        <p className="text-[9px] text-gray-400 mt-1">
+          {safeLimitPercent}% limit
+        </p>
+
+      </div>
+
+      {/* CEILING */}
+      <div className="bg-[#f8faff] rounded-[14px] p-2.5 border border-[#edf1f7]">
+
+        <div className="flex items-center gap-1.5">
+
+          <div className="w-2 h-2 rounded-full bg-yellow-400" />
+
+          <span className="text-[9px] text-gray-500 uppercase font-bold">
+            Max
+          </span>
+
+        </div>
+
+        <h4 className={`text-[13px] font-black text-[#081c4b] mt-2 ${blurClass}`}>
+          {formatCurrency(stretchEMICap)}
+        </h4>
+
+        <p className="text-[9px] text-gray-400 mt-1">
+          {bankMaxLimitPercent}% limit
+        </p>
+
+      </div>
+
+      {/* DANGER */}
+      <div className="bg-[#f8faff] rounded-[14px] p-2.5 border border-[#edf1f7]">
+
+        <div className="flex items-center gap-1.5">
+
+          <div className="w-2 h-2 rounded-full bg-red-500" />
+
+          <span className="text-[9px] text-gray-500 uppercase font-bold">
+            Risk
+          </span>
+
+        </div>
+
+        <h4 className={`text-[13px] font-black text-red-600 mt-2 ${blurClass}`}>
+          {">"} {bankMaxLimitPercent}%
+        </h4>
+
+        <p className="text-[9px] text-gray-400 mt-1">
+          Danger Zone
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</Card>
       </div>
 
     </div>
   );
 }
+
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+}) {
+  const [editing, setEditing] = useState(false);
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <h3 className="text-[16px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+              {displayValue()}
+            </h3>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="w-full mt-3 accent-blue-600"
+      />
+
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
+      </div>
+
+    </div>
+  );
+};

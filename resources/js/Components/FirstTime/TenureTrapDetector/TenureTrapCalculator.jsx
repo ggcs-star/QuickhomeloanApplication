@@ -132,108 +132,158 @@ export default function TenureTrapCalculator() {
         </div>
       </div>
 
-      {/* INPUT SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-6 md:col-span-1">
-          <Card title="Loan Details">
-            <div className="space-y-4">
-              <div>
-                <label className="text-[10px] uppercase text-gray-500 font-bold block mb-1">Loan Amount (₹)</label>
-                {isProUser ? (
-                  <input 
-                    type="number" step="100000"
-                    value={loanData.loanAmount}
-                    onChange={(e) => handleInputChange('loanAmount', e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm font-semibold text-gray-900 outline-none focus:border-blue-500 transition-colors"
-                  />
-                ) : (
-                  <div className={`w-full bg-gray-50 border border-gray-200 rounded-md p-2 text-sm font-semibold text-gray-900 ${blurClass}`}>5000000</div>
-                )}
-              </div>
-              <div>
-                <label className="text-[10px] uppercase text-gray-500 font-bold block mb-1">Annual Interest Rate (%)</label>
-                {isProUser ? (
-                  <input 
-                    type="number" step="0.1"
-                    value={loanData.interestRate}
-                    onChange={(e) => handleInputChange('interestRate', e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm font-semibold text-gray-900 outline-none focus:border-blue-500 transition-colors"
-                  />
-                ) : (
-                  <div className={`w-full bg-gray-50 border border-gray-200 rounded-md p-2 text-sm font-semibold text-gray-900 ${blurClass}`}>8.5</div>
-                )}
-              </div>
-            </div>
-          </Card>
+    {/* INPUT SECTION */}
+<div className="space-y-3">
 
-          <Card title="Tenure Options">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase text-gray-500 font-bold">Compare Years</label>
-                <div className="flex flex-wrap gap-2">
-                  {tenureOptions.map(year => (
-                    <div key={year} className={`flex items-center gap-1 px-2 py-1 bg-gray-100 border border-gray-200 rounded-md text-[11px] font-semibold text-gray-700 ${blurClass}`}>
-                      <span>{year} Yrs</span>
-                      <button onClick={() => removeYear(year)} className="text-gray-400 hover:text-red-500 transition-colors">
-                        <Trash2 size={12} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex gap-2 mt-3">
-                  <input 
-                    type="number" placeholder="Add year..." value={newYear}
-                    onChange={(e) => setNewYear(e.target.value)} disabled={!isProUser}
-                    className="flex-1 bg-gray-50 border border-gray-300 rounded-md p-1.5 text-xs font-semibold text-gray-900 outline-none focus:border-blue-500"
-                  />
-                  <button 
-                    onClick={addYear} disabled={!isProUser}
-                    className="px-3 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold rounded-md hover:bg-blue-100 transition-colors flex items-center gap-1 disabled:opacity-50"
-                  >
-                    <Plus size={12} /> Add
-                  </button>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
+  <Card title="Loan Details">
 
-        {/* CHART SECTION */}
-        <Card title="Lifetime Interest vs. Loan Principal" className="md:col-span-2">
-          <div className={`h-80 ${blurClass}`}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={comparisonData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                <XAxis dataKey="tenureVal" label={{ value: 'Tenure (Years)', position: 'insideBottom', offset: -5, fontSize: 10, fill: '#6b7280' }} stroke="#9ca3af" fontSize={10} />
-                <YAxis tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} stroke="#9ca3af" fontSize={10} />
-                <RechartsTooltip 
-                  cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                  contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e5e7eb', fontSize: '11px', color: '#374151', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
-                  formatter={(value, name) => [formatCurrency(value), name === 'principal' ? 'Principal Amount' : 'Total Interest Burden']}
-                />
-                <Bar dataKey="principal" stackId="a" fill="#e5e7eb" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="interestPaid" stackId="a" radius={[4, 4, 0, 0]}>
-                  {comparisonData.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={entry.isTrap ? '#ef4444' : entry.tenureVal === loanData.tenureYears ? '#eab308' : '#22c55e'} 
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+    <div className="space-y-3">
+
+      <EditableRangeField
+        label="Loan Amount"
+        value={loanData.loanAmount}
+        onChange={(val) =>
+          handleInputChange(
+            "loanAmount",
+            val
+          )
+        }
+        min={100000}
+        max={10000000}
+        step={100000}
+        format="currency"
+      />
+
+      <EditableRangeField
+        label="Annual Interest Rate"
+        value={loanData.interestRate}
+        onChange={(val) =>
+          handleInputChange(
+            "interestRate",
+            val
+          )
+        }
+        min={1}
+        max={15}
+        step={0.1}
+        format="percent"
+      />
+
+      <EditableRangeField
+        label="Selected Tenure"
+        value={loanData.tenureYears}
+        onChange={(val) =>
+          handleInputChange(
+            "tenureYears",
+            val
+          )
+        }
+        min={1}
+        max={30}
+        step={1}
+        format="year"
+      />
+
+    </div>
+
+  </Card>
+
+  {/* TENURE OPTIONS */}
+  <Card title="Tenure Options">
+
+    <div className="space-y-4">
+
+      <div className="flex flex-wrap gap-2">
+
+        {tenureOptions.map((year) => (
+
+          <div
+            key={year}
+            className={`
+              flex items-center gap-1
+              px-3 py-2
+              rounded-xl
+              border
+              text-[12px]
+              font-semibold
+              ${
+                loanData.tenureYears === year
+                  ? "bg-blue-50 border-blue-200 text-blue-700"
+                  : "bg-[#f8faff] border-[#edf1f7] text-gray-700"
+              }
+            `}
+          >
+
+            <button
+              onClick={() =>
+                setLoanData({
+                  ...loanData,
+                  tenureYears: year,
+                })
+              }
+            >
+              {year} Yrs
+            </button>
+
+            <button
+              onClick={() =>
+                removeYear(year)
+              }
+              className="text-gray-400 hover:text-red-500"
+            >
+              <Trash2 size={12} />
+            </button>
+
           </div>
-          <p className="text-[11px] text-gray-500 mt-4 italic text-center">
-            Notice how the interest bar (green/red) overtakes the principal (gray) as the years increase.
-          </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-6 text-[10px] uppercase text-gray-500 font-bold tracking-wider">
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 bg-[#e5e7eb] rounded-sm" /> <span>Principal Amount</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 bg-[#22c55e] rounded-sm" /> <span>Safe Interest</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 bg-[#eab308] rounded-sm" /> <span>Current Selection</span></div>
-            <div className="flex items-center gap-2"><div className="w-2.5 h-2.5 bg-[#ef4444] rounded-sm" /> <span>Trap Zone</span></div>
-          </div>
-        </Card>
+
+        ))}
+
       </div>
+
+      <div className="flex gap-2">
+
+        <input
+          type="number"
+          placeholder="Add year"
+          value={newYear}
+          onChange={(e) =>
+            setNewYear(e.target.value)
+          }
+          className="
+            flex-1
+            h-10
+            rounded-xl
+            border border-[#d9e2f2]
+            px-3
+            text-sm
+            font-semibold
+            outline-none
+          "
+        />
+
+        <button
+          onClick={addYear}
+          className="
+            h-10 px-4
+            rounded-xl
+            bg-[#001B5E]
+            text-white
+            text-sm
+            font-semibold
+            flex items-center gap-1
+          "
+        >
+          <Plus size={14} />
+          Add
+        </button>
+
+      </div>
+
+    </div>
+
+  </Card>
+
+</div>
 
       {/* TABLES SECTION */}
       <Card title="Table 1: Cost Comparison">
@@ -319,6 +369,204 @@ export default function TenureTrapCalculator() {
           </table>
         </div>
       </Card>
+
+    </div>
+  );
+}
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  // SYNC VALUE
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div
+      className="
+        bg-white
+        rounded-[18px]
+        px-4
+        py-4
+        shadow-sm
+        border border-[#edf1f7]
+      "
+    >
+
+      {/* TOP */}
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500 font-medium">
+            {label}
+          </p>
+
+          {!editing ? (
+            <h3 className="text-[20px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+              {displayValue()}
+            </h3>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    saveValue();
+                  }
+                }}
+                className="
+                  h-11
+                  flex-1
+                  rounded-2xl
+                  border border-[#d9e2f2]
+                  px-4
+                  text-[15px]
+                  font-bold
+                  outline-none
+                  focus:border-[#001B5E]
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-11
+                  px-4
+                  rounded-2xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[13px]
+                  font-bold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-10 h-10
+              rounded-2xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      {/* RANGE */}
+      <div className="mt-4">
+
+        <input
+          type="range"
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={(e) =>
+            onChange(Number(e.target.value))
+          }
+          className="
+            w-full
+            mt-3
+            accent-[#001B5E]
+          "
+        />
+
+        <div className="flex justify-between text-[10px] text-gray-400 mt-2">
+
+          <span>
+            {format === "currency"
+              ? "₹1L"
+              : format === "percent"
+              ? "1%"
+              : "1Y"}
+          </span>
+
+          <span>
+            {format === "currency"
+              ? "₹1Cr"
+              : format === "percent"
+              ? "15%"
+              : "30Y"}
+          </span>
+
+        </div>
+
+      </div>
 
     </div>
   );
