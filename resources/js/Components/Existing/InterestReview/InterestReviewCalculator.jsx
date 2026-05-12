@@ -113,102 +113,103 @@ export default function InterestReviewCalculator() {
                     {!isProUser && !isCheckingAccess ? "UPGRADE TO VIEW" : statusBadge.text}
                 </div>
 
-                {/* LOAN */}
-                <div className="mb-4">
-                    <label className="text-xs text-gray-500 uppercase">
-                        Loan Outstanding
-                    </label>
+            {/* LOAN */}
+<EditableRangeField
+  label="Loan Outstanding"
+  value={data.loan}
+  onChange={(val) =>
+    setData((prev) => ({
+      ...prev,
+      loan: val,
+    }))
+  }
+  min={100000}
+  max={10000000}
+  step={1000}
+  format="currency"
+/>
 
-                    {isProUser ? (
-                        <div className="mt-1 border rounded-xl px-4 py-3 flex items-center">
-                            <span className="text-gray-500 font-semibold mr-2">₹</span>
-                            <input
-                                type="number"
-                                value={data.loan}
-                                onChange={(e) => setData(prev => ({ ...prev, loan: parseFloat(e.target.value) || 0 }))}
-                                className="w-full text-lg font-semibold bg-transparent outline-none"
-                            />
-                        </div>
-                    ) : (
-                        <div className="mt-1 border rounded-xl px-4 py-3 text-lg font-semibold filter blur-[4px] select-none">
-                            {format(data.loan)}
-                        </div>
-                    )}
-                </div>
+{/* EMI + PAID */}
+<div className="grid grid-cols-1 gap-3 mb-4 mt-4">
 
-                {/* EMI + PAID */}
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div>
-                        <label className="text-xs text-gray-500 uppercase">
-                            EMI Amount
-                        </label>
-                        {isProUser ? (
-                            <div className="mt-1 border rounded-xl px-4 py-3 flex items-center">
-                                <span className="text-gray-500 font-semibold mr-2">₹</span>
-                                <input
-                                    type="number"
-                                    value={data.emi}
-                                    onChange={(e) => setData(prev => ({ ...prev, emi: parseFloat(e.target.value) || 0 }))}
-                                    className="w-full font-semibold bg-transparent outline-none"
-                                />
-                            </div>
-                        ) : (
-                            <div className="mt-1 border rounded-xl px-4 py-3 font-semibold filter blur-[4px] select-none">
-                                {format(data.emi)}
-                            </div>
-                        )}
-                    </div>
+  <EditableRangeField
+    label="EMI Amount"
+    value={data.emi}
+    onChange={(val) =>
+      setData((prev) => ({
+        ...prev,
+        emi: val,
+      }))
+    }
+    min={1000}
+    max={500000}
+    step={100}
+    format="currency"
+  />
 
-                    <div>
-                        <label className="text-xs text-gray-500 uppercase">
-                            EMIs Paid
-                        </label>
-                        {isProUser ? (
-                            <div className="mt-1 border rounded-xl px-4 py-3">
-                                <input
-                                    type="number"
-                                    value={data.paid}
-                                    onChange={(e) => setData(prev => ({ ...prev, paid: parseInt(e.target.value) || 0 }))}
-                                    className="w-full font-semibold bg-transparent outline-none"
-                                />
-                            </div>
-                        ) : (
-                            <div className="mt-1 border rounded-xl px-4 py-3 font-semibold filter blur-[4px] select-none">
-                                {data.paid}
-                            </div>
-                        )}
-                    </div>
-                </div>
+  <EditableRangeField
+    label="EMIs Paid"
+    value={data.paid}
+    onChange={(val) =>
+      setData((prev) => ({
+        ...prev,
+        paid: val,
+      }))
+    }
+    min={1}
+    max={360}
+    step={1}
+    format="number"
+  />
 
-                {/* TENURE */}
-                <div className="mb-4">
-                    <div className="flex justify-between items-center">
-                        <label className="text-xs text-gray-500 uppercase">
-                            Tenure (Years)
-                        </label>
+</div>
 
-                        <span className={`text-xs px-2 py-1 rounded ${!isProUser && !isCheckingAccess ? 'bg-gray-100 text-gray-500 filter blur-[3px]' : getInterestShareColor(results.interestPercentage)}`}>
-                            {results.interestPercentage}% INTEREST SHARE
-                        </span>
-                    </div>
+{/* TENURE */}
+<div className="mb-4">
 
-                    {isProUser ? (
-                        <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2">
-                            <Calendar size={16} className="text-gray-500" />
-                            <input
-                                type="number"
-                                value={data.tenure}
-                                onChange={(e) => setData(prev => ({ ...prev, tenure: parseInt(e.target.value) || 0 }))}
-                                className="font-semibold bg-transparent outline-none w-full"
-                            />
-                        </div>
-                    ) : (
-                        <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2 font-semibold filter blur-[4px] select-none">
-                            <Calendar size={16} className="text-gray-500" />
-                            {data.tenure}
-                        </div>
-                    )}
-                </div>
+  <div className="flex justify-between items-center mb-2">
+
+    <label className="text-xs text-gray-500 uppercase">
+      Tenure (Years)
+    </label>
+
+    <span
+      className={`text-xs px-2 py-1 rounded ${
+        !isProUser && !isCheckingAccess
+          ? "bg-gray-100 text-gray-500 filter blur-[3px]"
+          : getInterestShareColor(
+              results.interestPercentage
+            )
+      }`}
+    >
+      {results.interestPercentage}%
+      INTEREST SHARE
+    </span>
+
+  </div>
+
+  <EditableRangeField
+    label="Loan Tenure"
+    value={data.tenure}
+    onChange={(val) =>
+      setData((prev) => ({
+        ...prev,
+        tenure: val,
+      }))
+    }
+    min={1}
+    max={30}
+    step={1}
+    format="year"
+    icon={
+      <Calendar
+        size={16}
+        className="text-gray-500"
+      />
+    }
+  />
+
+</div>
 
                 {/* NOTE */}
                 <div className="border rounded-xl p-4 bg-gray-50 flex gap-3">
@@ -295,4 +296,175 @@ export default function InterestReviewCalculator() {
 
         </div>
     );
+}
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  icon = null,
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <div className="flex items-center gap-2 mt-2">
+
+              {icon}
+
+              <h3 className="text-[16px] leading-tight font-black text-[#081c4b] break-words">
+                {displayValue()}
+              </h3>
+
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="
+          w-full
+          mt-3
+          accent-blue-600
+        "
+      />
+
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
+      </div>
+
+    </div>
+  );
 }

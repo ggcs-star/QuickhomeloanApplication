@@ -127,76 +127,97 @@ export default function FreedomCalculator() {
                     </div>
                 </div>
 
-                <div className="space-y-5 mb-5">
-                    {/* Sanction & Outstanding */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="text-xs text-gray-500 uppercase flex items-center gap-1 mb-1"><Trophy className="w-3 h-3" /> Original Sanction</label>
-                            {isProUser ? (
-                                <div className="border rounded-xl px-4 py-3 flex items-center">
-                                    <span className="text-gray-500 font-semibold mr-2">₹</span>
-                                    <input type="number" value={loanData.originalSanction} onChange={(e) => handleInputChange('originalSanction', e.target.value)}
-                                        className="w-full font-semibold bg-transparent outline-none" min="0" step="100000" />
-                                </div>
-                            ) : (
-                                <div className={`border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ XX,XX,XXX</div>
-                            )}
-                        </div>
-                        <div>
-                            <label className="text-xs text-gray-500 uppercase flex items-center gap-1 mb-1"><History className="w-3 h-3" /> Outstanding</label>
-                            {isProUser ? (
-                                <div className="border rounded-xl px-4 py-3 flex items-center">
-                                    <span className="text-gray-500 font-semibold mr-2">₹</span>
-                                    <input type="number" value={loanData.currentOutstanding} onChange={(e) => handleInputChange('currentOutstanding', e.target.value)}
-                                        className="w-full font-semibold bg-transparent outline-none" min="0" step="100000" />
-                                </div>
-                            ) : (
-                                <div className={`border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ XX,XX,XXX</div>
-                            )}
-                        </div>
-                    </div>
+           <div className="space-y-5 mb-5">
 
-                    {/* EMI & ROI */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="text-xs text-gray-500 uppercase flex items-center gap-1 mb-1"><Zap className="w-3 h-3" /> Monthly EMI</label>
-                            {isProUser ? (
-                                <div className="border rounded-xl px-4 py-3 flex items-center">
-                                    <span className="text-gray-500 font-semibold mr-2">₹</span>
-                                    <input type="number" value={loanData.monthlyEMI} onChange={(e) => handleInputChange('monthlyEMI', e.target.value)}
-                                        className="w-full font-semibold bg-transparent outline-none" />
-                                </div>
-                            ) : (
-                                <div className={`border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ XX,XXX</div>
-                            )}
-                        </div>
-                        <div>
-                            <label className="text-xs text-gray-500 uppercase flex items-center gap-1 mb-1"><TrendingDown className="w-3 h-3" /> ROI (%)</label>
-                            {isProUser ? (
-                                <input type="number" step="0.05" value={loanData.roi} onChange={(e) => handleInputChange('roi', e.target.value)}
-                                    className="w-full border rounded-xl px-4 py-3 font-semibold bg-transparent outline-none" />
-                            ) : (
-                                <div className={`border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>XX.XX</div>
-                            )}
-                        </div>
-                    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                    {/* Accelerator Slider */}
-                    <div className="bg-gray-50 p-4 rounded-xl border">
-                        <div className="flex justify-between items-center mb-3">
-                            <span className="text-xs font-semibold text-gray-800 uppercase flex items-center gap-1">
-                                <Sparkles className="w-3.5 h-3.5" /> Accelerator (Extra EMI/Mo)
-                            </span>
-                            <span className="font-bold text-sm"><BlurredNumberDisplay value={loanData.additionalRepayment} isCurrency={true} /></span>
-                        </div>
-                        {isProUser ? (
-                            <input type="range" min="0" max="50000" step="1000" value={loanData.additionalRepayment} onChange={handleSliderChange}
-                                className="w-full h-1.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-black" />
-                        ) : (
-                            <div className="w-full h-1.5 bg-gray-300 rounded-lg opacity-50"></div>
-                        )}
-                    </div>
-                </div>
+        <EditableRangeField
+            label="Original Sanction"
+            value={loanData.originalSanction}
+            onChange={(val) =>
+                handleInputChange(
+                    "originalSanction",
+                    val
+                )
+            }
+            min={100000}
+            max={50000000}
+            step={1000}
+            format="currency"
+            icon={<Trophy className="w-3 h-3" />}
+        />
+
+        <EditableRangeField
+            label="Outstanding"
+            value={loanData.currentOutstanding}
+            onChange={(val) =>
+                handleInputChange(
+                    "currentOutstanding",
+                    val
+                )
+            }
+            min={100000}
+            max={50000000}
+            step={1000}
+            format="currency"
+            icon={<History className="w-3 h-3" />}
+        />
+
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <EditableRangeField
+            label="Monthly EMI"
+            value={loanData.monthlyEMI}
+            onChange={(val) =>
+                handleInputChange(
+                    "monthlyEMI",
+                    val
+                )
+            }
+            min={1000}
+            max={500000}
+            step={100}
+            format="currency"
+            icon={<Zap className="w-3 h-3" />}
+        />
+
+        <EditableRangeField
+            label="ROI (%)"
+            value={loanData.roi}
+            onChange={(val) =>
+                handleInputChange(
+                    "roi",
+                    val
+                )
+            }
+            min={1}
+            max={20}
+            step={0.05}
+            format="percent"
+            icon={<TrendingDown className="w-3 h-3" />}
+        />
+
+    </div>
+
+    <EditableRangeField
+        label="Accelerator (Extra EMI/Mo)"
+        value={loanData.additionalRepayment}
+        onChange={(val) =>
+            handleInputChange(
+                "additionalRepayment",
+                val
+            )
+        }
+        min={0}
+        max={50000}
+        step={100}
+        format="currency"
+        icon={<Sparkles className="w-3.5 h-3.5" />}
+    />
+
+</div>
 
                 <button
                     className={`w-full py-3 rounded-xl flex items-center justify-center gap-2 transition-all font-semibold ${isProUser ? 'bg-[#1f2a3c] text-white hover:bg-[#2a3a4f]' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
@@ -284,6 +305,161 @@ export default function FreedomCalculator() {
                     </div>
                 </div>
             </div>
+        </div>
+    );
+}
+function EditableRangeField({
+    label,
+    value,
+    onChange,
+    min,
+    max,
+    step,
+    format = "number",
+    icon = null,
+}) {
+    const [editing, setEditing] =
+        useState(false);
+
+    const [tempValue, setTempValue] =
+        useState(value);
+
+    useEffect(() => {
+        setTempValue(value);
+    }, [value]);
+
+    const displayValue = () => {
+        if (format === "currency") {
+            return `₹${Number(value).toLocaleString(
+                "en-IN"
+            )}`;
+        }
+
+        if (format === "percent") {
+            return `${value}%`;
+        }
+
+        return value;
+    };
+
+    const saveValue = () => {
+        let finalValue = Number(tempValue);
+
+        if (isNaN(finalValue)) {
+            finalValue = min;
+        }
+
+        if (finalValue < min) {
+            finalValue = min;
+        }
+
+        if (finalValue > max) {
+            finalValue = max;
+        }
+
+        onChange(finalValue);
+        setEditing(false);
+    };
+
+    return (
+        <div className="space-y-3">
+
+            <div className="flex items-center justify-between">
+
+                <label className="text-xs text-gray-500 uppercase flex items-center gap-1">
+                    {icon}
+                    {label}
+                </label>
+
+                {!editing && (
+                    <button
+                        onClick={() => {
+                            setEditing(true);
+                            setTempValue(value);
+                        }}
+                        className="
+                            w-7 h-7
+                            rounded-lg
+                            bg-gray-100
+                            text-gray-600
+                            flex items-center justify-center
+                            text-xs
+                        "
+                    >
+                        ✎
+                    </button>
+                )}
+
+            </div>
+
+            {!editing ? (
+                <div className="border rounded-xl px-4 py-3 font-semibold bg-white">
+                    {displayValue()}
+                </div>
+            ) : (
+                <div className="flex items-center gap-2">
+
+                    <input
+                        type="number"
+                        value={tempValue}
+                        min={min}
+                        max={max}
+                        step={step}
+                        autoFocus
+                        onChange={(e) =>
+                            setTempValue(e.target.value)
+                        }
+                        className="
+                            flex-1
+                            border
+                            rounded-xl
+                            px-4 py-3
+                            font-semibold
+                            bg-white
+                            outline-none
+                        "
+                    />
+
+                    <button
+                        onClick={saveValue}
+                        className="
+                            px-4 py-3
+                            rounded-xl
+                            bg-black
+                            text-white
+                            text-sm
+                            font-semibold
+                        "
+                    >
+                        OK
+                    </button>
+
+                </div>
+            )}
+
+            <input
+                type="range"
+                value={value}
+                min={min}
+                max={max}
+                step={step}
+                onChange={(e) =>
+                    onChange(Number(e.target.value))
+                }
+                className="
+                    w-full
+                    accent-black
+                "
+            />
+
+            <div className="flex justify-between text-[10px] text-gray-400">
+
+                <span>{min}</span>
+
+                <span>{max}</span>
+
+            </div>
+
         </div>
     );
 }

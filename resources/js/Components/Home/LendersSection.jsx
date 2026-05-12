@@ -24,59 +24,28 @@ export default function LendersSection() {
     }
   };
 
-  // ✅ FIXED SHORT SLUG LOGIC
+  // ✅ NEW APPLY LOAN ROUTE LOGIC
   const openLender = (item) => {
 
-    let slug = item?.slug?.trim();
+    const bankName = item?.name?.trim();
 
-    const bankName = item?.name
-      ?.trim()
-      ?.toLowerCase();
+    if (!bankName) return;
 
-    // FORCE SHORT URLS
-    if (bankName?.includes("state bank")) {
-      slug = "sbi";
-    }
+    const category = encodeURIComponent(
+      "Home Loan By Banks"
+    );
 
-    if (bankName?.includes("bank of maharashtra")) {
-      slug = "bom";
-    }
-
-    if (bankName?.includes("hdfc")) {
-      slug = "hdfc";
-    }
-
-    if (bankName?.includes("icici")) {
-      slug = "icici";
-    }
-
-    if (bankName?.includes("punjab national")) {
-      slug = "pnb";
-    }
-
-    if (bankName?.includes("bank of baroda")) {
-      slug = "bob";
-    }
-
-    if (bankName?.includes("canara")) {
-      slug = "canara-bank";
-    }
-
-    if (bankName?.includes("union bank")) {
-      slug = "union-bank";
-    }
-
-    console.log("BANK:", bankName);
-    console.log("FINAL SLUG:", slug);
-
-    if (!slug) return;
+    const subcategory = encodeURIComponent(
+      bankName
+    );
 
     const url =
-      `https://quickhomeloan.in/home-loan/details/${slug}`;
+      `https://quickhomeloan.in/apply-loan?category=${category}&subcategory=${subcategory}`;
 
+    console.log("BANK:", bankName);
     console.log("URL:", url);
 
-   window.location.href = url;
+    window.location.href = url;
   };
 
   return (
@@ -305,4 +274,4 @@ export default function LendersSection() {
       </div>
     </section>
   );
-}   
+}
