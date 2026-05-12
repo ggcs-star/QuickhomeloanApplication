@@ -109,57 +109,41 @@ const JourneyCompletionAudit = () => {
         </div>
 
         {/* Input Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-          {/* Sanctioned Tenure Input */}
-          <div>
-            <label className="text-xs text-gray-500 uppercase">Sanctioned Tenure (Months)</label>
-            {isProUser ? (
-              <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2">
-                <ClockIcon size={16} className="text-gray-500" />
-                <input
-                  type="number"
-                  value={data.sanctionedTenure}
-                  onChange={(e) => handleSanctionedTenureChange(Number(e.target.value))}
-                  className="w-full font-semibold bg-transparent outline-none"
-                  min="0"
-                  max="600"
-                />
-              </div>
-            ) : (
-              <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>
-                {data.sanctionedTenure}
-              </div>
-            )}
-            <div className="text-[10px] text-gray-500 mt-1 text-right">
-              {calculations.sanctionedYears} Years
-            </div>
-          </div>
+    <div className="grid grid-cols-1 gap-4 mb-5">
 
-          {/* Pending Installments Input */}
-          <div>
-            <label className="text-xs text-gray-500 uppercase">Pending Installments</label>
-            {isProUser ? (
-              <div className="mt-1 border rounded-xl px-4 py-3 flex items-center gap-2">
-                <CalendarIcon size={16} className="text-gray-500" />
-                <input
-                  type="number"
-                  value={data.pendingInstallments}
-                  onChange={(e) => handlePendingInstallmentsChange(Number(e.target.value))}
-                  className="w-full font-semibold bg-transparent outline-none"
-                  min="0"
-                  max="600"
-                />
-              </div>
-            ) : (
-              <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>
-                {data.pendingInstallments}
-              </div>
-            )}
-            <div className="text-[10px] text-gray-500 mt-1 text-right">
-              {calculations.pendingYears} Years
-            </div>
-          </div>
-        </div>
+  <EditableRangeField
+    label="Sanctioned Tenure (Months)"
+    value={data.sanctionedTenure}
+    onChange={handleSanctionedTenureChange}
+    min={0}
+    max={600}
+    step={1}
+    format="year"
+    icon={
+      <ClockIcon
+        size={16}
+        className="text-gray-500"
+      />
+    }
+  />
+
+  <EditableRangeField
+    label="Pending Installments"
+    value={data.pendingInstallments}
+    onChange={handlePendingInstallmentsChange}
+    min={0}
+    max={600}
+    step={1}
+    format="year"
+    icon={
+      <CalendarIcon
+        size={16}
+        className="text-gray-500"
+      />
+    }
+  />
+
+</div>
 
         {/* Audit Button */}
         <button
@@ -247,5 +231,166 @@ const JourneyCompletionAudit = () => {
     </div>
   );
 };
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  icon = null,
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "year") {
+      return `${value} Months`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <div className="flex items-center gap-2 mt-2">
+
+              {icon}
+
+              <h3 className="text-[16px] leading-tight font-black text-[#081c4b] break-words">
+                {displayValue()}
+              </h3>
+
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="
+          w-full
+          mt-3
+          accent-indigo-600
+        "
+      />
+
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
+      </div>
+
+    </div>
+  );
+}
 
 export default JourneyCompletionAudit;

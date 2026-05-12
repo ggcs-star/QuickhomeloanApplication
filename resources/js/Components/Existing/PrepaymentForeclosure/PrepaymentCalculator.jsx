@@ -68,58 +68,60 @@ export default function PrepaymentCalculator() {
           </div>
         </div>
 
-        <div className="space-y-5 mb-5">
-          {/* Prepayment Amount */}
-          <div>
-            <div className="flex justify-between items-center mb-1">
-              <label className="text-xs text-gray-500 uppercase">Prepayment Amount</label>
-              <span className={`text-base font-semibold ${blurClass}`}>{formatCurrency(formData.prepaymentAmount)}</span>
-            </div>
-            {isProUser ? (
-              <div className="mt-1 border rounded-xl px-4 py-3 flex items-center">
-                <span className="text-gray-500 font-semibold mr-2">₹</span>
-                <input 
-                  type="number" value={formData.prepaymentAmount}
-                  onChange={(e) => handleInputChange('prepaymentAmount', e.target.value)}
-                  className="w-full font-semibold bg-transparent outline-none" 
-                  min="50000" max="5000000" step="50000"
-                />
-              </div>
-            ) : (
-              <div className={`mt-1 border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ XX,XX,XXX</div>
-            )}
-            {isProUser && (
-              <input type="range" min="50000" max="5000000" step="50000" 
-                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer mt-4" 
-                value={formData.prepaymentAmount} onChange={(e) => handleInputChange('prepaymentAmount', e.target.value)} 
-              />
-            )}
-          </div>
+    <div className="space-y-4 mb-5">
 
-          {/* Loan Outstanding & Interest Rate */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs text-gray-500 uppercase block mb-1">Loan Outstanding</label>
-              {isProUser ? (
-                <div className="border rounded-xl px-4 py-3 flex items-center">
-                  <span className="text-gray-500 font-semibold mr-2">₹</span>
-                  <input type="number" value={formData.loanOutstanding} onChange={(e) => handleInputChange('loanOutstanding', e.target.value)}
-                    className="w-full font-semibold bg-transparent outline-none" min="0" step="100000" />
-                </div>
-              ) : (
-                <div className={`border rounded-xl px-4 py-3 font-semibold ${blurClass}`}>₹ XX,XX,XXX</div>
-              )}
-            </div>
-            <div>
-              <div className="flex justify-between items-center mb-1">
-                <label className="text-xs text-gray-500 uppercase">Interest Rate</label>
-              </div>
-              <div className={`border rounded-xl px-4 py-3 font-semibold bg-gray-50 flex items-center gap-2 ${blurClass}`}>
-                <span className="text-gray-500">%</span> {calculations.interestRate} ROI
-              </div>
-            </div>
-          </div>
-        </div>
+  <EditableRangeField
+    label="Prepayment Amount"
+    value={formData.prepaymentAmount}
+    onChange={(val) =>
+      handleInputChange(
+        "prepaymentAmount",
+        val
+      )
+    }
+    min={50000}
+    max={5000000}
+    step={10000}
+    format="currency"
+  />
+
+  <EditableRangeField
+    label="Loan Outstanding"
+    value={formData.loanOutstanding}
+    onChange={(val) =>
+      handleInputChange(
+        "loanOutstanding",
+        val
+      )
+    }
+    min={100000}
+    max={50000000}
+    step={10000}
+    format="currency"
+  />
+
+  <div>
+    <label className="text-xs text-gray-500 uppercase block mb-1">
+      Interest Rate
+    </label>
+
+    <div
+      className={`
+        border rounded-xl px-4 py-3
+        font-semibold bg-gray-50
+        flex items-center gap-2
+        ${blurClass}
+      `}
+    >
+      <span className="text-gray-500">
+        %
+      </span>
+
+      {calculations.interestRate} ROI
+    </div>
+  </div>
+
+</div>
 
         <button
           className={`w-full py-3 rounded-xl flex items-center justify-center gap-2 transition-all ${isProUser ? 'bg-[#1f2a3c] text-white hover:bg-[#2a3a4f]' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
@@ -155,6 +157,166 @@ export default function PrepaymentCalculator() {
         {/* Recovery Action */}
         
       </div>
+    </div>
+  );
+}
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <h3 className="text-[16px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+              {displayValue()}
+            </h3>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="
+          w-full
+          mt-3
+          accent-blue-600
+        "
+      />
+
+      <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
+      </div>
+
     </div>
   );
 }

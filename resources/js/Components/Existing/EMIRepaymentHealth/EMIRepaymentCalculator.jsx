@@ -272,96 +272,79 @@ export default function EMIRepaymentCalculator() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
               {/* Input Form */}
               <div className="lg:col-span-5 space-y-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-[12px] font-medium text-neutral-500 uppercase tracking-wider flex items-center gap-2">
-                      <WalletIcon className="w-3 h-3" />
-                      Loan Outstanding (Start of Year)
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 font-medium text-[15px]">₹</span>
-                      {isProUser ? (
-                        <input 
-                          className="w-full pl-8 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 focus:ring-1 focus:ring-neutral-700 outline-none transition-all"
-                          type="number" 
-                          value={loanData.loanOutstanding}
-                          onChange={(e) => handleInputChange('loanOutstanding', e.target.value)}
-                        />
-                      ) : (
-                        <div className="w-full pl-8 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 filter blur-[4px]">
-                          ₹ XX,XX,XXX
-                        </div>
-                      )}
-                    </div>
-                  </div>
+               <div className="space-y-5">
 
-                  <div className="space-y-2">
-                    <label className="text-[12px] font-medium text-neutral-500 uppercase tracking-wider flex items-center gap-2">
-                      <PiggyBankIcon className="w-3 h-3" />
-                      Monthly EMI Amount
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 font-medium text-[15px]">₹</span>
-                      {isProUser ? (
-                        <input 
-                          className="w-full pl-8 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 focus:ring-1 focus:ring-neutral-700 outline-none transition-all"
-                          type="number" 
-                          value={loanData.emiAmount}
-                          onChange={(e) => handleInputChange('emiAmount', e.target.value)}
-                        />
-                      ) : (
-                        <div className="w-full pl-8 pr-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 filter blur-[4px]">
-                          ₹ XX,XXX
-                        </div>
-                      )}
-                    </div>
-                  </div>
+  <EditableRangeField
+    label="Loan Outstanding (Start of Year)"
+    value={loanData.loanOutstanding}
+    onChange={(val) =>
+      handleInputChange(
+        "loanOutstanding",
+        val
+      )
+    }
+    min={100000}
+    max={50000000}
+    step={1000}
+    format="currency"
+    icon={<WalletIcon className="w-3 h-3" />}
+  />
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-[12px] font-medium text-neutral-500 uppercase tracking-wider flex items-center gap-2">
-                        <Calendar className="w-3 h-3" />
-                        EMIs Paid
-                      </label>
-                      <div className="relative">
-                        {isProUser ? (
-                          <input 
-                            className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 outline-none"
-                            type="number" 
-                            value={loanData.emisPaid}
-                            onChange={(e) => handleInputChange('emisPaid', e.target.value)}
-                          />
-                        ) : (
-                          <div className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 filter blur-[4px]">
-                            XX
-                          </div>
-                        )}
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[12px] font-medium text-neutral-500">Mo</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[12px] font-medium text-neutral-500 uppercase tracking-wider flex items-center gap-2">
-                        <Clock className="w-3 h-3" />
-                        Tenure
-                      </label>
-                      <div className="relative">
-                        {isProUser ? (
-                          <input 
-                            className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 outline-none"
-                            type="number" 
-                            value={loanData.tenureYears}
-                            onChange={(e) => handleInputChange('tenureYears', e.target.value)}
-                          />
-                        ) : (
-                          <div className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900 filter blur-[4px]">
-                            XX
-                          </div>
-                        )}
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[12px] font-medium text-neutral-500">Yrs</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <EditableRangeField
+    label="Monthly EMI Amount"
+    value={loanData.emiAmount}
+    onChange={(val) =>
+      handleInputChange(
+        "emiAmount",
+        val
+      )
+    }
+    min={1000}
+    max={500000}
+    step={100}
+    format="currency"
+    icon={<PiggyBankIcon className="w-3 h-3" />}
+  />
+
+  <div className="grid grid-cols-2 gap-4">
+
+    <EditableRangeField
+      label="EMIs Paid"
+      value={loanData.emisPaid}
+      onChange={(val) =>
+        handleInputChange(
+          "emisPaid",
+          val
+        )
+      }
+      min={1}
+      max={360}
+      step={1}
+      format="number"
+      suffix=" Mo"
+      icon={<Calendar className="w-3 h-3" />}
+    />
+
+    <EditableRangeField
+      label="Tenure"
+      value={loanData.tenureYears}
+      onChange={(val) =>
+        handleInputChange(
+          "tenureYears",
+          val
+        )
+      }
+      min={1}
+      max={30}
+      step={1}
+      format="number"
+      suffix=" Yrs"
+      icon={<Clock className="w-3 h-3" />}
+    />
+
+  </div>
+
+</div>
                 <button 
                   className={`w-full py-4 rounded-md text-[14px] font-semibold tracking-wide uppercase transition-all shadow-sm flex items-center justify-center gap-2 ${isProUser ? 'bg-black text-white hover:bg-neutral-800 active:scale-[0.98]' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
                   disabled={!isProUser}
@@ -456,6 +439,164 @@ export default function EMIRepaymentCalculator() {
             </div>
           </div>
         </div>
+      </div>
+
+    </div>
+  );
+}
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  icon = null,
+  suffix = "",
+}) {
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    return `${value}${suffix}`;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="space-y-3">
+
+      <div className="flex items-center justify-between">
+
+        <label className="text-[12px] font-medium text-neutral-500 uppercase tracking-wider flex items-center gap-2">
+          {icon}
+          {label}
+        </label>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-7 h-7
+              rounded-lg
+              bg-neutral-100
+              text-neutral-600
+              flex items-center justify-center
+              text-xs
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      {!editing ? (
+        <div className="px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-md font-medium text-[16px] text-neutral-900">
+          {displayValue()}
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+
+          <input
+            type="number"
+            value={tempValue}
+            min={min}
+            max={max}
+            step={step}
+            autoFocus
+            onChange={(e) =>
+              setTempValue(e.target.value)
+            }
+            className="
+              flex-1
+              px-4 py-3
+              bg-neutral-50
+              border border-neutral-300
+              rounded-md
+              font-medium
+              text-[16px]
+              text-neutral-900
+              outline-none
+            "
+          />
+
+          <button
+            onClick={saveValue}
+            className="
+              px-4 py-3
+              rounded-md
+              bg-black
+              text-white
+              text-sm
+              font-semibold
+            "
+          >
+            OK
+          </button>
+
+        </div>
+      )}
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="
+          w-full
+          accent-black
+        "
+      />
+
+      <div className="flex justify-between text-[10px] text-neutral-400">
+
+        <span>{min}</span>
+
+        <span>{max}</span>
+
       </div>
 
     </div>

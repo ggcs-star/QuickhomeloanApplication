@@ -1,99 +1,258 @@
 import AppLayout from "../Layouts/AppLayout";
 import { router } from "@inertiajs/react";
-import { Sparkles, Layers, Calculator, Calendar, ArrowRight } from "lucide-react";
+
+import {
+  Sparkles,
+  Layers,
+  Calculator,
+  Calendar,
+  ArrowLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const tools = [
-    {
-        title: "First Time",
-        desc: "Start Loan Journey",
-        icon: Sparkles,
-    },
-    {
-        title: "Existing",
-        desc: "Manage Loan Smartly",
-        icon: Layers,
-    },
-    {
-        title: "Calculator",
-        desc: "Calculate EMI Easily",
-        icon: Calculator,
-    },
-    {
-        title: "calendar",
-        desc: "Track Loan Dates",
-        icon: Calendar,
-    },
+  {
+    title: "First Time",
+    desc: "Start Loan Journey",
+    icon: Sparkles,
+    bg: "from-[#2563EB] to-[#1D4ED8]",
+  },
+  {
+    title: "Existing",
+    desc: "Manage Loan Smartly",
+    icon: Layers,
+    bg: "from-[#0F766E] to-[#115E59]",
+  },
+  {
+    title: "Calculator",
+    desc: "Calculate EMI Easily",
+    icon: Calculator,
+    bg: "from-[#7C3AED] to-[#6D28D9]",
+  },
+  {
+    title: "calendar",
+    desc: "Track Loan Dates",
+    icon: Calendar,
+    bg: "from-[#EA580C] to-[#C2410C]",
+  },
 ];
 
 export default function Tools() {
-    return (
-        <AppLayout showTopNav={false} showBottomNav={true}>
-            <div className="px-4 py-5">
+  return (
+    <AppLayout showTopNav={false} showBottomNav={true}>
+      <div className="min-h-screen bg-[#f5f7fd] pb-24">
 
-                {/* Title */}
-                <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-                    Tools
-                </h1>
+        {/* HEADER */}
+        <div className="px-4 pt-5">
 
-                {/* List */}
-                <div className="space-y-5">
+          <div className="flex items-center gap-3">
 
-                    {tools.map((item, i) => {
-                        const Icon = item.icon;
-
-                        return (
-                            <div
-                                key={i}
-                                onClick={() => router.visit(`/tools/${item.title.toLowerCase().replace(" ", "-")}`)}
-                                className="
+            <button
+              onClick={() => window.history.back()}
+              className="
+                w-10 h-10 rounded-full
                 bg-white
-                rounded-2xl 
-                p-4 
-                flex items-center justify-between
-                border border-gray-200
-                shadow-[0_2px_6px_rgba(0,0,0,0.06)]
-                active:scale-[0.98] transition
-                cursor-pointer
+                border border-[#edf1f7]
+                flex items-center justify-center
+                shadow-sm
+              "
+            >
+              <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+            </button>
+
+            <div>
+
+              <h1 className="
+                text-[24px]
+                font-black
+                tracking-[-0.5px]
+                text-[#081c4b]
+                leading-tight
+              ">
+
+                Tools
+
+              </h1>
+
+              <p className="text-[12px] text-gray-500 mt-[2px]">
+                Smart utilities for loan planning
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* HERO */}
+        <div className="px-4 mt-4">
+
+          <div className="
+            relative overflow-hidden
+            rounded-[22px]
+            bg-gradient-to-r
+            from-[#001B5E]
+            to-[#0038b8]
+            px-5 py-5
+            text-white
+          ">
+
+            <div className="relative z-10 max-w-[70%]">
+
+              <p className="text-[11px] opacity-90 font-medium">
+                Financial Utility Tools
+              </p>
+
+              <h2 className="
+                text-[28px]
+                leading-[30px]
+                font-black
+                mt-2
+                tracking-[-1px]
+              ">
+
+                Explore Smart Tools
+
+              </h2>
+
+              <p className="
+                text-[12px]
+                opacity-90
+                mt-2
+                leading-5
+              ">
+                EMI calculators, planning utilities and smart loan tools.
+              </p>
+
+            </div>
+
+            <img
+              src="/images/house.png"
+              alt="house"
+              className="
+                absolute right-0 bottom-0
+                h-[120px]
+                object-contain
+              "
+            />
+
+          </div>
+
+        </div>
+
+        {/* GRID */}
+        <div className="px-4 mt-4 grid grid-cols-2 gap-3">
+
+          {tools.map((item, i) => {
+
+            const Icon = item.icon;
+
+            return (
+              <button
+                key={i}
+                onClick={() =>
+                  router.visit(
+                    `/tools/${item.title.toLowerCase().replace(" ", "-")}`
+                  )
+                }
+                className="
+                  relative overflow-hidden
+                  rounded-[20px]
+                  bg-white
+                  border border-[#edf1f7]
+                  p-4
+                  text-left
+                  shadow-sm
+                  active:scale-[0.98]
+                  transition-all
                 "
-                            >
+              >
 
-                                {/* LEFT */}
-                                <div className="flex items-center gap-4">
+                {/* TOP ICON */}
+                <div className={`
+                  w-14 h-14 rounded-[16px]
+                  bg-gradient-to-br
+                  ${item.bg}
+                  flex items-center justify-center
+                  shadow-md
+                `}>
 
-                                    {/* ICON BOX */}
-                                    <div
-                                        className="
-                    w-12 h-12 
-                    rounded-xl 
-                    bg-[#eef1f4] 
-                    flex items-center justify-center
-                    shadow-inner
-                    "
-                                    >
-                                        <Icon className="text-blue-500" size={22} />
-                                    </div>
-
-                                    {/* TEXT */}
-                                    <div>
-                                        <h3 className="text-[17px] font-semibold text-gray-800">
-                                            {item.title}
-                                        </h3>
-                                        <p className="text-sm text-gray-500 mt-[2px]">
-                                            {item.desc}
-                                        </p>
-                                    </div>
-
-                                </div>
-
-                                {/* RIGHT ARROW */}
-                                <ArrowRight className="text-gray-400" size={22} />
-
-                            </div>
-                        );
-                    })}
+                  <Icon
+                    className="w-7 h-7 text-white"
+                    strokeWidth={2.2}
+                  />
 
                 </div>
-            </div>
-        </AppLayout>
-    );
+
+                {/* CONTENT */}
+                <div className="mt-4">
+
+                  <h3 className="
+                    text-[15px]
+                    leading-[20px]
+                    font-bold
+                    text-[#081c4b]
+                  ">
+
+                    {item.title}
+
+                  </h3>
+
+                  <p className="
+                    text-[11px]
+                    leading-[17px]
+                    text-gray-500
+                    mt-1
+                  ">
+
+                    {item.desc}
+
+                  </p>
+
+                </div>
+
+                {/* BOTTOM */}
+                <div className="
+                  mt-4
+                  flex items-center justify-between
+                ">
+
+                  <span className="
+                    text-[11px]
+                    font-semibold
+                    text-[#2563eb]
+                  ">
+                    Open Tool
+                  </span>
+
+                  <div className="
+                    w-7 h-7 rounded-full
+                    bg-[#f5f7fd]
+                    flex items-center justify-center
+                  ">
+
+                    <ChevronRight className="w-4 h-4 text-[#081c4b]" />
+
+                  </div>
+
+                </div>
+
+                {/* BG DECOR */}
+                <div className={`
+                  absolute -right-8 -top-8
+                  w-24 h-24 rounded-full
+                  opacity-[0.06]
+                  bg-gradient-to-br
+                  ${item.bg}
+                `} />
+
+              </button>
+            );
+          })}
+
+        </div>
+
+      </div>
+    </AppLayout>
+  );
 }

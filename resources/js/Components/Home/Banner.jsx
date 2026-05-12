@@ -22,8 +22,27 @@ export default function Banner() {
 
     const fetchBanners = async () => {
         try {
+            // ✅ CHECK CACHE FIRST
+            const cachedBanners =
+                localStorage.getItem("home_banners");
+
+            if (cachedBanners) {
+                setBanners(JSON.parse(cachedBanners));
+                setLoading(false);
+            }
+
+            // ✅ FETCH LATEST DATA
             const res = await api.get("/banners");
-            setBanners(res.data.data || []);
+
+            const data = res.data.data || [];
+
+            setBanners(data);
+
+            // ✅ SAVE CACHE
+            localStorage.setItem(
+                "home_banners",
+                JSON.stringify(data)
+            );
         } catch (err) {
             console.error(err);
         } finally {
@@ -32,7 +51,7 @@ export default function Banner() {
     };
 
     return (
-        <section className="w-full px-4 mt-4">
+        <section className="w-full px-4">
 
             {/* LOADING */}
             {loading && (
@@ -41,7 +60,7 @@ export default function Banner() {
                 </div>
             )}
 
-            {/* BANNER */}
+            {/* BANNERS */}
             {!loading && banners.length > 0 && (
                 <div className="relative w-full">
 
@@ -52,6 +71,7 @@ export default function Banner() {
                             w-full
                             block
                             object-contain
+                            rounded-[20px]
                         "
                         style={{
                             height: "auto",
@@ -63,12 +83,14 @@ export default function Banner() {
                     {/* DOTS */}
                     <div className="flex items-center justify-center gap-2 mt-3">
                         {banners.map((_, i) => (
-                            <div
+                            <button
                                 key={i}
+                                onClick={() => setCurrent(i)}
                                 className={`
                                     rounded-full
                                     transition-all
                                     duration-300
+                                    cursor-pointer
                                     ${
                                         i === current
                                             ? "w-4 h-1.5 bg-[#111827]"
@@ -78,6 +100,7 @@ export default function Banner() {
                             />
                         ))}
                     </div>
+
                 </div>
             )}
         </section>

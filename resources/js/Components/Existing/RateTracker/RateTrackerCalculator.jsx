@@ -123,131 +123,217 @@ export default function SafetyEngineCalculator() {
         </div>
       </div>
 
-      {/* INPUT SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card title="Your Financials">
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">Monthly In-Hand Income (₹)</label>
-              {isProUser ? (
-                <input
-                  type="number"
-                  value={loanData.monthlyIncome}
-                  onChange={(e) => setLoanData({ ...loanData, monthlyIncome: Number(e.target.value) })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  120000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">Existing Monthly EMIs (₹)</label>
-              {isProUser ? (
-                <input
-                  type="number"
-                  value={loanData.existingEmis}
-                  onChange={(e) => setLoanData({ ...loanData, existingEmis: Number(e.target.value) })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  25000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">City Type</label>
-              {isProUser ? (
-                <select
-                  value={loanData.city}
-                  onChange={(e) => setLoanData({ ...loanData, city: e.target.value })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                >
-                  <option value="Metro">Metro / Tier 1</option>
-                  <option value="Non-Metro">Non-Metro / Tier 2+</option>
-                </select>
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  Metro / Tier 1
-                </div>
-              )}
-              <p className="text-[10px] text-neutral-500 mt-1 italic leading-tight">
-                {loanData.city === 'Metro' ? 'Higher living costs. Safety buffer adjusted (-5%).' : 'Standard living costs. No safety buffer penalty.'}
-              </p>
-            </div>
-          </div>
-        </Card>
+     {/* INPUT SECTION */}
+<div className="space-y-5">
 
-        <Card title="Loan Parameters">
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">Proposed Loan Amount (₹)</label>
-              {isProUser ? (
-                <input
-                  type="number" step="100000"
-                  value={loanData.loanAmount}
-                  onChange={(e) => setLoanData({ ...loanData, loanAmount: Number(e.target.value) })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  5000000
-                </div>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">Interest Rate (%)</label>
-              {isProUser ? (
-                <input
-                  type="number" step="0.1"
-                  value={loanData.interestRate}
-                  onChange={(e) => setLoanData({ ...loanData, interestRate: Number(e.target.value) })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  8.5
-                </div>
-              )}
-            </div>
-            <div className="space-y-1.5">
-              <label className="text-[10px] uppercase text-neutral-500 font-semibold tracking-wider">Tenure (Years)</label>
-              {isProUser ? (
-                <input
-                  type="number"
-                  value={loanData.tenureYears}
-                  onChange={(e) => setLoanData({ ...loanData, tenureYears: Number(e.target.value) })}
-                  className="w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 focus:border-neutral-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-neutral-50 border border-neutral-300 rounded-md px-3 py-2.5 text-sm font-semibold text-neutral-900 ${blurClass}`}>
-                  20
-                </div>
-              )}
-            </div>
-          </div>
-        </Card>
+  {/* YOUR FINANCIALS */}
+  <Card title="Your Financials">
 
-        <Card title="Tier-Based Rules">
-          <div className="space-y-4 pt-2">
-            <div className="flex justify-between items-center bg-neutral-50 p-3 rounded-md border border-neutral-200">
-              <span className="text-[11px] uppercase text-neutral-500 font-semibold tracking-wider">Safe Base Rule:</span>
-              <span className={`text-sm font-bold text-green-600 ${blurClass}`}>{safeLimitPercent}%</span>
-            </div>
-            <div className="flex justify-between items-center bg-neutral-50 p-3 rounded-md border border-neutral-200">
-              <span className="text-[11px] uppercase text-neutral-500 font-semibold tracking-wider">Bank Max Limit:</span>
-              <span className={`text-sm font-bold text-red-600 ${blurClass}`}>{bankMaxLimitPercent}%</span>
-            </div>
-            <div className="pt-2 border-t border-neutral-200">
-              <p className="text-[11px] text-neutral-500 leading-relaxed italic">
-                Targets are calculated dynamically based on your income bracket and city living costs.
-              </p>
-            </div>
+    <div className="space-y-4">
+
+      <EditableRangeField
+        label="Monthly In-Hand Income"
+        value={loanData.monthlyIncome}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            monthlyIncome: val,
+          })
+        }
+        min={10000}
+        max={1000000}
+        step={5000}
+        format="currency"
+        disabled={!isProUser}
+      />
+
+      <EditableRangeField
+        label="Existing Monthly EMIs"
+        value={loanData.existingEmis}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            existingEmis: val,
+          })
+        }
+        min={0}
+        max={500000}
+        step={1000}
+        format="currency"
+        disabled={!isProUser}
+      />
+
+      {/* CITY TYPE */}
+      <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+        <p className="text-[12px] text-gray-500 font-medium mb-3">
+          City Type
+        </p>
+
+        {isProUser ? (
+
+          <select
+            value={loanData.city}
+            onChange={(e) =>
+              setLoanData({
+                ...loanData,
+                city: e.target.value,
+              })
+            }
+            className="
+              w-full
+              h-12
+              rounded-2xl
+              border border-[#d9e2f2]
+              px-4
+              text-[14px]
+              font-bold
+              text-[#081c4b]
+              outline-none
+              focus:border-blue-500
+            "
+          >
+            <option value="Metro">
+              Metro / Tier 1
+            </option>
+
+            <option value="Non-Metro">
+              Non-Metro / Tier 2+
+            </option>
+
+          </select>
+
+        ) : (
+
+          <div
+            className={`
+              h-12 rounded-2xl
+              border border-[#edf1f7]
+              px-4
+              flex items-center
+              text-[14px]
+              font-bold
+              text-[#081c4b]
+              bg-[#f8faff]
+              ${blurClass}
+            `}
+          >
+            Metro / Tier 1
           </div>
-        </Card>
+
+        )}
+
+        <p className="text-[11px] text-gray-500 mt-3 leading-5">
+          {loanData.city === "Metro"
+            ? "Higher living costs. Extra safety buffer applied."
+            : "Standard cost of living. Normal safety calculation applied."}
+        </p>
+
       </div>
+
+    </div>
+
+  </Card>
+
+  {/* LOAN PARAMETERS */}
+  <Card title="Loan Parameters">
+
+    <div className="space-y-4">
+
+      <EditableRangeField
+        label="Proposed Loan Amount"
+        value={loanData.loanAmount}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            loanAmount: val,
+          })
+        }
+        min={100000}
+        max={10000000}
+        step={100000}
+        format="currency"
+        disabled={!isProUser}
+      />
+
+      <EditableRangeField
+        label="Interest Rate"
+        value={loanData.interestRate}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            interestRate: val,
+          })
+        }
+        min={1}
+        max={15}
+        step={0.1}
+        format="percent"
+        disabled={!isProUser}
+      />
+
+      <EditableRangeField
+        label="Loan Tenure"
+        value={loanData.tenureYears}
+        onChange={(val) =>
+          setLoanData({
+            ...loanData,
+            tenureYears: val,
+          })
+        }
+        min={1}
+        max={30}
+        step={1}
+        format="year"
+        disabled={!isProUser}
+      />
+
+    </div>
+
+  </Card>
+
+  {/* TIER RULES */}
+  <Card title="Tier-Based Rules">
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+      <div className="bg-green-50 border border-green-200 rounded-[18px] p-4">
+
+        <div className="text-[11px] uppercase font-black tracking-wider text-green-700">
+          Safe Limit
+        </div>
+
+        <div className={`text-[30px] font-black text-[#081c4b] mt-2 ${blurClass}`}>
+          {safeLimitPercent}%
+        </div>
+
+        <p className="text-[11px] text-gray-600 mt-2">
+          Recommended safe EMI ratio.
+        </p>
+
+      </div>
+
+      <div className="bg-red-50 border border-red-200 rounded-[18px] p-4">
+
+        <div className="text-[11px] uppercase font-black tracking-wider text-red-700">
+          Bank Ceiling
+        </div>
+
+        <div className={`text-[30px] font-black text-[#081c4b] mt-2 ${blurClass}`}>
+          {bankMaxLimitPercent}%
+        </div>
+
+        <p className="text-[11px] text-gray-600 mt-2">
+          Maximum approval threshold.
+        </p>
+
+      </div>
+
+    </div>
+
+  </Card>
+
+</div>
 
       {/* RESULTS DISPLAY */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -343,6 +429,202 @@ export default function SafetyEngineCalculator() {
             </div>
           </div>
         </Card>
+      </div>
+
+    </div>
+    
+  );
+  
+}
+
+  function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  disabled = false,
+}) {
+
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${Number(value).toFixed(1)}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+
+    let finalValue = parseFloat(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="flex-1 min-w-0">
+
+          <p className="text-[12px] text-gray-500 font-medium">
+            {label}
+          </p>
+
+          {!editing ? (
+
+            <h3 className="text-[30px] leading-none font-black text-[#081c4b] mt-3 tracking-[-1px]">
+              {displayValue()}
+            </h3>
+
+          ) : (
+
+            <div className="flex gap-2 mt-3">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                disabled={disabled}
+                onChange={(e) =>
+                  setTempValue(
+                    e.target.value
+                  )
+                }
+                className="
+                  flex-1
+                  h-11
+                  rounded-2xl
+                  border border-[#d9e2f2]
+                  px-4
+                  text-[15px]
+                  font-bold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-11
+                  px-4
+                  rounded-2xl
+                  bg-[#001B5E]
+                  text-white
+                  text-sm
+                  font-bold
+                "
+              >
+                Save
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+        {!editing && (
+
+          <button
+            disabled={disabled}
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-10 h-10
+              rounded-2xl
+              bg-[#f4f7fd]
+              border border-[#edf1f7]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+
+        )}
+
+      </div>
+
+      <div className="mt-5">
+
+        <input
+          type="range"
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+          onChange={(e) =>
+            onChange(
+              parseFloat(e.target.value)
+            )
+          }
+          className="
+            w-full
+            h-2
+            accent-[#2563eb]
+            cursor-pointer
+          "
+        />
+
+        <div className="flex justify-between mt-2">
+
+          <span className="text-[11px] text-gray-400">
+            {min}
+          </span>
+
+          <span className="text-[11px] text-gray-400">
+            {max}
+          </span>
+
+        </div>
+
       </div>
 
     </div>
