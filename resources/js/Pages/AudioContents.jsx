@@ -30,7 +30,6 @@ export default function AudioContents() {
     const [loading, setLoading] = useState(true);
     const [playingId, setPlayingId] = useState(null);
 
-
     useEffect(() => {
         if (currentAudio && isPlaying) {
             setPlayingId(currentAudio.id);
@@ -83,9 +82,7 @@ export default function AudioContents() {
         0
     );
 
-
     const navigateToAudioPlayer = () => {
-
         router.visit('/audio-player', {
             preserveState: true,
             preserveScroll: true,
@@ -100,15 +97,20 @@ export default function AudioContents() {
     return (
         <AppLayout showTopNav={false} showBottomNav={false}>
             <div className="min-h-screen bg-gray-100 px-4 py-5 pb-28 ">
-                {/* BACK */}
                 <button
-                    onClick={() => window.history.back()}
+                    onClick={() => {
+                        // Audio band karo
+                        if (window.globalAudioElement) {
+                            window.globalAudioElement.pause();
+                        }
+                        // Back jao
+                        window.history.back();
+                    }}
                     className="mb-4 text-gray-700 mt-4"
                 >
                     <FaArrowLeft size={18} />
                 </button>
 
-                {/* LOADING */}
                 {loading && (
                     <div className="animate-pulse space-y-4">
                         <div className="bg-gray-200 w-full h-40 rounded-2xl"></div>
@@ -130,7 +132,6 @@ export default function AudioContents() {
                     </div>
                 )}
 
-                {/* CONTENT */}
                 {!loading && (
                     <>
                         {module && (
@@ -226,7 +227,6 @@ export default function AudioContents() {
                     </>
                 )}
 
-                {/* ✅ MINI PLAYER */}
                 {currentAudio && (
                     <div
                         onClick={navigateToAudioPlayer}
