@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useRef, useCallback, useEffect } f
 
 const GlobalAudioContext = createContext(null);
 
-
 let globalAudioElement = null;
 let globalAudioState = {
     currentAudio: null,
@@ -13,7 +12,6 @@ let globalAudioState = {
     duration: 0,
     progress: 0,
 };
-
 
 const loadSavedState = () => {
     try {
@@ -26,7 +24,6 @@ const loadSavedState = () => {
         console.error("Error loading audio state:", err);
     }
 };
-
 
 const saveState = () => {
     try {
@@ -42,10 +39,36 @@ const saveState = () => {
     }
 };
 
-
 if (typeof window !== "undefined") {
     loadSavedState();
 }
+
+const updateMediaSession = (audioData) => {
+    if (typeof window !== "undefined" && "mediaSession" in navigator && audioData) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: audioData.title || "Audio Track",
+            artist: "QuickHomeLoan",
+            album: "Learning Modules",
+            artwork: [
+                {
+                    src: audioData.image_url || "/logo.png",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+                {
+                    src: audioData.image_url || "/logo.png",
+                    sizes: "256x256",
+                    type: "image/png",
+                },
+                {
+                    src: audioData.image_url || "/logo.png",
+                    sizes: "128x128",
+                    type: "image/png",
+                },
+            ],
+        });
+    }
+};
 
 export function GlobalAudioProvider({ children }) {
     const [currentAudio, setCurrentAudio] = useState(globalAudioState.currentAudio);
@@ -57,12 +80,68 @@ export function GlobalAudioProvider({ children }) {
     const [progress, setProgress] = useState(0);
     const [isInitialized, setIsInitialized] = useState(false);
 
+    const handleNext = useCallback(() => {
+        if (globalAudioState.audioList.length === 0) return;
+        const newIndex = globalAudioState.currentIndex + 1;
+        if (newIndex >= globalAudioState.audioList.length) return;
+
+        const nextAudio = globalAudioState.audioList[newIndex];
+        playAudio(nextAudio, globalAudioState.audioList, newIndex);
+    }, []);
+
+    const handlePrev = useCallback(() => {
+        if (globalAudioState.audioList.length === 0) return;
+        const newIndex = Math.max(0, globalAudioState.currentIndex - 1);
+        const prevAudio = globalAudioState.audioList[newIndex];
+        playAudio(prevAudio, globalAudioState.audioList, newIndex);
+    }, []);
+
+    const setupMediaSessionHandlers = useCallback((audioElement) => {
+        if (typeof window !== "undefined" && "mediaSession" in navigator) {
+            navigator.mediaSession.setActionHandler("play", async () => {
+                if (audioElement) {
+                    await audioElement.play();
+                }
+            });
+
+            navigator.mediaSession.setActionHandler("pause", () => {
+                if (audioElement) {
+                    audioElement.pause();
+                }
+            });
+
+            navigator.mediaSession.setActionHandler("previoustrack", () => {
+                handlePrev();
+            });
+
+            navigator.mediaSession.setActionHandler("nexttrack", () => {
+                handleNext();
+            });
+
+            navigator.mediaSession.setActionHandler("seekbackward", () => {
+                if (audioElement) {
+                    audioElement.currentTime = Math.max(0, audioElement.currentTime - 10);
+                }
+            });
+
+            navigator.mediaSession.setActionHandler("seekforward", () => {
+                if (audioElement && audioElement.duration) {
+                    audioElement.currentTime = Math.min(audioElement.duration, audioElement.currentTime + 10);
+                }
+            });
+
+            navigator.mediaSession.setActionHandler("seekto", (details) => {
+                if (audioElement && details.seekTime !== undefined) {
+                    audioElement.currentTime = details.seekTime;
+                }
+            });
+        }
+    }, [handlePrev, handleNext]);
 
     const getAudioElement = useCallback(() => {
         if (!globalAudioElement && typeof window !== "undefined") {
             globalAudioElement = new Audio();
-
-
+             window.globalAudioElement = globalAudioElement;
             globalAudioElement.addEventListener("timeupdate", () => {
                 const time = globalAudioElement.currentTime;
                 globalAudioState.currentTime = time;
@@ -110,6 +189,7 @@ export function GlobalAudioProvider({ children }) {
                     setCurrentAudio(nextAudio);
                     globalAudioElement.src = nextAudio.file_url;
                     globalAudioElement.play();
+                    updateMediaSession(nextAudio);
                     saveState();
                 }
             });
@@ -118,16 +198,29 @@ export function GlobalAudioProvider({ children }) {
                 console.error("Audio error:", e);
                 setIsPlaying(false);
             });
+
+            setupMediaSessionHandlers(globalAudioElement);
         }
         return globalAudioElement;
-    }, []);
-
+    }, [setupMediaSessionHandlers]);
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+            console.log("=== MEDIA SESSION DEBUG ===");
+            console.log("User Agent:", navigator.userAgent);
+            console.log("Media Session exists:", 'mediaSession' in navigator);
+            console.log("Secure Context:", window.isSecureContext);
+            console.log("Protocol:", window.location.protocol);
+            
+            if ('mediaSession' in navigator) {
+                console.log("✅ Media Session API is available!");
+            } else {
+                console.log("❌ Media Session API NOT available - NativePHP WebView limitation");
+            }
+        }
         if (typeof window === "undefined") return;
 
         const audio = getAudioElement();
-
 
         if (globalAudioState.currentAudio?.file_url && !audio.src) {
             audio.src = globalAudioState.currentAudio.file_url;
@@ -135,28 +228,62 @@ export function GlobalAudioProvider({ children }) {
                 audio.currentTime = globalAudioState.currentTime;
             }
 
-
             if (globalAudioState.isPlaying) {
                 audio.play().catch(err => {
                     console.log("Autoplay prevented:", err);
                     setIsPlaying(false);
                 });
             }
+            
+            updateMediaSession(globalAudioState.currentAudio);
         }
 
         setIsInitialized(true);
 
-
         return () => {
-
+            if (typeof window !== "undefined" && "mediaSession" in navigator) {
+                navigator.mediaSession.setActionHandler("play", null);
+                navigator.mediaSession.setActionHandler("pause", null);
+                navigator.mediaSession.setActionHandler("previoustrack", null);
+                navigator.mediaSession.setActionHandler("nexttrack", null);
+                navigator.mediaSession.setActionHandler("seekbackward", null);
+                navigator.mediaSession.setActionHandler("seekforward", null);
+                navigator.mediaSession.setActionHandler("seekto", null);
+            }
         };
     }, [getAudioElement]);
 
+    useEffect(() => {
+    const stopAudio = () => {
+        if (globalAudioElement && !globalAudioElement.paused) {
+            globalAudioElement.pause();
+            globalAudioState.isPlaying = false;
+            setIsPlaying(false);
+        }
+    };
+
+    const handleBeforeNavigate = () => stopAudio();
+    const handlePageHide = () => stopAudio();
+    const handleVisibilityChange = () => {
+        if (document.hidden) {
+            stopAudio();
+        }
+    };
+    
+    document.addEventListener('inertia:before', handleBeforeNavigate);
+    window.addEventListener('pagehide', handlePageHide);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    
+    return () => {
+        document.removeEventListener('inertia:before', handleBeforeNavigate);
+        window.removeEventListener('pagehide', handlePageHide);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+}, []);
 
     const playAudio = useCallback((audioData, listData = [], index = 0, startTime = 0) => {
         const audio = getAudioElement();
         if (!audio || !audioData?.file_url) return;
-
 
         if (globalAudioState.currentAudio?.id === audioData.id && audio.src) {
             if (!audio.paused) return;
@@ -166,7 +293,6 @@ export function GlobalAudioProvider({ children }) {
             audio.play().catch(err => console.log("Play error:", err));
             return;
         }
-
 
         globalAudioState.currentAudio = audioData;
         globalAudioState.audioList = listData;
@@ -183,6 +309,8 @@ export function GlobalAudioProvider({ children }) {
         audio.src = audioData.file_url;
         audio.load();
 
+        updateMediaSession(audioData);
+
         const onCanPlay = () => {
             if (startTime > 0) {
                 audio.currentTime = startTime;
@@ -195,7 +323,6 @@ export function GlobalAudioProvider({ children }) {
         saveState();
     }, [getAudioElement]);
 
-
     const togglePlay = useCallback(() => {
         const audio = getAudioElement();
         if (!audio || !audio.src) return;
@@ -207,7 +334,6 @@ export function GlobalAudioProvider({ children }) {
         }
     }, [getAudioElement]);
 
-
     const seekTo = useCallback((time) => {
         const audio = getAudioElement();
         if (audio) {
@@ -218,32 +344,19 @@ export function GlobalAudioProvider({ children }) {
         }
     }, [getAudioElement]);
 
-
-    const handleNext = useCallback(() => {
-        if (globalAudioState.audioList.length === 0) return;
-        const newIndex = globalAudioState.currentIndex + 1;
-        if (newIndex >= globalAudioState.audioList.length) return;
-
-        const nextAudio = globalAudioState.audioList[newIndex];
-        playAudio(nextAudio, globalAudioState.audioList, newIndex);
-    }, [playAudio]);
-
-
-    const handlePrev = useCallback(() => {
-        if (globalAudioState.audioList.length === 0) return;
-        const newIndex = Math.max(0, globalAudioState.currentIndex - 1);
-        const prevAudio = globalAudioState.audioList[newIndex];
-        playAudio(prevAudio, globalAudioState.audioList, newIndex);
-    }, [playAudio]);
-
-
     const pauseAudio = useCallback(() => {
         const audio = getAudioElement();
         if (audio && !audio.paused) {
             audio.pause();
         }
     }, [getAudioElement]);
-
+    window.pauseGlobalAudio = () => {
+    if (globalAudioElement && !globalAudioElement.paused) {
+        globalAudioElement.pause();
+        globalAudioState.isPlaying = false;
+        setIsPlaying(false);
+    }
+};
 
     const resumeAudio = useCallback(() => {
         const audio = getAudioElement();

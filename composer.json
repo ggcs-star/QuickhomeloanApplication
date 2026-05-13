@@ -3,6 +3,7 @@
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
+   
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -10,7 +11,7 @@
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^4.3",
-        "nativephp/mobile": "^3.2"
+        "nativephp/mobile": "^3.3"
     },
 
     "require-dev": {
@@ -69,6 +70,6 @@
         },
         "process-timeout": 2000
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

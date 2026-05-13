@@ -30,17 +30,10 @@ return [
     */
 
     'connections' => [
-
-        'mongodb' => [
+   'mongodb' => [
         'driver' => 'mongodb',
-        'host' => env('MONGODB_HOST', '127.0.0.1'),
-        'port' => env('MONGODB_PORT', 27017),
+        'dsn' => env('MONGODB_DSN'),
         'database' => env('MONGODB_DATABASE', 'quickhomeloan'),
-        'username' => env('MONGODB_USERNAME'),
-        'password' => env('MONGODB_PASSWORD'),
-        'options' => [
-            'database' => 'admin'
-        ]
     ],
         'sqlite' => [
             'driver' => 'sqlite',

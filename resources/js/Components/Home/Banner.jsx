@@ -79,6 +79,7 @@ export default function Banner() {
 
     return (
         <section className="w-full px-4">
+        <section className="w-full px-4">
 
             {/* LOADING */}
             {loading && (
@@ -87,6 +88,7 @@ export default function Banner() {
                 </div>
             )}
 
+            {/* BANNERS */}
             {/* BANNERS */}
             {!loading && banners.length > 0 && (
 
@@ -100,6 +102,7 @@ export default function Banner() {
                             w-full
                             block
                             object-contain
+                            rounded-[20px]
                             rounded-[20px]
                         "
                         style={{
@@ -171,10 +174,12 @@ export default function Banner() {
                             <button
                                 key={i}
                                 onClick={() => setCurrent(i)}
+                                onClick={() => setCurrent(i)}
                                 className={`
                                     rounded-full
                                     transition-all
                                     duration-300
+                                    cursor-pointer
                                     cursor-pointer
                                     ${
                                         i === current
@@ -186,6 +191,7 @@ export default function Banner() {
                         ))}
 
                     </div>
+
 
                 </div>
             )}
