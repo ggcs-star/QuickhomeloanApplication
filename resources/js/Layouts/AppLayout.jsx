@@ -14,7 +14,35 @@ export default function AppLayout({
 }) {
   const { user, isProUser, loading } = useAuth();
 
+useEffect(() => {
 
+    if (
+        window.AndroidBridge &&
+        user
+    ) {
+
+        const alreadyRequested =
+            localStorage.getItem(
+                "push_permission_requested"
+            );
+
+        if (!alreadyRequested) {
+
+            console.log(
+                "📢 Requesting notification permission"
+            );
+
+            window.AndroidBridge
+                .enablePushNotifications();
+
+            localStorage.setItem(
+                "push_permission_requested",
+                "true"
+            );
+        }
+    }
+
+}, [user]);
 
 
   if (loading) {
