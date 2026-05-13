@@ -260,3 +260,30 @@ Route::get('/home-loan/details/{slug}', function ($slug) {
         'slug' => $slug
     ]);
 });
+Route::get('/my-posts', function () {
+    return Inertia::render('MyPosts');
+});
+Route::get('/my-comments', function () {
+    return Inertia::render('MyComments');
+});
+Route::get('/payment-history', function () {
+    return Inertia::render('PaymentHistory');
+});
+Route::get(
+    '/saved-discussions',
+    function () {
+        return Inertia::render(
+            'SavedDiscussions'
+        );
+    }
+);
+Route::get('/privacy-policy', function () {
+    return Inertia::render('PrivacyPolicy');
+});
+
+Route::get('/about-us', function () {
+    return Inertia::render('AboutUs');
+});
+Route::get('/help-support', function () {
+    return Inertia::render('HelpSupport');
+});
