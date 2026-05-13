@@ -3,26 +3,22 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Native\Mobile\Facades\PushNotifications;
-use Native\Mobile\Attributes\OnNative;
-use Native\Mobile\Events\PushNotification\TokenGenerated;
 use Illuminate\Support\Facades\Http;
 
 class PushNotificationHandler extends Component
 {
     public function mount()
     {
-
-        PushNotifications::enroll();
+        $this->dispatch('request-notification-permission');
     }
 
-    #[OnNative(TokenGenerated::class)]
-    public function storeToken(string $token)
+    public function saveToken($token)
     {
-        \Log::info('🔥 FCM TOKEN:', ['token' => $token]);
+        \Log::info('FCM Token: ' . $token);
 
         Http::post('https://backend.quickhomeloan.in/public/api/fcm/save-token', [
             'fcm_token' => $token,
+            'device' => 'android'
         ]);
     }
 

@@ -117,13 +117,10 @@ export default function PodcastPage() {
                             >
                                 <div className="relative h-52 bg-gray-900 cursor-pointer" onClick={() => openPlayer(podcast)}>
                                     {getThumbnailUrl(podcast) ? (
-                                        <img 
-                                            src={getThumbnailUrl(podcast)} 
-                                            alt={podcast.title}
+                                       <img
+                                            src={`https://admin.quickhomeloan.in/public/storage/${podcast.thumbnail}`}
                                             className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                e.target.src = "/images/podcast-placeholder.jpg";
-                                            }}
+                                            alt={podcast.title}
                                         />
                                     ) : (
                                         <div className="w-full h-full bg-gradient-to-br from-purple-800 to-indigo-900 flex items-center justify-center">

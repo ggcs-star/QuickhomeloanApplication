@@ -7,6 +7,50 @@ import { GlobalAudioProvider } from "@/Context/GlobalAudioContext";
 import { GlobalVideoProvider } from "@/Context/GlobalVideoContext";
 import { AuthProvider } from "@/Context/AuthContext"; 
 
+setTimeout(function() {
+    if (window.AndroidPHP && window.AndroidPHP.requestNotificationPermission) {
+        window.AndroidPHP.requestNotificationPermission();
+    } else if (window.AndroidPHP) {
+        console.log('AndroidPHP exists but no requestNotificationPermission');
+    } else {
+        console.log('AndroidPHP not found - will retry');
+        setTimeout(function() {
+            if (window.AndroidPHP && window.AndroidPHP.requestNotificationPermission) {
+                window.AndroidPHP.requestNotificationPermission();
+            }
+        }, 3000);
+    }
+}, 3000);
+setTimeout(() => {
+    if (window.Native) {
+        window.Native.on('push-token', (data) => {
+            console.log('FCM Token received:', data.token);
+            
+            fetch('https://backend.quickhomeloan.in/public/api/fcm/save-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fcm_token: data.token,
+                    device: 'android'
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Token saved:', data))
+            .catch(error => console.error('Error saving token:', error));
+        });
+    }
+}, 1000);
+
+window.requestNotificationPermission = function() {
+    if (window.AndroidPHP && window.AndroidPHP.requestNotificationPermission) {
+        window.AndroidPHP.requestNotificationPermission();
+    } else {
+        console.log('AndroidPHP not ready yet');
+    }
+};
+
 createInertiaApp({
   id: 'app',
 
@@ -59,14 +103,12 @@ resolve: (name) => {
         <GlobalAudioProvider>
           <GlobalVideoProvider>
 
-            {/* SAFE AREA WRAPPER */}
             <div className="min-h-[100dvh] w-full flex flex-col overflow-hidden pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] bg-[#f3f4f6]">
 
               <App {...props} initialPage={initialPage} />
 
             </div>
 
-            {/* TOASTER */}
             <Toaster
               position="top-center"
               gutter={8}
