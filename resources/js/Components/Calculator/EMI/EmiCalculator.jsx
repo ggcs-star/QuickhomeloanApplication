@@ -1,17 +1,13 @@
   import { useState } from "react";
-  import {
-    ArrowLeft,
-    RotateCcw,
-    BookOpenText,
-    Home,
-    Car,
-    UserRound,
-    Pencil,
-    WalletCards,
-    BarChart3,
-    ReceiptText,
-  } from "lucide-react";
-
+import {
+  Home,
+  Car,
+  UserRound,
+  Pencil,
+  WalletCards,
+  BarChart3,
+  ReceiptText,
+} from "lucide-react";
   import InsightsLayout from "@/Components/Common/InsightsLayout";
   import { EMI_INSIGHTS } from "./emiInsightsData";
 
@@ -91,19 +87,19 @@
     const totalInterest =
       totalPayment - amount;
 
-    return (
-      <section className="bg-[#f5f7fd] min-h-screen pb-24 max-w-[430px] mx-auto">
+return (
+  <section className="pb-24">
 
   
         {/* LOAN TYPES */}
-        <div className="px-3 mt-3">
+        {/* <div className="px-3 mt-3">
 
           <LoanTypeSelector
             loanType={loanType}
             onChange={handleLoanTypeChange}
           />
 
-        </div>
+        </div> */}
 
         {/* HERO CARD */}
         <div className="px-3 mt-3">
@@ -211,8 +207,8 @@
 
         </div>
 
-      </section>
-    );
+</section>
+);
   }
 function InputField({
   label,
@@ -436,8 +432,7 @@ function InputField({
     totalInterest,
   }) {
 
-    const radius = 58;
-
+const radius = 72;
     const circumference =
       2 * Math.PI * radius;
 

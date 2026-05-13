@@ -112,53 +112,68 @@ export default function InterestTruthCalculator() {
           <div className={`text-xl font-bold text-red-600 ${blurClass}`}>{formatCurrency(totalInterest)}</div>
         </div>
       </div>
+{/* INPUT SECTION */}
+<div className="space-y-4">
+  <Card title="Input Parameters">
+    <div className="space-y-5">
 
-      {/* INPUT SECTION */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card title="Input Parameters" className="md:col-span-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Loan Amount (Principal) (₹)</label>
-              {isProUser ? (
-                <input 
-                  type="number" step="100000"
-                  value={loanData.loanAmount} 
-                  onChange={(e) => handleInputChange('loanAmount', e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>5000000</div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Tenure (Years)</label>
-              {isProUser ? (
-                <input 
-                  type="number" 
-                  value={loanData.tenureYears} 
-                  onChange={(e) => handleInputChange('tenureYears', e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>20</div>
-              )}
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">Annual Interest Rate (%)</label>
-              {isProUser ? (
-                <input 
-                  type="number" step="0.1"
-                  value={loanData.interestRate} 
-                  onChange={(e) => handleInputChange('interestRate', e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none transition-colors"
-                />
-              ) : (
-                <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>8.5</div>
-              )}
-            </div>
-          </div>
-        </Card>
+      {/* LOAN AMOUNT */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
+        <EditableRangeField
+          label="Loan Amount"
+          value={loanData.loanAmount}
+          onChange={(val) =>
+            handleInputChange(
+              "loanAmount",
+              val
+            )
+          }
+          min={100000}
+          max={10000000}
+          step={100000}
+          format="currency"
+        />
       </div>
+
+      {/* TENURE */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
+        <EditableRangeField
+          label="Tenure"
+          value={loanData.tenureYears}
+          onChange={(val) =>
+            handleInputChange(
+              "tenureYears",
+              val
+            )
+          }
+          min={1}
+          max={30}
+          step={1}
+          format="year"
+        />
+      </div>
+
+      {/* INTEREST RATE */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-md">
+        <EditableRangeField
+          label="Annual Interest Rate"
+          value={loanData.interestRate}
+          onChange={(val) =>
+            handleInputChange(
+              "interestRate",
+              val
+            )
+          }
+          min={1}
+          max={15}
+          step={0.1}
+          format="percent"
+        />
+      </div>
+
+    </div>
+  </Card>
+</div>
 
       <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
         <Info className="text-red-500 shrink-0 mt-0.5" size={20} />
@@ -250,6 +265,153 @@ export default function InterestTruthCalculator() {
           </div>
         </Card>
       </div>
+
+    </div>
+  );
+}
+
+function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+}) {
+  const [editing, setEditing] = useState(false);
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  const displayValue = () => {
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${value}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+    let finalValue = Number(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white rounded-[14px] px-3 py-[10px] shadow-sm border border-[#edf1f7]">
+
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="min-w-0 flex-1">
+
+          <p className="text-[11px] text-gray-500">
+            {label}
+          </p>
+
+          {!editing ? (
+            <h3 className="text-[16px] leading-tight font-black text-[#081c4b] mt-2 break-words">
+              {displayValue()}
+            </h3>
+          ) : (
+            <div className="flex items-center gap-2 mt-2">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                onChange={(e) =>
+                  setTempValue(e.target.value)
+                }
+                className="
+                  h-9
+                  flex-1
+                  rounded-xl
+                  border border-[#d9e2f2]
+                  px-3
+                  text-[14px]
+                  font-semibold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-9 px-3
+                  rounded-xl
+                  bg-[#001B5E]
+                  text-white
+                  text-[12px]
+                  font-semibold
+                "
+              >
+                OK
+              </button>
+
+            </div>
+          )}
+
+        </div>
+
+        {!editing && (
+          <button
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-8 h-8
+              rounded-xl
+              bg-[#f5f7fd]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+        )}
+
+      </div>
+
+      <input
+        type="range"
+        value={value}
+        min={min}
+        max={max}
+        step={step}
+        onChange={(e) =>
+          onChange(Number(e.target.value))
+        }
+        className="w-full mt-3 accent-blue-600"
+      />
 
     </div>
   );

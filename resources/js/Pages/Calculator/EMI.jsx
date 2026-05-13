@@ -8,13 +8,13 @@ import GuideTab from "@/Components/Calculator/EMI/GuideTab";
 export default function EMI() {
   return (
     <AppLayout showTopNav={false} showBottomNav={false} showFooter={false}>
-      
-      <CalculatorLayout
-        title="EMI Calculator"
-        CalculateComponent={EmiCalculator}
-        InsightsComponent={InsightsTab}
-        GuideComponent={GuideTab}
-      />
+    <CalculatorLayout
+  title="EMI Calculator"
+  subtitle="Plan your loan repayments smartly"
+  CalculateComponent={EmiCalculator}
+  InsightsComponent={InsightsTab}
+  GuideComponent={GuideTab}
+/>
 
     </AppLayout>
   );

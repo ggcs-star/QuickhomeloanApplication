@@ -199,109 +199,265 @@ export default function OfferDecoderCalculator() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* INPUT SECTION */}
         <div className="space-y-6 md:col-span-1">
-          <Card title="Basic Information">
-            <div className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase text-gray-500 font-bold">Lender Type</label>
-                {isProUser ? (
-                  <select 
-                    value={offerDetails.source}
-                    onChange={(e) => handleOfferChange('source', e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none"
-                  >
-                    <option value="GOVT_BANK">GOVT BANK (SBI, BoB, etc.)</option>
-                    <option value="PRIVATE_BANK">Private Bank (HDFC, ICICI, etc.)</option>
-                    <option value="NBFC">NBFC (Bajaj, LIC HFL, etc.)</option>
-                  </select>
-                ) : (
-                  <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>GOVT BANK</div>
+       <Card title="Basic Information">
+
+  <div className="space-y-4">
+
+    {/* LENDER TYPE */}
+    <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+      <p className="text-[12px] text-gray-500 font-medium mb-3">
+        Lender Type
+      </p>
+
+      {isProUser ? (
+
+        <select
+          value={offerDetails.source}
+          onChange={(e) =>
+            handleOfferChange(
+              "source",
+              e.target.value
+            )
+          }
+          className="
+            w-full
+            h-12
+            rounded-2xl
+            border border-[#d9e2f2]
+            px-4
+            text-[14px]
+            font-bold
+            text-[#081c4b]
+            outline-none
+            focus:border-blue-500
+          "
+        >
+          <option value="GOVT_BANK">
+            GOVT BANK
+          </option>
+
+          <option value="PRIVATE_BANK">
+            PRIVATE BANK
+          </option>
+
+          <option value="NBFC">
+            NBFC
+          </option>
+
+        </select>
+
+      ) : (
+
+        <div
+          className={`
+            h-12 rounded-2xl
+            border border-[#edf1f7]
+            px-4
+            flex items-center
+            text-[14px]
+            font-bold
+            text-[#081c4b]
+            bg-[#f8faff]
+            ${blurClass}
+          `}
+        >
+          GOVT BANK
+        </div>
+
+      )}
+
+    </div>
+
+    {/* BIAS CARD */}
+    {offerDetails.source && (
+
+      <div
+        className={`
+          p-4 rounded-[18px] border
+          ${
+            offerDetails.source ===
+            "GOVT_BANK"
+              ? "bg-green-50 border-green-200"
+              : offerDetails.source ===
+                "PRIVATE_BANK"
+              ? "bg-yellow-50 border-yellow-200"
+              : "bg-red-50 border-red-200"
+          }
+        `}
+      >
+
+        <div className="flex justify-between items-start gap-3">
+
+          <div>
+
+            <div className="flex items-center gap-2">
+
+              <ShieldAlert
+                size={16}
+                className={
+                  offerDetails.source ===
+                  "GOVT_BANK"
+                    ? "text-green-600"
+                    : offerDetails.source ===
+                      "PRIVATE_BANK"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+                }
+              />
+
+              <span className="text-[11px] font-black uppercase tracking-wider text-gray-900">
+                {offerDetails.source.replace(
+                  "_",
+                  " "
                 )}
-              </div>
+                {" "}Bias Profile
+              </span>
 
-              {offerDetails.source && (
-                <div className={`p-3 rounded-lg border ${offerDetails.source === 'GOVT_BANK' ? 'bg-green-50 border-green-200' : offerDetails.source === 'PRIVATE_BANK' ? 'bg-yellow-50 border-yellow-200' : 'bg-red-50 border-red-200'}`}>
-                  <div className="flex justify-between items-center mb-1">
-                    <div className="flex items-center gap-1.5">
-                      <ShieldAlert size={14} className={offerDetails.source === 'GOVT_BANK' ? 'text-green-600' : offerDetails.source === 'PRIVATE_BANK' ? 'text-yellow-600' : 'text-red-600'} />
-                      <span className="text-[10px] font-bold text-gray-900 uppercase tracking-widest">{offerDetails.source.replace('_', ' ')} Bias Profile</span>
-                    </div>
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white border">
-                      {sourceBiases[offerDetails.source].score}/100 Transparency
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-gray-600 mt-1 italic leading-tight">
-                    {sourceBiases[offerDetails.source].bias}
-                  </p>
-                </div>
-              )}
-
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase text-gray-500 font-bold">Loan Amount (₹)</label>
-                {isProUser ? (
-                  <input type="number" value={loanData.loanAmount} onChange={(e) => handleLoanChange('loanAmount', e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none" />
-                ) : (
-                  <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>5000000</div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase text-gray-500 font-bold">Interest Rate (%)</label>
-                  {isProUser ? (
-                    <input type="number" step="0.01" value={offerDetails.quotedRate} onChange={(e) => handleOfferChange('quotedRate', e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none" />
-                  ) : (
-                    <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>8.4</div>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase text-gray-500 font-bold">Tenure (Years)</label>
-                  {isProUser ? (
-                    <input type="number" value={loanData.tenureYears} onChange={(e) => handleLoanChange('tenureYears', e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none" />
-                  ) : (
-                    <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>20</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase text-gray-500 font-bold">CIBIL Score</label>
-                  {isProUser ? (
-                    <input type="number" value={offerDetails.cibilScore} onChange={(e) => handleOfferChange('cibilScore', e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none" />
-                  ) : (
-                    <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>750</div>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <label className="text-[10px] uppercase text-gray-500 font-bold">Processing Fee</label>
-                  {isProUser ? (
-                    <input type="number" value={offerDetails.processingFee} onChange={(e) => handleOfferChange('processingFee', e.target.value)}
-                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 focus:border-blue-500 outline-none" />
-                  ) : (
-                    <div className={`w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 ${blurClass}`}>25000</div>
-                  )}
-                </div>
-              </div>
-
-              <div className="space-y-2 pt-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={offerDetails.isBuilderTieUp} onChange={(e) => handleOfferChange('isBuilderTieUp', e.target.checked)}
-                    className="w-3 h-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500" disabled={!isProUser} />
-                  <span className="text-[11px] text-gray-600 font-semibold">Builder Tie-up Offer</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={offerDetails.hasBundledInsurance} onChange={(e) => handleOfferChange('hasBundledInsurance', e.target.checked)}
-                    className="w-3 h-3 rounded border-gray-300 text-blue-600 focus:ring-blue-500" disabled={!isProUser} />
-                  <span className="text-[11px] text-gray-600 font-semibold">Bundled Insurance Added</span>
-                </label>
-              </div>
             </div>
-          </Card>
 
+            <p className="text-[11px] text-gray-600 mt-2 leading-5">
+              {
+                sourceBiases[
+                  offerDetails.source
+                ].bias
+              }
+            </p>
+
+          </div>
+
+          <div className="bg-white border border-white/50 rounded-xl px-2 py-1 text-[10px] font-black text-[#081c4b]">
+            {
+              sourceBiases[
+                offerDetails.source
+              ].score
+            }
+            /100
+          </div>
+
+        </div>
+
+      </div>
+
+    )}
+
+    {/* MODERN INPUTS */}
+    <EditableRangeField
+      label="Loan Amount"
+      value={loanData.loanAmount}
+      onChange={(val) =>
+        handleLoanChange(
+          "loanAmount",
+          val
+        )
+      }
+      min={100000}
+      max={10000000}
+      step={100000}
+      format="currency"
+      disabled={!isProUser}
+    />
+
+    <EditableRangeField
+      label="Interest Rate"
+      value={offerDetails.quotedRate}
+      onChange={(val) =>
+        handleOfferChange(
+          "quotedRate",
+          val
+        )
+      }
+      min={1}
+      max={15}
+      step={0.1}
+      format="percent"
+      disabled={!isProUser}
+    />
+
+    <EditableRangeField
+      label="Loan Tenure"
+      value={loanData.tenureYears}
+      onChange={(val) =>
+        handleLoanChange(
+          "tenureYears",
+          val
+        )
+      }
+      min={1}
+      max={30}
+      step={1}
+      format="year"
+      disabled={!isProUser}
+    />
+
+    {/* SMALL INPUTS */}
+    <div className="grid grid-cols-2 gap-3">
+
+      <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+        <p className="text-[11px] text-gray-500 font-medium mb-2">
+          CIBIL Score
+        </p>
+
+        <input
+          type="number"
+          value={offerDetails.cibilScore}
+          disabled={!isProUser}
+          onChange={(e) =>
+            handleOfferChange(
+              "cibilScore",
+              e.target.value
+            )
+          }
+          className="
+            w-full
+            h-11
+            rounded-2xl
+            border border-[#d9e2f2]
+            px-4
+            text-[14px]
+            font-bold
+            outline-none
+          "
+        />
+
+      </div>
+
+      <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+        <p className="text-[11px] text-gray-500 font-medium mb-2">
+          Processing Fee
+        </p>
+
+        <input
+          type="number"
+          value={offerDetails.processingFee}
+          disabled={!isProUser}
+          onChange={(e) =>
+            handleOfferChange(
+              "processingFee",
+              e.target.value
+            )
+          }
+          className="
+            w-full
+            h-11
+            rounded-2xl
+            border border-[#d9e2f2]
+            px-4
+            text-[14px]
+            font-bold
+            outline-none
+          "
+        />
+
+      </div>
+
+    </div>
+
+  </div>
+
+</Card>
           <button
             className={`w-full py-3 rounded-xl flex items-center justify-center gap-2 transition-all font-semibold ${isProUser ? 'bg-[#1f2a3c] text-white hover:bg-[#2a3a4f]' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}
             disabled={!isProUser}
@@ -440,6 +596,202 @@ export default function OfferDecoderCalculator() {
 
         </div>
       </div>
+    </div>
+  );
+}
+
+  function EditableRangeField({
+  label,
+  value,
+  onChange,
+  min,
+  max,
+  step,
+  format = "number",
+  disabled = false,
+}) {
+
+  const [editing, setEditing] =
+    useState(false);
+
+  const [tempValue, setTempValue] =
+    useState(value);
+
+  useEffect(() => {
+    setTempValue(value);
+  }, [value]);
+
+  const displayValue = () => {
+
+    if (format === "currency") {
+      return `₹${Number(value).toLocaleString(
+        "en-IN"
+      )}`;
+    }
+
+    if (format === "percent") {
+      return `${Number(value).toFixed(1)}%`;
+    }
+
+    if (format === "year") {
+      return `${value} Years`;
+    }
+
+    return value;
+  };
+
+  const saveValue = () => {
+
+    let finalValue = parseFloat(tempValue);
+
+    if (isNaN(finalValue)) {
+      finalValue = min;
+    }
+
+    if (finalValue < min) {
+      finalValue = min;
+    }
+
+    if (finalValue > max) {
+      finalValue = max;
+    }
+
+    onChange(finalValue);
+
+    setEditing(false);
+  };
+
+  return (
+    <div className="bg-white border border-[#e9edf5] rounded-[18px] p-4">
+
+      {/* TOP */}
+      <div className="flex items-start justify-between gap-3">
+
+        <div className="flex-1 min-w-0">
+
+          <p className="text-[12px] text-gray-500 font-medium">
+            {label}
+          </p>
+
+          {!editing ? (
+
+            <h3 className="text-[30px] leading-none font-black text-[#081c4b] mt-3 tracking-[-1px]">
+              {displayValue()}
+            </h3>
+
+          ) : (
+
+            <div className="flex gap-2 mt-3">
+
+              <input
+                type="number"
+                value={tempValue}
+                min={min}
+                max={max}
+                step={step}
+                autoFocus
+                disabled={disabled}
+                onChange={(e) =>
+                  setTempValue(
+                    e.target.value
+                  )
+                }
+                className="
+                  flex-1
+                  h-11
+                  rounded-2xl
+                  border border-[#d9e2f2]
+                  px-4
+                  text-[15px]
+                  font-bold
+                  outline-none
+                  focus:border-blue-500
+                "
+              />
+
+              <button
+                onClick={saveValue}
+                className="
+                  h-11
+                  px-4
+                  rounded-2xl
+                  bg-[#001B5E]
+                  text-white
+                  text-sm
+                  font-bold
+                "
+              >
+                Save
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
+
+        {!editing && (
+
+          <button
+            disabled={disabled}
+            onClick={() => {
+              setEditing(true);
+              setTempValue(value);
+            }}
+            className="
+              w-10 h-10
+              rounded-2xl
+              bg-[#f4f7fd]
+              border border-[#edf1f7]
+              flex items-center justify-center
+              text-gray-500
+              shrink-0
+            "
+          >
+            ✎
+          </button>
+
+        )}
+
+      </div>
+
+      {/* SLIDER */}
+      <div className="mt-5">
+
+        <input
+          type="range"
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          disabled={disabled}
+          onChange={(e) =>
+            onChange(
+              parseFloat(e.target.value)
+            )
+          }
+          className="
+            w-full
+            h-2
+            accent-[#2563eb]
+            cursor-pointer
+          "
+        />
+
+        <div className="flex justify-between mt-2">
+
+          <span className="text-[11px] text-gray-400">
+            {min}
+          </span>
+
+          <span className="text-[11px] text-gray-400">
+            {max}
+          </span>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }
