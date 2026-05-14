@@ -47,35 +47,30 @@ function Calendar() {
         }
     };
 
-    /* ---------- FILTER EVENTS LOCALLY (MULTI-DAY SUPPORT) ---------- */
     const events = useMemo(() => {
         const formatted = {};
 
         allEvents.forEach((item) => {
             if (!item.start_datetime) return;
 
-            // Start aur End dates nikalo
-            const startDate = new Date(item.start_datetime);
-            // Agar end date nahi hai (jaise task me), toh usko start date ke barabar maan lo
-            const endDate = item.end_datetime ? new Date(item.end_datetime) : startDate;
+            const startDateStr = item.start_datetime.split(" ")[0];
+            const endDateStr = item.end_datetime ? item.end_datetime.split(" ")[0] : startDateStr;
+            
+            const [startYear, startMonth, startDay] = startDateStr.split("-").map(Number);
+            const [endYear, endMonth, endDay] = endDateStr.split("-").map(Number);
+            
+            let currentDay = new Date(startYear, startMonth - 1, startDay);
+            const lastDay = new Date(endYear, endMonth - 1, endDay);
 
-            // Dates ko normalize karo (taaki sirf date compare ho, time nahi)
-            let currentDay = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-            const lastDay = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-
-            // Loop chalao: Start date se le kar End date tak
             while (currentDay <= lastDay) {
-                // Agar ye din current view wale month/year me aata hai, toh isko calendar me daalo
                 if (currentDay.getMonth() === month && currentDay.getFullYear() === year) {
                     const day = currentDay.getDate();
                     if (!formatted[day]) formatted[day] = [];
                     
-                    // Duplicate check (taaki ek hi event ek din me do baar na dikhe)
                     if (!formatted[day].some(e => e.id === item.id)) {
                         formatted[day].push(item);
                     }
                 }
-                // Next day par jao
                 currentDay.setDate(currentDay.getDate() + 1);
             }
         });
@@ -126,15 +121,19 @@ function Calendar() {
 
     const selectedEvents = selected ? events[selected] || [] : [];
 
-    // Helper function to format time - FIXED (No extra offset)
 const formatEventTime = (event) => {
     if (event.is_all_day) return "All Day";
 
     const formatTime = (dateString) => {
         if (!dateString) return "";
-        const date = new Date(dateString);
-        if (isNaN(date.getTime())) return "";
-        return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        const timePart = dateString.split(" ")[1];
+        if (!timePart) return "";
+        const [hours, minutes] = timePart.split(":");
+        let h = parseInt(hours);
+        const ampm = h >= 12 ? "PM" : "AM";
+        h = h % 12;
+        if (h === 0) h = 12;
+        return `${h}:${minutes} ${ampm}`;
     };
 
     const start = formatTime(event.start_datetime);
@@ -145,11 +144,13 @@ const formatEventTime = (event) => {
     if (start) return start;
     return "";
 };
-    
+
+    /* ---------- BACK NAVIGATION ---------- */
     const handleGoBack = () => {
         window.history.back();
     };
 
+    /* ---------- LOADING ---------- */
     if (loading) {
         return (
             <div className="max-w-md mx-auto min-h-screen bg-gray-100">
@@ -279,8 +280,12 @@ const formatEventTime = (event) => {
                                 </div>
                             ) : (
                                 <div className="space-y-2">
-                                    {selectedEvents.map((e, i) => (
-                                        <div key={i} className="p-3.5 rounded-xl border border-gray-100 bg-gray-50 hover:bg-gray-100 transition-colors shadow-sm">
+                                 {selectedEvents.map((e, i) => (
+                                    <div 
+                                        key={i} 
+                                        onClick={() => router.visit("/my-calendar")}
+                                        className="p-3.5 rounded-xl border border-gray-100 bg-gray-50 hover:bg-gray-100 transition-colors shadow-sm cursor-pointer"
+                                    >
                                             <div className="flex items-start justify-between">
                                                 <div className="flex flex-col">
                                                     <span className={`text-[10px] font-bold tracking-wider uppercase mb-1 ${e.type === 'event' ? 'text-blue-600' : 'text-yellow-600'}`}>
