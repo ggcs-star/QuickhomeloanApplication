@@ -260,3 +260,5 @@ Route::get('/home-loan/details/{slug}', function ($slug) {
         'slug' => $slug
     ]);
 });
+Route::get('/notifications', fn() => Inertia::render('Notifications/Notification'));
+Route::get('/my-calendar', fn() => Inertia::render('Profile/MyCalendarPage'));

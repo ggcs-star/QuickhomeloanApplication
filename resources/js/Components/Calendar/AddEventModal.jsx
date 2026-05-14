@@ -37,16 +37,42 @@ export default function AddEventModal({ onClose, onSuccess }) {
     setErrors({ ...errors, [name]: "" });
   };
 
-  /* ---------- FORMAT DATETIME FOR BACKEND ---------- */
   const formatDateTime = (date, time) => {
     if (!date) return null;
     const validTime = time ? time : "00:00";
     return `${date} ${validTime}:00`;
+};
+  const validateForm = () => {
+    const newErrors = {};
+    const now = new Date();
+    const today = new Date().toISOString().split('T')[0];
+    
+    const startDate = new Date(form.start_date);
+    const todayDate = new Date(today);
+    
+    if (form.start_date && startDate < todayDate) {
+      newErrors.start_date = "Cannot select past date";
+    }
+    
+    if (form.type === "event" && !form.is_all_day && form.start_date === today && form.start_time) {
+      const nowTime = new Date();
+      const [hours, minutes] = form.start_time.split(':');
+      const selectedDateTime = new Date();
+      selectedDateTime.setHours(parseInt(hours), parseInt(minutes), 0);
+      
+      if (selectedDateTime < nowTime) {
+        newErrors.start_time = "Cannot select past time";
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   /* ---------- SUBMIT ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
+      if (!validateForm()) return;
     try {
       setLoading(true);
       setErrors({});

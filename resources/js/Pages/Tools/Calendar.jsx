@@ -126,31 +126,30 @@ function Calendar() {
 
     const selectedEvents = selected ? events[selected] || [] : [];
 
-    // Helper function to format time
-    const formatEventTime = (event) => {
-        if (event.is_all_day) return "All Day";
+    // Helper function to format time - FIXED (No extra offset)
+const formatEventTime = (event) => {
+    if (event.is_all_day) return "All Day";
 
-        const formatTime = (dateString) => {
-            if (!dateString) return "";
-            const date = new Date(dateString);
-            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        };
-
-        const start = formatTime(event.start_datetime);
-        const end = formatTime(event.end_datetime);
-
-        if (event.type === "task") return start; // Task ke liye sirf start time
-        if (start && end) return `${start} - ${end}`;
-        if (start) return start;
-        return "";
+    const formatTime = (dateString) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return "";
+        return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
     };
 
-    /* ---------- BACK NAVIGATION ---------- */
+    const start = formatTime(event.start_datetime);
+    const end = formatTime(event.end_datetime);
+
+    if (event.type === "task") return start;
+    if (start && end) return `${start} - ${end}`;
+    if (start) return start;
+    return "";
+};
+    
     const handleGoBack = () => {
         window.history.back();
     };
 
-    /* ---------- LOADING ---------- */
     if (loading) {
         return (
             <div className="max-w-md mx-auto min-h-screen bg-gray-100">

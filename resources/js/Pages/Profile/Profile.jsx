@@ -25,7 +25,8 @@ import {
   ChevronRight,
   Lock,
   Sparkles,
-  Crown
+  Crown,
+  CalendarDays
 } from "lucide-react";
 
 function ProfileContent() {
@@ -164,6 +165,7 @@ function ProfileContent() {
       {/* SETTINGS */}
       <SectionCard title="Settings">
         <ListItem icon={Bell} label="Notifications" />
+        <ListItem icon={CalendarDays} label="My Calendar" onClick={() => router.visit("/my-calendar")} />
         <ListItem icon={PlayCircle} label="Playback Settings" />
         <ListItem icon={Moon} label="Appearance" rightText="System" />
         <ListItem icon={Shield} label="Privacy" />
@@ -214,9 +216,12 @@ function SectionCard({ title, children }) {
   );
 }
 
-function ListItem({ icon: Icon, label, rightText, hasLock }) {
+function ListItem({ icon: Icon, label, rightText, hasLock, onClick }) {
   return (
-    <div className="flex justify-between px-3 py-3.5 border-b last:border-0">
+    <div 
+      onClick={onClick}
+      className="flex justify-between px-3 py-3.5 border-b last:border-0 cursor-pointer active:scale-95"
+    >
       <div className="flex items-center gap-3.5">
         <Icon size={20} className="text-blue-500" />
         <div className="flex items-center gap-2">
