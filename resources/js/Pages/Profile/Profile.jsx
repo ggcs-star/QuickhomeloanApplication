@@ -235,13 +235,32 @@ function ProfileContent() {
 
       {/* SETTINGS */}
       <SectionCard title="Settings">
-        <ListItem icon={Bell} label="Notifications" />
+            <ListItem
+    icon={Bell}
+    label="Notifications"
+    onClick={() => router.visit("/notifications")}
+/>
         <ListItem icon={CalendarDays} label="My Calendar" onClick={() => router.visit("/my-calendar")} />
-        <ListItem icon={PlayCircle} label="Playback Settings" />
-        <ListItem icon={Moon} label="Appearance" rightText="System" />
-        <ListItem icon={Shield} label="Privacy" />
-        <ListItem icon={Info} label="About" />
-        <ListItem icon={HelpCircle} label="Help & Support" />
+ 
+
+
+<ListItem
+    icon={Shield}
+    label="Privacy"
+    onClick={() => router.visit("/privacy-policy")}
+/>
+
+<ListItem
+    icon={Info}
+    label="About"
+    onClick={() => router.visit("/about-us")}
+/>
+
+<ListItem
+    icon={HelpCircle}
+    label="Help & Support"
+    onClick={() => router.visit("/help-support")}
+/>
       </SectionCard>
 
       {/* LOGOUT */}
