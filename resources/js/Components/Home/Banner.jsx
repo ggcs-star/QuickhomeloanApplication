@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "@/api";
 
+import {
+    ChevronLeft,
+    ChevronRight,
+} from "lucide-react";
+
 export default function Banner() {
+
     const [banners, setBanners] = useState([]);
     const [loading, setLoading] = useState(true);
     const [current, setCurrent] = useState(0);
@@ -11,18 +17,22 @@ export default function Banner() {
     }, []);
 
     useEffect(() => {
+
         if (banners.length === 0) return;
 
         const interval = setInterval(() => {
-            setCurrent((prev) => (prev + 1) % banners.length);
+            nextSlide();
         }, 4000);
 
         return () => clearInterval(interval);
-    }, [banners]);
+
+    }, [banners, current]);
 
     const fetchBanners = async () => {
+
         try {
-            // ✅ CHECK CACHE FIRST
+
+            // CACHE
             const cachedBanners =
                 localStorage.getItem("home_banners");
 
@@ -31,23 +41,40 @@ export default function Banner() {
                 setLoading(false);
             }
 
-            // ✅ FETCH LATEST DATA
+            // API
             const res = await api.get("/banners");
 
             const data = res.data.data || [];
 
             setBanners(data);
 
-            // ✅ SAVE CACHE
+            // SAVE CACHE
             localStorage.setItem(
                 "home_banners",
                 JSON.stringify(data)
             );
+
         } catch (err) {
             console.error(err);
         } finally {
             setLoading(false);
         }
+    };
+
+    // NEXT
+    const nextSlide = () => {
+        setCurrent((prev) =>
+            (prev + 1) % banners.length
+        );
+    };
+
+    // PREV
+    const prevSlide = () => {
+        setCurrent((prev) =>
+            prev === 0
+                ? banners.length - 1
+                : prev - 1
+        );
     };
 
     return (
@@ -62,8 +89,10 @@ export default function Banner() {
 
             {/* BANNERS */}
             {!loading && banners.length > 0 && (
+
                 <div className="relative w-full">
 
+                    {/* IMAGE */}
                     <img
                         src={banners[current].image_url}
                         alt="Banner"
@@ -80,11 +109,68 @@ export default function Banner() {
                         loading="lazy"
                     />
 
+                    {/* LEFT ARROW */}
+                    <button
+                        onClick={prevSlide}
+                        className="
+                            absolute
+                            left-3
+                            top-1/2
+                            -translate-y-1/2
+                            w-10
+                            h-10
+                            rounded-full
+                            bg-white/90
+                            backdrop-blur-md
+                            shadow-md
+                            flex
+                            items-center
+                            justify-center
+                            active:scale-95
+                            transition
+                        "
+                    >
+                        <ChevronLeft
+                            size={22}
+                            className="text-[#111827]"
+                        />
+                    </button>
+
+                    {/* RIGHT ARROW */}
+                    <button
+                        onClick={nextSlide}
+                        className="
+                            absolute
+                            right-3
+                            top-1/2
+                            -translate-y-1/2
+                            w-10
+                            h-10
+                            rounded-full
+                            bg-white/90
+                            backdrop-blur-md
+                            shadow-md
+                            flex
+                            items-center
+                            justify-center
+                            active:scale-95
+                            transition
+                        "
+                    >
+                        <ChevronRight
+                            size={22}
+                            className="text-[#111827]"
+                        />
+                    </button>
+
                     {/* DOTS */}
                     <div className="flex items-center justify-center gap-2 mt-3">
+
                         {banners.map((_, i) => (
+
                             <button
                                 key={i}
+                                onClick={() => setCurrent(i)}
                                 onClick={() => setCurrent(i)}
                                 className={`
                                     rounded-full
@@ -99,6 +185,7 @@ export default function Banner() {
                                 `}
                             />
                         ))}
+
                     </div>
 
                 </div>
