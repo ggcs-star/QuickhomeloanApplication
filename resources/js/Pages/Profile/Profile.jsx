@@ -26,7 +26,8 @@ import {
   ChevronRight,
   Lock,
   Sparkles,
-  Crown
+  Crown,
+  CalendarDays
 } from "lucide-react";
 
 function ProfileContent() {
@@ -235,32 +236,13 @@ function ProfileContent() {
       {/* SETTINGS */}
       <SectionCard title="Settings">
         <ListItem icon={Bell} label="Notifications" />
-        {/* <ListItem icon={PlayCircle} label="Playback Settings" /> */}
-        {/* <ListItem icon={Moon} label="Appearance" rightText="System" /> */}
-        <ListItem
-  icon={Shield}
-  label="Privacy"
-  onClick={() =>
-    router.visit("/privacy-policy")
-  }
-/>
-
-<ListItem
-  icon={Info}
-  label="About"
-  onClick={() =>
-    router.visit("/about-us", {
-      preserveScroll: false,
-    })
-  }
-/>
-<ListItem
-  icon={HelpCircle}
-  label="Help & Support"
-  onClick={() =>
-    router.visit("/help-support")
-  }
-/>      </SectionCard>
+        <ListItem icon={CalendarDays} label="My Calendar" onClick={() => router.visit("/my-calendar")} />
+        <ListItem icon={PlayCircle} label="Playback Settings" />
+        <ListItem icon={Moon} label="Appearance" rightText="System" />
+        <ListItem icon={Shield} label="Privacy" />
+        <ListItem icon={Info} label="About" />
+        <ListItem icon={HelpCircle} label="Help & Support" />
+      </SectionCard>
 
       {/* LOGOUT */}
       <div
@@ -308,19 +290,12 @@ function SectionCard({ title, children }) {
   );
 }
 
-function ListItem({
-  icon: Icon,
-  label,
-  rightText,
-  hasLock,
-  onClick
-}) {
+function ListItem({ icon: Icon, label, rightText, hasLock, onClick }) {
   return (
-    <div
+    <div 
       onClick={onClick}
-      className="flex justify-between px-3 py-3.5 border-b last:border-0 cursor-pointer active:bg-gray-50"
+      className="flex justify-between px-3 py-3.5 border-b last:border-0 cursor-pointer active:scale-95"
     >
-
       <div className="flex items-center gap-3.5">
 
         <Icon
