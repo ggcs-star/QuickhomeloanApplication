@@ -37,7 +37,7 @@ export default function AddEventModal({ onClose, onSuccess }) {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const formatDateTime = (date, time) => {
+const formatDateTime = (date, time) => {
     if (!date) return null;
     const validTime = time ? time : "00:00";
     return `${date} ${validTime}:00`;

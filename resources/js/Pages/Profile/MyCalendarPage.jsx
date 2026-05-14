@@ -30,14 +30,23 @@ export default function MyCalendarPage() {
 
     const formatDate = (datetime) => {
         if (!datetime) return '';
-        const date = new Date(datetime);
+        const datePart = datetime.split(' ')[0];
+        const [year, month, day] = datePart.split('-');
+        const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
         return date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
     };
 
     const formatTime = (item) => {
         if (item.is_all_day) return "All Day";
-        const date = new Date(item.start_datetime);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        if (!item.start_datetime) return '';
+        const timePart = item.start_datetime.split(' ')[1];
+        if (!timePart) return '';
+        const [hours, minutes] = timePart.split(':');
+        let h = parseInt(hours);
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12;
+        if (h === 0) h = 12;
+        return `${h}:${minutes} ${ampm}`;
     };
 
     const currentData = activeTab === 'events' ? events : tasks;
@@ -152,7 +161,8 @@ export default function MyCalendarPage() {
                             currentData.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all duration-200"
+                                    onClick={() => router.visit("/tools/calendar")}
+                                    className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
                                 >
                                     <div className="flex gap-3">
                                         {/* Icon */}
