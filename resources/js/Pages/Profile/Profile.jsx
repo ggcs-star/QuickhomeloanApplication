@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 import { useAuth } from "@/Context/AuthContext";
+import api from "@/api";
 import AppLayout from "@/Layouts/AppLayout";
 
 import {
@@ -29,7 +30,48 @@ import {
 } from "lucide-react";
 
 function ProfileContent() {
+
   const { user, isProUser } = useAuth();
+
+  const [postCount, setPostCount] = useState(0);
+  const [commentCount, setCommentCount] = useState(0);
+
+  useEffect(() => {
+    fetchMyPosts();
+    fetchMyComments();
+  }, []);
+
+  const fetchMyPosts = async () => {
+    try {
+
+      const res = await api.get(
+        "/community/my-posts"
+      );
+
+      setPostCount(
+        res.data.data.data.length
+      );
+
+    } catch (error) {
+      console.log("Posts Error", error);
+    }
+  };
+
+  const fetchMyComments = async () => {
+    try {
+
+      const res = await api.get(
+        "/community/my-comments"
+      );
+
+      setCommentCount(
+        res.data.data.data.length
+      );
+
+    } catch (error) {
+      console.log("Comments Error", error);
+    }
+  };
 
   return (
     <div className="bg-[#f3f4f6] min-h-screen px-5 pt-6 pb-12 font-sans">
@@ -44,22 +86,19 @@ function ProfileContent() {
 
       {/* PROFILE INFO */}
       <div className="flex flex-col items-center mb-8">
-        <div className="relative w-20 h-20 mb-4">
-          <div className="relative w-20 h-20 mb-4">
-            <img
-              src={user.avatar || "/images/default-avatar.jpg"}
-              alt={user.full_name}
-              className="w-full h-full rounded-full object-cover shadow-sm border border-gray-200"
-            />
-            {/* Edit Button */}
-            <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-[2px] border-white shadow-sm active:scale-95 transition-transform">
-              <Pencil size={12} className="text-gray-700" />
-            </button>
-          </div>
 
-          <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-2 border-white shadow-sm active:scale-95">
-            <Pencil size={12} />
+        <div className="relative w-20 h-20 mb-4">
+
+          <img
+            src={user.avatar || "/images/default-avatar.jpg"}
+            alt={user.full_name}
+            className="w-full h-full rounded-full object-cover shadow-sm border border-gray-200"
+          />
+
+          <button className="absolute bottom-0 right-0 bg-gray-100 p-1.5 rounded-full border-[2px] border-white shadow-sm active:scale-95 transition-transform">
+            <Pencil size={12} className="text-gray-700" />
           </button>
+
         </div>
 
         <h2 className="text-[19px] font-bold text-gray-900">
@@ -73,22 +112,32 @@ function ProfileContent() {
         <p className="text-[13px] text-gray-400 mt-1">
           Member Since {user?.created_at?.slice(0, 7) || "—"}
         </p>
+
       </div>
 
-
-
+      {/* PREMIUM CARD */}
       <div className={`rounded-2xl p-5 mb-6 border relative overflow-hidden
-  ${isProUser
+      ${isProUser
           ? 'bg-gradient-to-br from-yellow-50 via-white to-yellow-100 border-yellow-300 shadow-lg'
           : 'bg-white border-gray-200'}`}>
 
-        {/* Badge */}
         <div className="flex items-center justify-between mb-4">
+
           <div className="flex items-center gap-2">
-            <Briefcase size={16} className={isProUser ? "text-yellow-600" : "text-gray-500"} />
+            <Briefcase
+              size={16}
+              className={isProUser
+                ? "text-yellow-600"
+                : "text-gray-500"}
+            />
+
             <span className={`text-xs uppercase font-medium tracking-wide
-        ${isProUser ? "text-yellow-700" : "text-gray-500"}`}>
+            ${isProUser
+                ? "text-yellow-700"
+                : "text-gray-500"}`}>
+
               {isProUser ? "Premium Plan" : "Free Plan"}
+
             </span>
           </div>
 
@@ -98,10 +147,11 @@ function ProfileContent() {
               PRO
             </div>
           )}
+
         </div>
 
-        {/* Content */}
         <div className="text-center">
+
           {isProUser ? (
             <>
               <h3 className="text-yellow-700 font-semibold text-lg mb-1 flex items-center justify-center gap-2">
@@ -130,46 +180,87 @@ function ProfileContent() {
 
               <button
                 onClick={() => router.visit("/membership")}
-                className="w-full bg-gradient-to-r from-[#1e2330] to-[#2f3a52] 
-          text-white py-3.5 rounded-xl font-medium hover:opacity-90 transition flex items-center justify-center gap-2">
+                className="w-full bg-gradient-to-r from-[#1e2330] to-[#2f3a52]
+                text-white py-3.5 rounded-xl font-medium hover:opacity-90 transition flex items-center justify-center gap-2">
+
                 <Crown size={18} />
                 Upgrade Now
+
               </button>
             </>
           )}
+
         </div>
 
-        {/* Glow effect */}
-        {isProUser && (
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-yellow-300 opacity-20 rounded-full blur-2xl"></div>
-        )}
       </div>
 
       {/* CONTENT */}
       <SectionCard title="Content">
         <ListItem icon={IdCard} label="Membership" />
         <ListItem icon={Bookmark} label="Saved Items" />
-        <ListItem icon={Download} label="Downloads" hasLock />
-        <ListItem icon={History} label="History" />
+        {/* <ListItem icon={Download} label="Downloads" hasLock /> */}
+        <ListItem
+  icon={History}
+  label="History"
+  onClick={() => router.visit("/payment-history")}
+/>
         <ListItem icon={Mic} label="Followed Shows" />
       </SectionCard>
 
       {/* COMMUNITY */}
       <SectionCard title="Community">
-        <ListItem icon={MessageSquare} label="My Posts" rightText="1" />
-        <ListItem icon={Users} label="My Comments" rightText="2" />
-        <ListItem icon={Star} label="Saved Discussions" />
+
+        <ListItem
+          icon={MessageSquare}
+          label="My Posts"
+          rightText={postCount}
+          onClick={() => router.visit("/my-posts")}
+        />
+
+  <ListItem
+  icon={Users}
+  label="My Comments"
+  rightText={commentCount}
+  onClick={() => router.visit("/my-comments")}
+/>
+
+       <ListItem
+  icon={Star}
+  label="Saved Discussions"
+  onClick={() => router.visit("/saved-discussions")}
+/>
+
       </SectionCard>
 
       {/* SETTINGS */}
       <SectionCard title="Settings">
         <ListItem icon={Bell} label="Notifications" />
-        <ListItem icon={PlayCircle} label="Playback Settings" />
-        <ListItem icon={Moon} label="Appearance" rightText="System" />
-        <ListItem icon={Shield} label="Privacy" />
-        <ListItem icon={Info} label="About" />
-        <ListItem icon={HelpCircle} label="Help & Support" />
-      </SectionCard>
+        {/* <ListItem icon={PlayCircle} label="Playback Settings" /> */}
+        {/* <ListItem icon={Moon} label="Appearance" rightText="System" /> */}
+        <ListItem
+  icon={Shield}
+  label="Privacy"
+  onClick={() =>
+    router.visit("/privacy-policy")
+  }
+/>
+
+<ListItem
+  icon={Info}
+  label="About"
+  onClick={() =>
+    router.visit("/about-us", {
+      preserveScroll: false,
+    })
+  }
+/>
+<ListItem
+  icon={HelpCircle}
+  label="Help & Support"
+  onClick={() =>
+    router.visit("/help-support")
+  }
+/>      </SectionCard>
 
       {/* LOGOUT */}
       <div
@@ -180,11 +271,14 @@ function ProfileContent() {
         }}
         className="bg-white rounded-2xl border px-4 py-4 flex justify-between text-red-500 active:scale-95"
       >
+
         <div className="flex items-center gap-3">
           <LogOut size={18} />
           <span>Logout</span>
         </div>
+
         <ChevronRight size={18} />
+
       </div>
 
     </div>
@@ -214,21 +308,55 @@ function SectionCard({ title, children }) {
   );
 }
 
-function ListItem({ icon: Icon, label, rightText, hasLock }) {
+function ListItem({
+  icon: Icon,
+  label,
+  rightText,
+  hasLock,
+  onClick
+}) {
   return (
-    <div className="flex justify-between px-3 py-3.5 border-b last:border-0">
+    <div
+      onClick={onClick}
+      className="flex justify-between px-3 py-3.5 border-b last:border-0 cursor-pointer active:bg-gray-50"
+    >
+
       <div className="flex items-center gap-3.5">
-        <Icon size={20} className="text-blue-500" />
+
+        <Icon
+          size={20}
+          className="text-blue-500"
+        />
+
         <div className="flex items-center gap-2">
-          <span className="text-[15px]">{label}</span>
-          {hasLock && <Lock size={14} className="text-gray-400" />}
+
+          <span className="text-[15px]">
+            {label}
+          </span>
+
+          {hasLock && (
+            <Lock
+              size={14}
+              className="text-gray-400"
+            />
+          )}
+
         </div>
+
       </div>
 
       <div className="flex items-center gap-2">
-        {rightText && <span className="text-xs text-gray-400">{rightText}</span>}
+
+        {rightText && (
+          <span className="text-xs text-gray-400">
+            {rightText}
+          </span>
+        )}
+
         <ChevronRight size={18} />
+
       </div>
+
     </div>
   );
 }
