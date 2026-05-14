@@ -170,8 +170,7 @@ export default function Banner() {
 
                             <button
                                 key={i}
-                                onClick={() => setCurrent(i)}
-                                onClick={() => setCurrent(i)}
+                                onClick={() => setCurrent(i)}  // REMOVED THE DUPLICATE LINE
                                 className={`
                                     rounded-full
                                     transition-all
