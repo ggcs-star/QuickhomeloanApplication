@@ -1,4 +1,4 @@
-import { createInertiaApp } from '@inertiajs/react'
+import { createInertiaApp, router } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
 import '../css/app.css'
@@ -95,7 +95,28 @@ resolve: (name) => {
       console.error('Inertia initialPage missing')
       return
     }
+router.on('success', () => {
+  setTimeout(() => {
 
+    const app = document.querySelector('#app');
+
+    if (app) {
+      app.scrollTop = 0;
+    }
+
+    window.scrollTo(0, 0);
+
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    document.querySelectorAll('*').forEach((el) => {
+      if (el.scrollHeight > el.clientHeight) {
+        el.scrollTop = 0;
+      }
+    });
+
+  }, 50);
+});
     createRoot(el).render(
 
       <AuthProvider> 

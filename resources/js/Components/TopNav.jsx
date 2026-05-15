@@ -7,12 +7,27 @@ export default function TopNav() {
 
   const [user, setUser] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [appLogo, setAppLogo] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
+  }, []);
+   useEffect(() => {
+    const fetchAppSettings = async () => {
+      try {
+        const response = await api.get('/app-settings');
+        if (response.data.success) {
+          setAppLogo(response.data.data.app_logo);
+        }
+      } catch (error) {
+        console.error('Error fetching app settings:', error);
+      }
+    };
+    
+    fetchAppSettings();
   }, []);
 
   // Fetch unread notifications count
@@ -58,7 +73,7 @@ export default function TopNav() {
                 className="w-11 h-11 rounded-xl overflow-hidden shadow-sm shrink-0 cursor-pointer"
               >
                 <img
-                  src="/images/Logo.png"
+                  src={appLogo || "/images/Logo.png"}
                   alt="App Logo"
                   className="w-full h-full object-cover"
                 />

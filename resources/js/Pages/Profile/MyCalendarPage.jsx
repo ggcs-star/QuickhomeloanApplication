@@ -91,7 +91,7 @@ export default function MyCalendarPage() {
                         <div className="px-4 py-4">
                             <div className="flex items-center gap-3">
                                 <button 
-                                    onClick={() => router.visit("/profile")} 
+                                    onClick={() => window.history.back()}
                                     className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm hover:bg-gray-50 transition active:scale-95"
                                 >
                                     <ArrowLeft className="w-5 h-5 text-gray-700" />

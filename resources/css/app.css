@@ -21,6 +21,15 @@ body,
 
     overscroll-behavior: none;
 }
+/* Force scroll to top */
+html, body, #app {
+    scroll-behavior: auto !important;
+}
+
+/* Inertia fix */
+[inertia] {
+    scroll-behavior: auto !important;
+}
 
 * {
     -webkit-tap-highlight-color: transparent;

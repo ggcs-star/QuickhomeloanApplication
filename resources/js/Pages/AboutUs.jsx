@@ -53,7 +53,7 @@ export default function AboutUs() {
   return (
     <div className="min-h-screen bg-[#f5f7fd] pb-24">
 
-      {/* HEADER - Sticky Top Bar (same as Privacy Policy) */}
+      {/* HEADER */}
       <div className="sticky top-0 z-20 bg-white border-b border-[#edf1f7] px-4 py-4">
         <div className="flex items-center gap-3">
           <button
@@ -73,7 +73,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* HERO SECTION with house.png image */}
+      {/* HERO */}
       <div className="px-4 mt-4">
         <div className="relative overflow-hidden rounded-[22px] bg-gradient-to-r from-[#001B5E] to-[#0038b8] px-5 py-5 text-white">
           <div className="relative z-10 max-w-[70%]">
@@ -85,8 +85,6 @@ export default function AboutUs() {
               Making home ownership simple, transparent, and affordable for every Indian borrower.
             </p>
           </div>
-          
-          {/* house.png image - same as Privacy Policy & Loan by Profession */}
           <img
             src="/images/house.png"
             alt="house"
@@ -95,7 +93,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* MAIN CONTENT - About Section */}
+      {/* MAIN CONTENT */}
       <div className="px-4 mt-6">
         <div className="bg-white rounded-[20px] border border-[#edf1f7] p-5 shadow-sm">
           <p className="text-[15px] text-gray-700 leading-7 mb-4">
@@ -110,8 +108,8 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* MISSION & VISION - 2 Column Grid (same as Privacy Policy cards) */}
-      <div className="px-4 mt-4 grid grid-cols-2 gap-3">
+      {/* MISSION & VISION - 1 COLUMN (CHANGED) */}
+      <div className="px-4 mt-4 grid grid-cols-1 gap-3">
         {/* MISSION CARD */}
         <div className="relative overflow-hidden rounded-[20px] bg-white border border-[#edf1f7] shadow-sm">
           <div className="w-14 h-14 rounded-[16px] bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] flex items-center justify-center shadow-md mt-4 ml-4">
@@ -160,7 +158,7 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* CORE VALUES SECTION - Section Header */}
+      {/* CORE VALUES SECTION */}
       <div className="px-4 mt-6">
         <div className="text-center mb-4">
           <h2 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b]">
@@ -172,8 +170,8 @@ export default function AboutUs() {
         </div>
       </div>
 
-      {/* CORE VALUES GRID - 2 Column */}
-      <div className="px-4 mt-2 grid grid-cols-2 gap-3">
+      {/* CORE VALUES GRID - 1 COLUMN (CHANGED) */}
+      <div className="px-4 mt-2 grid grid-cols-1 gap-3">
         {coreValues.map((value, index) => {
           const Icon = value.icon;
           return (
@@ -199,7 +197,7 @@ export default function AboutUs() {
         })}
       </div>
 
-      {/* CTA SECTION - Same as Privacy Policy contact section */}
+      {/* CTA SECTION */}
       <div className="px-4 mt-6">
         <div className="bg-gradient-to-r from-[#001B5E] to-[#0038b8] rounded-[20px] p-5 text-white">
           <div className="text-center">
