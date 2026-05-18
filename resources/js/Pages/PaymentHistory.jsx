@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import PageSkeleton from "@/components/Skeleton/PageSkeleton";
+
 import {
   ArrowLeft,
   Crown,
@@ -20,6 +22,7 @@ function PaymentHistoryContent() {
   }, []);
 
   const fetchPayments = async () => {
+        setLoading(true); 
 
     try {
 
@@ -57,6 +60,47 @@ function PaymentHistoryContent() {
 
   };
 
+// Add skeleton loading
+if (loading) {
+  return (
+    <PageSkeleton>
+      <div className="p-4 space-y-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="bg-white rounded-[28px] border border-gray-100 p-5 shadow-sm">
+            <div className="flex items-start justify-between gap-4 mb-5">
+              <div className="flex items-start gap-3 flex-1">
+                <div className="w-13 h-13 rounded-2xl bg-gray-200 animate-pulse"></div>
+                <div className="flex-1 space-y-2">
+                  <div className="h-5 w-32 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-3 w-48 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+              <div className="w-20 h-6 bg-gray-200 rounded-full animate-pulse"></div>
+            </div>
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100 rounded-2xl p-4 mb-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-2">
+                  <div className="h-3 w-20 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-gray-200 animate-pulse"></div>
+              </div>
+            </div>
+            <div className="bg-gray-50 rounded-2xl p-4 space-y-4">
+              {[1, 2, 3].map((j) => (
+                <div key={j} className="flex justify-between items-center">
+                  <div className="h-3 w-20 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-3 w-28 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </PageSkeleton>
+  );
+}
   return (
     <div className="min-h-screen bg-[#f4f7fb]">
 
@@ -77,11 +121,7 @@ function PaymentHistoryContent() {
       {/* BODY */}
       <div className="p-4 space-y-5 max-w-3xl mx-auto">
 
-        {loading && (
-          <div className="text-center text-gray-500 mt-10">
-            Loading payment history...
-          </div>
-        )}
+        
 
         {!loading && payments.length === 0 && (
 

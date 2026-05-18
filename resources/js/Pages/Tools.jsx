@@ -40,7 +40,7 @@ const tools = [
 export default function Tools() {
   return (
     <AppLayout showTopNav={false} showBottomNav={true}>
-      <div className="min-h-screen bg-[#f5f7fd] pb-24">
+      <div className="min-h-screen bg-[#f5f7fd] pb-4">
 
         {/* HEADER */}
         <div className="px-4 pt-5">
@@ -141,7 +141,7 @@ export default function Tools() {
         </div>
 
         {/* GRID */}
-        <div className="px-4 mt-4 grid grid-cols-2 gap-3">
+        <div className="px-4 mt-4 grid grid-cols-2 gap-2">
 
           {tools.map((item, i) => {
 
@@ -160,7 +160,7 @@ export default function Tools() {
                   rounded-[20px]
                   bg-white
                   border border-[#edf1f7]
-                  p-4
+                  p-3
                   text-left
                   shadow-sm
                   active:scale-[0.98]

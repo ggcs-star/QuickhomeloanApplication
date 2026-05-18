@@ -14,6 +14,14 @@ if ($data['success']) {
     // Project path - APNA SAHI PATH DAALO
     $projectPath = 'c:\xampp\htdocs\QuickhomeloanApplication'; // Change this
     
+        // 🔥 UPDATE .env FILE
+    $envFile = $projectPath . '/.env';
+    if (file_exists($envFile)) {
+        $env = file_get_contents($envFile);
+        $env = preg_replace('/APP_NAME=.*/', 'APP_NAME="' . $appName . '"', $env);
+        file_put_contents($envFile, $env);
+        echo "✅ .env updated\n";
+    }
     // Update AndroidManifest.xml
     $manifestFile = $projectPath . '/nativephp/android/app/src/main/AndroidManifest.xml';
     if (file_exists($manifestFile)) {

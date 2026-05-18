@@ -53,10 +53,10 @@ export default function GuideLayout({
   };
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 px-4">
 
       {/* HEADER */}
-      <div className="flex items-center gap-2 px-1 mb-4">
+      <div className="flex items-center gap-2 mb-4">
 
         <HelpCircle
           size={19}
@@ -186,32 +186,32 @@ export default function GuideLayout({
 
       </div>
 
-      {/* PRO TIPS */}
+         {/* PRO TIPS */}
       {tips.length > 0 && (
         <div className="mt-6">
 
           <div
             className="
-              bg-[#1f2a3c]
+              bg-blue-50
               rounded-[28px]
               p-5
-              shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+              border border-blue-100
             "
           >
 
             {/* HEADER */}
             <div className="flex items-center gap-2 mb-5">
 
-              <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
 
                 <Lightbulb
                   size={18}
-                  className="text-blue-400"
+                  className="text-blue-600"
                 />
 
               </div>
 
-              <h3 className="text-[18px] font-semibold text-white">
+              <h3 className="text-[18px] font-semibold text-blue-900">
                 Pro Tips
               </h3>
 
@@ -226,15 +226,15 @@ export default function GuideLayout({
                   className="flex items-start gap-3"
                 >
 
-                  <div className="w-5 h-5 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <div className="w-5 h-5 rounded-full bg-blue-200 flex items-center justify-center shrink-0 mt-0.5">
 
-                    <span className="text-[11px] text-blue-400">
+                    <span className="text-[11px] text-blue-700 font-bold">
                       ✓
                     </span>
 
                   </div>
 
-                  <p className="text-[14px] leading-7 text-gray-200">
+                  <p className="text-[14px] leading-7 text-gray-700">
                     {tip}
                   </p>
 
@@ -247,7 +247,6 @@ export default function GuideLayout({
 
         </div>
       )}
-
     </div>
   );
 }

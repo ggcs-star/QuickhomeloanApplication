@@ -59,7 +59,7 @@ const [openIndex, setOpenIndex] =
   useState(null);
 
   return (
-    <div className="bg-white rounded-[20px] overflow-hidden border border-[#eceef3]">
+    <div className="bg-white rounded-[20px] overflow-hidden border border-[#eceef3] mx-3">
 
       {sections.map((section, idx) => {
         const Icon =

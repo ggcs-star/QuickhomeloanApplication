@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PageSkeleton from "@/components/Skeleton/PageSkeleton";
 import { router } from "@inertiajs/react";
 import { useAuth } from "@/Context/AuthContext";
 import api from "@/api";
@@ -36,6 +37,7 @@ function ProfileContent() {
 
   const [postCount, setPostCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchMyPosts();
@@ -44,15 +46,8 @@ function ProfileContent() {
 
   const fetchMyPosts = async () => {
     try {
-
-      const res = await api.get(
-        "/community/my-posts"
-      );
-
-      setPostCount(
-        res.data.data.data.length
-      );
-
+      const res = await api.get("/community/my-posts");
+      setPostCount(res.data.data.data.length);
     } catch (error) {
       console.log("Posts Error", error);
     }
@@ -60,19 +55,47 @@ function ProfileContent() {
 
   const fetchMyComments = async () => {
     try {
-
-      const res = await api.get(
-        "/community/my-comments"
-      );
-
-      setCommentCount(
-        res.data.data.data.length
-      );
-
+      const res = await api.get("/community/my-comments");
+      setCommentCount(res.data.data.data.length);
     } catch (error) {
       console.log("Comments Error", error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <PageSkeleton>
+        <div className="p-4 space-y-4">
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-20 h-20 rounded-full bg-gray-200 animate-pulse mb-4"></div>
+            <div className="h-5 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-48 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="bg-white rounded-2xl p-5 mb-6 border">
+            <div className="h-32 bg-gray-200 rounded-xl animate-pulse"></div>
+          </div>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-2xl p-4 border mb-4">
+              <div className="h-4 w-20 bg-gray-200 rounded animate-pulse mb-4"></div>
+              <div className="space-y-3">
+                {[1, 2, 3].map((j) => (
+                  <div key={j} className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </PageSkeleton>
+    );
+  }
 
   return (
     <div className="bg-[#f3f4f6] min-h-screen px-5 pt-6 pb-12 font-sans">

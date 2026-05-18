@@ -113,10 +113,12 @@ export default function TopNav() {
           <div className="mt-3 relative">
             <Search size={18} strokeWidth={2} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              type="text"
-              placeholder="Search for loans, tools, courses & more"
-              className="w-full h-[48px] rounded-full border border-gray-200 bg-white pl-11 pr-11 text-[14px] text-gray-700 placeholder:text-gray-400 shadow-sm focus:outline-none"
-            />
+                type="text"
+                placeholder="Search for loans, tools, courses & more"
+                className="w-full h-[48px] rounded-full border border-gray-200 bg-white pl-11 pr-11 text-[14px] text-gray-700 placeholder:text-gray-400 shadow-sm focus:outline-none"
+                onClick={() => router.visit("/search")}
+                readOnly
+              />
             <Mic size={18} strokeWidth={2} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
           </div>
         </div>

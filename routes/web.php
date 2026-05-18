@@ -288,3 +288,7 @@ Route::get('/help-support', function () {
     return Inertia::render('HelpSupport');
 });Route::get('/notifications', fn() => Inertia::render('Notifications/Notification'));
 Route::get('/my-calendar', fn() => Inertia::render('Profile/MyCalendarPage'));
+
+Route::get('/search', function () {
+    return Inertia::render('Search/SearchPage');
+});

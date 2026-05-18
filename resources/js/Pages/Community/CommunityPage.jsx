@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Heart, MessageCircle, Share2, Bookmark, X } from "lucide-react";
+import { Heart, MessageCircle, Share2, Bookmark, X, ArrowLeft } from "lucide-react";
 import api from "@/api";
 import AppLayout from "@/Layouts/AppLayout";
 
@@ -195,16 +195,16 @@ export default function CommunityPage() {
     if (loading) {
         return (
             <AppLayout showBottomNav={true} showTopNav={false} showFooter={false}>
-                <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+                <div className="min-h-screen bg-[#f5f7fd]">
                     <div className="max-w-3xl mx-auto bg-white min-h-screen shadow-sm">
                         {[...Array(3)].map((_, i) => (
-                            <div key={i} className="p-5 border-b border-blue-100 animate-pulse">
+                            <div key={i} className="p-5 border-b border-[#edf1f7] animate-pulse">
                                 <div className="flex gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-blue-200"></div>
+                                    <div className="w-12 h-12 rounded-full bg-gray-200"></div>
                                     <div className="flex-1">
-                                        <div className="h-4 bg-blue-200 rounded w-32 mb-2"></div>
-                                        <div className="h-3 bg-blue-100 rounded w-48 mb-3"></div>
-                                        <div className="h-3 bg-blue-100 rounded w-full"></div>
+                                        <div className="h-4 bg-gray-200 rounded w-32 mb-2"></div>
+                                        <div className="h-3 bg-gray-100 rounded w-48 mb-3"></div>
+                                        <div className="h-3 bg-gray-100 rounded w-full"></div>
                                     </div>
                                 </div>
                             </div>
@@ -217,40 +217,33 @@ export default function CommunityPage() {
 
     return (
         <AppLayout showBottomNav={true} showTopNav={false} showFooter={false}>
-            <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-                <div className="max-w-3xl mx-auto bg-white min-h-screen shadow-xl">
+            <div className="min-h-screen bg-[#f5f7fd]">
+                <div className="max-w-3xl mx-auto bg-white min-h-screen shadow-sm">
                     
-                    {/* Header - Dark Blue */}
-                    <div className="sticky top-0 z-10 bg-gradient-to-r from-blue-800 to-blue-900 text-white px-5 py-4 shadow-md">
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <button 
-                                    onClick={() => window.history.back()} 
-                                    className="p-1 -ml-1 rounded-full hover:bg-blue-700 transition"
-                                >
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                    </svg>
-                                </button>
-                                <div>
-                                    <h1 className="text-xl font-bold">Community</h1>
-                                    <p className="text-xs text-blue-200">Connect with other members</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center border-2 border-blue-400">
-                                    <span className="text-white text-xs font-bold">
-                                        {(currentUser?.full_name?.[0] || 'U').toUpperCase()}
-                                    </span>
-                                </div>
+                    {/* HEADER - Tools Page Style */}
+                    <div className="px-4 pt-5 bg-white">
+                        <div className="flex items-center gap-3">
+                            <button 
+                                onClick={() => window.history.back()} 
+                                className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm"
+                            >
+                                <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+                            </button>
+                            <div>
+                                <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">
+                                    Community
+                                </h1>
+                                <p className="text-[12px] text-gray-500 mt-[2px]">
+                                    Connect with other members
+                                </p>
                             </div>
                         </div>
                     </div>
                     
-                    {/* Create Post - Light Blue */}
-                    <div className="p-5 border-b border-blue-100 bg-white">
+                    {/* Create Post */}
+                    <div className="p-5 border-b border-[#edf1f7] bg-white">
                         <div className="flex gap-3 items-start">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-center flex-shrink-0 shadow-sm">
+                            <div className="w-10 h-10 rounded-full bg-[#e0e7ff] flex items-center justify-center flex-shrink-0 shadow-sm">
                                 <span className="text-white font-bold text-sm">
                                     {(currentUser?.full_name?.[0] || 'U').toUpperCase()}
                                 </span>
@@ -261,13 +254,13 @@ export default function CommunityPage() {
                                     onChange={(e) => setNewPostContent(e.target.value)}
                                     placeholder="What's on your mind?"
                                     rows="2"
-                                    className="w-full p-3 text-sm bg-blue-50 border border-blue-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+                                    className="w-full p-3 text-sm bg-[#f5f7fd] border border-[#edf1f7] rounded-xl focus:outline-none focus:border-[#001B5E] focus:ring-1 focus:ring-[#001B5E] resize-none"
                                 />
                                 <div className="flex justify-end mt-2">
                                     <button
                                         onClick={handleCreatePost}
                                         disabled={submitting || !newPostContent.trim()}
-                                        className="px-5 py-1.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm rounded-full font-medium disabled:opacity-50 disabled:bg-gray-400 hover:from-blue-700 hover:to-blue-800 transition shadow-sm"
+                                        className="px-5 py-1.5 bg-[#001B5E] text-white text-sm rounded-full font-medium disabled:opacity-50 disabled:bg-gray-400 hover:bg-[#002a8a] transition shadow-sm"
                                     >
                                         {submitting ? 'Posting...' : 'Post'}
                                     </button>
@@ -277,13 +270,13 @@ export default function CommunityPage() {
                     </div>
 
                     {/* Posts Feed */}
-                    <div className="divide-y divide-blue-100">
+                    <div className="divide-y divide-[#edf1f7]">
                         {posts.map((post) => (
-                            <div key={post.id} className="bg-white hover:bg-blue-50/30 transition">
+                            <div key={post.id} className="bg-white hover:bg-[#f5f7fd]/50 transition">
                                 <div className="p-5">
                                     {/* Post Header */}
                                     <div className="flex gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+                                        <div className="w-10 h-10 rounded-full bg-[#001B5E] flex items-center justify-center flex-shrink-0 shadow-sm">
                                             <span className="text-white font-bold text-sm">
                                                 {(post.user_name?.[0] || 'U').toUpperCase()}
                                             </span>
@@ -303,8 +296,8 @@ export default function CommunityPage() {
                                         </div>
                                     </div>
 
-                                    {/* Action Buttons - Blue Theme */}
-                                    <div className="flex items-center justify-around mt-4 pt-2 border-t border-blue-50">
+                                    {/* Action Buttons */}
+                                    <div className="flex items-center justify-around mt-4 pt-2 border-t border-[#edf1f7]">
                                         <button
                                             onClick={() => handleLike(post.id)}
                                             className={`flex items-center gap-2 py-1.5 px-4 rounded-full transition ${
@@ -315,7 +308,7 @@ export default function CommunityPage() {
                                             <span className="text-xs font-medium">{post.likes_count || 0}</span>
                                         </button>
 
-                                        <button onClick={() => openCommentModal(post)} className="flex items-center gap-2 py-1.5 px-4 rounded-full text-gray-500 hover:text-blue-600 transition">
+                                        <button onClick={() => openCommentModal(post)} className="flex items-center gap-2 py-1.5 px-4 rounded-full text-gray-500 hover:text-[#001B5E] transition">
                                             <MessageCircle size={20} strokeWidth={1.5} />
                                             <span className="text-xs font-medium">{post.comments_count || 0}</span>
                                         </button>
@@ -332,20 +325,20 @@ export default function CommunityPage() {
 
                                     {/* Comments Preview */}
                                     {post.comments && post.comments.length > 0 && (
-                                        <div className="mt-3 pt-2 border-t border-blue-50">
+                                        <div className="mt-3 pt-2 border-t border-[#edf1f7]">
                                             <div className="space-y-1.5">
                                                 {(expandedComments[post.id] ? post.comments : post.comments.slice(0, 2)).map((comment) => (
                                                     <div key={comment._id} className="flex gap-1.5 text-sm">
                                                         <span className="font-medium text-gray-800 text-xs flex-shrink-0">{comment.user_name}:</span>
                                                         <span className="text-gray-600 text-xs break-words">{comment.comment}</span>
                                                         {comment.is_admin_reply && (
-                                                            <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full whitespace-nowrap">Admin</span>
+                                                            <span className="text-[10px] bg-[#001B5E]/10 text-[#001B5E] px-1.5 py-0.5 rounded-full whitespace-nowrap">Admin</span>
                                                         )}
                                                     </div>
                                                 ))}
                                             </div>
                                             {(post.comments_count || 0) > 2 && (
-                                                <button onClick={() => toggleExpandComments(post.id)} className="text-xs text-blue-600 mt-1.5 font-medium hover:text-blue-800">
+                                                <button onClick={() => toggleExpandComments(post.id)} className="text-xs text-[#001B5E] mt-1.5 font-medium hover:text-[#002a8a]">
                                                     {expandedComments[post.id] ? 'Show less' : `View all ${post.comments_count} comments`}
                                                 </button>
                                             )}
@@ -359,8 +352,8 @@ export default function CommunityPage() {
                     {/* Empty State */}
                     {posts.length === 0 && !loading && (
                         <div className="flex flex-col items-center justify-center py-20 px-5">
-                            <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                                <MessageCircle size={36} className="text-blue-400" />
+                            <div className="w-20 h-20 bg-[#f5f7fd] rounded-full flex items-center justify-center mb-4">
+                                <MessageCircle size={36} className="text-[#001B5E]/40" />
                             </div>
                             <h3 className="text-lg font-medium text-gray-700">No posts yet</h3>
                             <p className="text-sm text-gray-500 text-center mt-1">Be the first to share something with the community!</p>
@@ -369,7 +362,7 @@ export default function CommunityPage() {
 
                     {/* Pagination */}
                     {lastPage > 1 && (
-                        <div className="flex justify-center items-center gap-2 py-6 px-5 border-t border-blue-100">
+                        <div className="flex justify-center items-center gap-2 py-6 px-5 border-t border-[#edf1f7]">
                             <button
                                 onClick={() => {
                                     if (currentPage > 1) {
@@ -379,7 +372,7 @@ export default function CommunityPage() {
                                 }}
                                 disabled={currentPage === 1}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                                    currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                                    currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#f5f7fd] text-[#001B5E] hover:bg-[#edf1f7]'
                                 }`}
                             >
                                 Previous
@@ -406,7 +399,7 @@ export default function CommunityPage() {
                                                 window.scrollTo({ top: 0, behavior: 'smooth' });
                                             }}
                                             className={`w-10 h-10 rounded-lg text-sm font-medium transition ${
-                                                currentPage === pageNum ? 'bg-blue-600 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-blue-100'
+                                                currentPage === pageNum ? 'bg-[#001B5E] text-white shadow-sm' : 'bg-[#f5f7fd] text-gray-700 hover:bg-[#edf1f7]'
                                             }`}
                                         >
                                             {pageNum}
@@ -424,7 +417,7 @@ export default function CommunityPage() {
                                 }}
                                 disabled={currentPage === lastPage}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-                                    currentPage === lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                                    currentPage === lastPage ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-[#f5f7fd] text-[#001B5E] hover:bg-[#edf1f7]'
                                 }`}
                             >
                                 Next
@@ -432,20 +425,20 @@ export default function CommunityPage() {
                         </div>
                     )}
 
-                    {/* Comment Modal - Blue Theme */}
+                    {/* Comment Modal */}
                     {selectedPost && (
                         <div className="fixed inset-0 bg-black/50 z-[100] flex items-end md:items-center justify-center">
                             <div className="bg-white w-full max-w-2xl rounded-t-2xl md:rounded-2xl max-h-[90vh] flex flex-col animate-slideUp z-[101] shadow-xl">
-                                <div className="flex justify-between items-center p-4 border-b bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-t-2xl sticky top-0">
-                                    <h2 className="text-lg font-bold">Comments</h2>
-                                    <button onClick={closeCommentModal} className="p-1 rounded-full hover:bg-blue-700 transition">
-                                        <X size={22} />
+                                <div className="flex justify-between items-center p-4 border-b bg-white rounded-t-2xl sticky top-0">
+                                    <h2 className="text-lg font-bold text-[#081c4b]">Comments</h2>
+                                    <button onClick={closeCommentModal} className="p-1 rounded-full hover:bg-gray-100 transition">
+                                        <X size={22} className="text-gray-500" />
                                     </button>
                                 </div>
 
-                                <div className="p-4 border-b bg-blue-50">
+                                <div className="p-4 border-b bg-[#f5f7fd]">
                                     <div className="flex gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                                        <div className="w-8 h-8 rounded-full bg-[#001B5E] flex items-center justify-center flex-shrink-0">
                                             <span className="text-white font-bold text-xs">{(selectedPost.user_name?.[0] || 'U').toUpperCase()}</span>
                                         </div>
                                         <div className="flex-1">
@@ -468,7 +461,7 @@ export default function CommunityPage() {
                                                 <div className="flex-1">
                                                     <div className="flex items-center gap-2 flex-wrap">
                                                         <span className="font-semibold text-gray-800 text-sm">{comment.user_name}</span>
-                                                        {comment.is_admin_reply && <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">Admin</span>}
+                                                        {comment.is_admin_reply && <span className="text-[10px] bg-[#001B5E]/10 text-[#001B5E] px-1.5 py-0.5 rounded-full">Admin</span>}
                                                         <span className="text-xs text-gray-400">{formatTime(comment.created_at)}</span>
                                                     </div>
                                                     <p className="text-gray-600 text-sm mt-0.5">{comment.comment}</p>
@@ -487,14 +480,14 @@ export default function CommunityPage() {
                                             value={commentInput} 
                                             onChange={(e) => setCommentInput(e.target.value)} 
                                             placeholder="Write a comment..." 
-                                            className="flex-1 p-2.5 text-sm bg-blue-50 border border-blue-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" 
+                                            className="flex-1 p-2.5 text-sm bg-[#f5f7fd] border border-[#edf1f7] rounded-full focus:outline-none focus:border-[#001B5E] focus:ring-1 focus:ring-[#001B5E]" 
                                             onKeyPress={(e) => e.key === 'Enter' && handleAddComment()} 
                                             autoFocus 
                                         />
                                         <button 
                                             onClick={handleAddComment} 
                                             disabled={submittingComment || !commentInput.trim()} 
-                                            className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm rounded-full font-medium disabled:opacity-50 disabled:bg-gray-400 hover:from-blue-700 hover:to-blue-800 transition shadow-sm"
+                                            className="px-4 py-2 bg-[#001B5E] text-white text-sm rounded-full font-medium disabled:opacity-50 disabled:bg-gray-400 hover:bg-[#002a8a] transition shadow-sm"
                                         >
                                             {submittingComment ? '...' : 'Post'}
                                         </button>

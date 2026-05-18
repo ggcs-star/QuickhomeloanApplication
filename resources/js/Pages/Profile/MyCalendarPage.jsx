@@ -92,9 +92,9 @@ export default function MyCalendarPage() {
                             <div className="flex items-center gap-3">
                                 <button 
                                     onClick={() => window.history.back()}
-                                    className="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm hover:bg-gray-50 transition active:scale-95"
+                                    className="w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"
                                 >
-                                    <ArrowLeft className="w-5 h-5 text-gray-700" />
+                                    <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
                                 </button>
                                 <h1 className="text-xl font-bold text-gray-900">My Calendar</h1>
                             </div>
