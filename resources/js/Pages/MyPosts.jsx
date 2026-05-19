@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PageSkeleton from "@/components/Skeleton/PageSkeleton";
 import {
   ArrowLeft,
   Heart,
@@ -22,7 +23,7 @@ function MyPostsContent() {
   }, []);
 
   const fetchPosts = async () => {
-
+      setLoading(true);
     try {
 
       const res = await api.get(
@@ -73,53 +74,65 @@ function MyPostsContent() {
 
     }
   };
+  if (loading) {
+    return (
+      <PageSkeleton>
+        <div className="p-4 space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-[28px] border border-[#edf1f7] shadow-sm p-5">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gray-200 animate-pulse"></div>
+                <div className="flex-1">
+                  <div className="h-4 w-32 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+              <div className="mt-4 space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+              <div className="flex items-center gap-6 mt-5 pt-4 border-t border-[#edf1f7]">
+                <div className="w-9 h-9 rounded-full bg-gray-200 animate-pulse"></div>
+                <div className="w-9 h-9 rounded-full bg-gray-200 animate-pulse"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </PageSkeleton>
+    );
+  }
+
 
   return (
 
-    <div className="min-h-screen bg-[#f4f7fb]">
+    <div className="min-h-screen bg-[#f5f7fd]">
 
-      {/* HEADER */}
-      <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-100">
-
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-
+      {/* HEADER - No background */}
+      <div className="max-w-2xl mx-auto px-4 pt-5 pb-2">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
+            className="w-10 h-10 rounded-full flex items-center justify-center"
           >
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
+            <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
           </button>
-
           <div>
-
-            <h1 className="text-[20px] font-bold text-gray-900">
+            <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">
               My Posts
             </h1>
-
-            <p className="text-xs text-gray-500">
+            <p className="text-[12px] text-gray-500 mt-[2px]">
               Your community activity
             </p>
-
           </div>
-
         </div>
-
       </div>
 
       {/* BODY */}
       <div className="max-w-2xl mx-auto px-3 py-4 space-y-5">
 
-        {loading && (
-
-          <div className="text-center py-20 text-gray-500">
-            Loading posts...
-          </div>
-
-        )}
-
         {!loading && posts.length === 0 && (
 
-          <div className="bg-white rounded-3xl p-10 text-center shadow-sm border border-gray-100">
+          <div className="bg-white rounded-3xl p-10 text-center shadow-sm border border-[#edf1f7]">
 
             <h3 className="font-semibold text-gray-700 text-lg">
               No Posts Found
@@ -137,7 +150,7 @@ function MyPostsContent() {
 
           <div
             key={post._id || post.id || index}
-            className="bg-white rounded-[28px] border border-gray-100 shadow-sm overflow-hidden"
+            className="bg-white rounded-[28px] border border-[#edf1f7] shadow-sm overflow-hidden"
           >
 
             <div className="p-5">
@@ -151,12 +164,12 @@ function MyPostsContent() {
                     "/images/default-avatar.jpg"
                   }
                   alt=""
-                  className="w-12 h-12 rounded-full object-cover border"
+                  className="w-12 h-12 rounded-full object-cover border border-[#edf1f7]"
                 />
 
                 <div className="flex-1 min-w-0">
 
-                  <h3 className="font-semibold text-[15px] text-gray-900 truncate">
+                  <h3 className="font-semibold text-[15px] text-[#081c4b] truncate">
                     {post.user_name}
                   </h3>
 
@@ -173,7 +186,7 @@ function MyPostsContent() {
               {/* CONTENT */}
               <div className="mt-4">
 
-                <p className="text-[15px] leading-7 text-gray-800 whitespace-pre-line">
+                <p className="text-[15px] leading-7 text-gray-700 whitespace-pre-line">
                   {post.content}
                 </p>
 
@@ -195,7 +208,7 @@ function MyPostsContent() {
               )}
 
               {/* STATS */}
-              <div className="flex items-center gap-6 mt-5 pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-6 mt-5 pt-4 border-t border-[#edf1f7]">
 
                 {/* LIKES */}
                 <div className="flex items-center gap-2 text-gray-600">
@@ -209,7 +222,7 @@ function MyPostsContent() {
 
                   <div>
 
-                    <p className="text-sm font-semibold">
+                    <p className="text-sm font-semibold text-[#081c4b]">
                       {post.likes_count || 0}
                     </p>
 
@@ -233,16 +246,16 @@ function MyPostsContent() {
                   className="flex items-center gap-2 text-gray-600"
                 >
 
-                  <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-[#f5f7fd] flex items-center justify-center">
                     <MessageCircle
                       size={18}
-                      className="text-blue-500"
+                      className="text-[#001B5E]"
                     />
                   </div>
 
                   <div className="text-left">
 
-                    <p className="text-sm font-semibold">
+                    <p className="text-sm font-semibold text-[#081c4b]">
                       {post.comments_count || 0}
                     </p>
 
@@ -304,7 +317,7 @@ function MyPostsContent() {
 
             </div>
 
-            {/* COMMENTS SECTION */}
+            {/* COMMENTS SECTION - No background */}
             {openComments[
               post._id || post.id
             ] &&
@@ -312,9 +325,9 @@ function MyPostsContent() {
               post._id || post.id
             ]?.comments?.length > 0 && (
 
-              <div className="border-t border-gray-100 bg-gray-50/50 px-5 py-5">
+              <div className="border-t border-[#edf1f7] px-5 py-5">
 
-                <h4 className="text-sm font-semibold text-gray-700 mb-4">
+                <h4 className="text-sm font-semibold text-[#081c4b] mb-4">
                   Comments
                 </h4>
 
@@ -326,12 +339,12 @@ function MyPostsContent() {
 
                     <div
                       key={i}
-                      className="bg-white rounded-2xl p-4 border border-gray-100"
+                      className="bg-white rounded-2xl p-4 border border-[#edf1f7]"
                     >
 
                       <div className="flex items-start gap-3">
 
-                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-600 shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-[#001B5E] flex items-center justify-center text-sm font-bold text-white shrink-0">
 
                           {
                             comment.user_name
@@ -345,7 +358,7 @@ function MyPostsContent() {
 
                           <div className="flex items-center justify-between gap-3">
 
-                            <h5 className="text-[14px] font-semibold text-gray-900 truncate">
+                            <h5 className="text-[14px] font-semibold text-[#081c4b] truncate">
                               {comment.user_name}
                             </h5>
 
@@ -357,7 +370,7 @@ function MyPostsContent() {
 
                           </div>
 
-                          <p className="text-[14px] text-gray-700 leading-6 mt-2 break-words">
+                          <p className="text-[14px] text-gray-600 leading-6 mt-2 break-words">
                             {comment.comment}
                           </p>
 

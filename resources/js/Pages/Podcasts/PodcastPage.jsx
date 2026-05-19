@@ -150,7 +150,7 @@ export default function PodcastPage() {
                                     </div>
                                     <button 
                                         onClick={() => openPlayer(podcast)}
-                                        className="w-full py-3 bg-purple-600 text-white rounded-xl font-medium text-sm hover:bg-purple-700 transition active:scale-98"
+                                        className="w-full py-3 bg-[#1E293B] text-white rounded-xl font-medium text-sm hover:bg-[#2D3A4E] transition active:scale-98"
                                     >
                                         Listen Now
                                     </button>
