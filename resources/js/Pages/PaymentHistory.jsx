@@ -105,19 +105,20 @@ if (loading) {
     <div className="min-h-screen bg-[#f4f7fb]">
 
       {/* HEADER */}
-      <div className="bg-white px-4 py-4 flex items-center gap-3 border-b sticky top-0 z-20">
-
-        <ArrowLeft
-          className="w-5 h-5 cursor-pointer"
-          onClick={() => window.history.back()}
-        />
-
-        <h1 className="text-xl font-bold text-gray-800">
-          Payment History
-        </h1>
-
-      </div>
-
+     <div className="px-4 pt-5 pb-2">
+        <div className="flex items-center gap-3">
+            <button
+                onClick={() => window.history.back()}
+                className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm active:scale-95 transition"
+            >
+                <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+            </button>
+            <div>
+                <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">Payment History</h1>
+                <p className="text-[12px] text-gray-500 mt-[2px]">Your transaction history</p>
+            </div>
+        </div>
+    </div>
       {/* BODY */}
       <div className="p-4 space-y-5 max-w-3xl mx-auto">
 

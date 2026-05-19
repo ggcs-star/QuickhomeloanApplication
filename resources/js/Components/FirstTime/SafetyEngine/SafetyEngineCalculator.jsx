@@ -10,7 +10,7 @@ import ProUpgradeBanner from "@/Components/Common/ProUpgradeBanner";
 
 // Reusable Card Component for Light Theme UI
 const Card = ({ children, title, className = "" }) => (
-  <div className={`bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm ${className}`}>
+  <div className={`bg-transparent border-0 rounded-xl overflow-hidden shadow-none ${className}`}>
     {title && (
       <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
         <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500">{title}</h3>
@@ -106,7 +106,7 @@ export default function SafetyEngineCalculator() {
   const blurClass = !isProUser && !isCheckingAccess ? "filter blur-[4px] select-none" : "";
 
   return (
-    <div className="space-y-6 bg-white p-4 sm:p-6 rounded-2xl border border-gray-200 shadow-sm">
+    <div className="space-y-6">
       
       {!isProUser && !isCheckingAccess && (
         <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-center justify-between mb-4">

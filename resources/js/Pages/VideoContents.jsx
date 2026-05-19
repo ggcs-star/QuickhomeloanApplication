@@ -87,12 +87,12 @@ export default function VideoContents() {
             <div className="min-h-screen bg-gray-50 pb-28">
 
                 {/* HEADER */}
-                <div className="px-4 pt-4 pb-2">
+               <div className="px-4 pt-4 pb-2">
                     <button
                         onClick={() => window.history.back()}
-                        className="text-gray-700 hover:bg-gray-200 p-2 rounded-full transition-colors mt-4"
+                        className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm active:scale-95 transition mt-4"
                     >
-                        <ArrowLeft size={22} />
+                        <ArrowLeft className="w-5 h-5 text-[#081c4b]" strokeWidth={2} />
                     </button>
                 </div>
 

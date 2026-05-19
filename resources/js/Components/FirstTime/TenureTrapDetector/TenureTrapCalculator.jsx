@@ -124,7 +124,7 @@ export default function TenureTrapCalculator() {
           </h2>
           <p className="text-gray-500 text-xs sm:text-sm mt-1">Exposing the high cost of long-tenure loans. The "EMI Illusion" exposed.</p>
         </div>
-        <div className="text-right">
+        <div className="text-left">
           <div className="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Interest Overhead</div>
           <div className={`text-xl font-bold ${currentTrap?.isTrap ? 'text-red-600' : 'text-green-600'} ${blurClass}`}>
             {currentTrap?.interestRatio.toFixed(0)}%

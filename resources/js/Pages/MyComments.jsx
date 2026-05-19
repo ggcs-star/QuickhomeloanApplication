@@ -85,10 +85,10 @@ function MyCommentsContent() {
       <div className="max-w-2xl mx-auto px-4 pt-5 pb-2">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => window.history.back()}
-            className="w-10 h-10 rounded-full flex items-center justify-center"
+              onClick={() => window.history.back()}
+              className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm"
           >
-            <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+              <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
           </button>
           <div>
             <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">

@@ -121,7 +121,7 @@ export default function RateShockCalculator() {
           </h2>
           <p className="text-gray-500 text-xs sm:text-sm mt-1">Preparing for floating rate reality. Simulating interest rate volatility.</p>
         </div>
-        <div className={`px-4 py-2 rounded-md border ${riskLevel.bg} ${riskLevel.border} text-right`}>
+        <div className={`px-4 py-2 rounded-md border ${riskLevel.bg} ${riskLevel.border} text-left`}>
           <div className="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Exposure Rating</div>
           <div className={`text-lg font-bold ${riskLevel.color} ${blurClass}`}>
             {!isProUser && !isCheckingAccess ? 'LOCKED' : riskLevel.label}

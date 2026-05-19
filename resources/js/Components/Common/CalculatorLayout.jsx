@@ -31,28 +31,29 @@ export default function CalculatorLayout({
           <div className="flex items-start gap-2">
 
             <button
-              onClick={() => {
-                if (activeTab !== "calculate") {
-                  setActiveTab("calculate");
-                  return;
-                }
-
-                window.history.back();
-              }}
-              className="
-                mt-[1px]
-                w-8 h-8
-                rounded-full
-                flex items-center justify-center
-                active:scale-95
-                transition-all
-              "
+                onClick={() => {
+                    if (activeTab !== "calculate") {
+                        setActiveTab("calculate");
+                        return;
+                    }
+                    window.history.back();
+                }}
+                className="
+                    w-10 h-10
+                    rounded-full
+                    bg-white
+                    border border-[#edf1f7]
+                    flex items-center justify-center
+                    shadow-sm
+                    active:scale-95
+                    transition-all
+                "
             >
-              <ArrowLeft
-                size={22}
-                strokeWidth={2.4}
-                className="text-[#081c4b]"
-              />
+                <ArrowLeft
+                    size={20}
+                    strokeWidth={2}
+                    className="text-[#081c4b]"
+                />
             </button>
 
             <div>

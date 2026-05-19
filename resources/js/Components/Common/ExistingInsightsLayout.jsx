@@ -29,10 +29,8 @@ export default function ExistingInsightsLayout({
   data = {},
 }) {
   return (
-    <div className="bg-gray-100 min-h-screen px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
-
-      {/* MAIN STACK */}
-      <div className="space-y-4 sm:space-y-5 md:space-y-6 max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
+  <div className="min-h-screen px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-5 md:py-6">
+    <div className="space-y-4 sm:space-y-5 md:space-y-6 max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-6xl mx-auto">
 
         {sections.map((section, idx) => {
 

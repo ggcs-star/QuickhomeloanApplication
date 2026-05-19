@@ -58,10 +58,23 @@ export default function Register() {
 
   return (
   <GuestLayout>
-    <div className="min-h-screen bg-white px-5 py-6 flex flex-col justify-between">
+    <div
+      style={{
+        height: "100%",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        padding: "12px 16px",
+      }}
+    >
 
       {/* TOP */}
-      <div>
+    <div
+      style={{
+        flex: 1,
+        overflow: "hidden",
+      }}
+    >
 
         {/* Logo */}
         <div className="mb-6 flex justify-center">

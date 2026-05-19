@@ -169,10 +169,10 @@ export default function SearchPage() {
             clearTimeout(searchDebounceTimer.current);
         }
         
-        if (value.trim().length >= 2) {
+        if (value.trim().length >= 4) {
             searchDebounceTimer.current = setTimeout(() => {
                 performSearch(value);
-            }, 500);
+            }, 1200);
         } else if (value.length === 0) {
             setResults([]);
         }
@@ -202,8 +202,8 @@ export default function SearchPage() {
 
     return (
         <AppLayout showBottomNav={true} showTopNav={false}>
-            <div className="min-h-screen bg-gray-50">
-                <div className="sticky top-0 z-20 bg-white border-b border-gray-100 px-4 py-3 shadow-sm">
+            <div className="min-h-screen bg-[#f5f7fd]">
+                <div className="sticky top-0 z-20 bg-white border-b border-[#edf1f7] px-4 py-3 shadow-sm">
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={() => router.visit("/")} 
@@ -239,7 +239,7 @@ export default function SearchPage() {
                     </div>
                 </div>
 
-                <div className="px-4 py-3 bg-white border-b border-gray-100 overflow-x-auto sticky top-[73px] z-10">
+                <div className="px-4 py-3 bg-white border-b border-[#edf1f7] overflow-x-auto sticky top-[73px] z-10">
                     <div className="flex gap-2">
                         {types.map((type) => {
                             const Icon = type.icon;
@@ -248,10 +248,7 @@ export default function SearchPage() {
                                     key={type.id}
                                     onClick={() => handleTypeChange(type.id)}
                                     className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition flex items-center gap-2
-                                        ${activeType === type.id 
-                                            ? "bg-blue-600 text-white shadow-md" 
-                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                        }`}
+                                        ${activeType === type.id ? "bg-[#001B5E] text-white shadow-md" : "bg-[#f5f7fd] text-gray-700 hover:bg-[#edf1f7]"}`}
                                 >
                                     <Icon size={14} />
                                     {type.label}
@@ -279,7 +276,7 @@ export default function SearchPage() {
                                 {recentSearches.map((s, i) => (
                                     <div
                                         key={i}
-                                        className="group flex items-center gap-2 bg-white rounded-xl border border-gray-100 hover:shadow-md transition-all"
+                                        className="group flex items-center gap-2 bg-white rounded-xl border border-[#edf1f7] hover:shadow-md transition-all"
                                     >
                                         <button
                                             onClick={() => handleRecentClick(s)}
@@ -310,12 +307,12 @@ export default function SearchPage() {
                                 {suggestions.map((s, i) => (
                                     <button
                                         key={i}
-                                        onClick={() => handleSuggestionClick(s.title)}
+                                        onClick={() => handleSuggestionClick(s)}
                                         className="group px-4 py-3 bg-white rounded-xl border border-gray-100 text-left hover:shadow-md hover:border-blue-200 transition-all flex items-center justify-between"
                                     >
                                         <div className="flex items-center gap-3">
                                             <Search size={16} className="text-gray-400" />
-                                            <span className="text-gray-700">{s.title}</span>
+                                            <span className="text-gray-700">{s}</span>
                                         </div>
                                         <ArrowRight size={16} className="text-blue-500 opacity-0 group-hover:opacity-100 transition" />
                                     </button>
@@ -347,15 +344,14 @@ export default function SearchPage() {
                                     <div
                                         key={i}
                                         onClick={() => router.visit(result.url)}
-                                        className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-blue-100 transition-all cursor-pointer group"
-                                    >
+className="bg-white rounded-xl p-4 shadow-sm border border-[#edf1f7] hover:shadow-md hover:border-[#001B5E]/20 transition-all cursor-pointer group"                                    >
                                         <div className="flex gap-3">
                                             <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-100 transition">
                                                 {getIcon(result.icon)}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                                    <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
+                                                    <span className="text-xs font-medium text-[#001B5E] bg-[#f5f7fd] px-2 py-0.5 rounded-full">
                                                         {result.type}
                                                     </span>
                                                     <h3 className="font-semibold text-gray-900 truncate">
@@ -366,8 +362,7 @@ export default function SearchPage() {
                                                     {result.description}
                                                 </p>
                                             </div>
-                                            <ArrowRight size={18} className="text-gray-300 flex-shrink-0 opacity-0 group-hover:opacity-100 transition" />
-                                        </div>
+                                <ArrowRight size={18} className="text-[#001B5E] flex-shrink-0 opacity-0 group-hover:opacity-100 transition" />                                        </div>
                                     </div>
                                 ))}
                             </div>

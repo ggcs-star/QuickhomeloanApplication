@@ -96,29 +96,22 @@ export default function NotificationsPage() {
 
     if (loading) {
         return (
-            <AppLayout showBottomNav={true} showTopNav={false} showFooter={false}>
-                <div className="min-h-screen bg-gray-50">
-                    <div className="max-w-[640px] mx-auto bg-gray-50 min-h-screen">
-                        <div className="sticky top-0 bg-gray-50 z-20 border-b border-gray-100">
+            <AppLayout showTopNav={false} showBottomNav={false} showFooter={false}>
+                <div className="min-h-screen bg-[#f5f7fd]">
+                    <div className="max-w-[640px] mx-auto bg-[#f5f7fd] min-h-screen">
+                        <div className="sticky top-0 bg-white z-20 border-b border-[#edf1f7]">
                             <div className="px-4 py-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+                                    <div className="w-10 h-10 bg-gray-200 rounded-full animate-pulse"></div>
                                     <div className="h-7 w-32 bg-gray-200 rounded animate-pulse"></div>
-                                </div>
-                            </div>
-                            <div className="px-4 pb-3">
-                                <div className="flex gap-2">
-                                    {[1, 2, 3].map(i => (
-                                        <div key={i} className="flex-1 h-10 bg-gray-200 rounded-xl animate-pulse"></div>
-                                    ))}
                                 </div>
                             </div>
                         </div>
                         <div className="p-4 space-y-3">
                             {[1, 2, 3, 4].map(i => (
-                                <div key={i} className="bg-white rounded-2xl p-4 shadow-sm animate-pulse">
+                                <div key={i} className="bg-white rounded-2xl border border-[#edf1f7] p-4 shadow-sm animate-pulse">
                                     <div className="flex gap-3">
-                                        <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                                        <div className="w-12 h-12 bg-gray-200 rounded-2xl"></div>
                                         <div className="flex-1 space-y-2">
                                             <div className="h-5 bg-gray-200 rounded w-3/4"></div>
                                             <div className="h-4 bg-gray-200 rounded w-full"></div>
@@ -135,35 +128,36 @@ export default function NotificationsPage() {
     }
 
     return (
-        <AppLayout showBottomNav={true} showTopNav={false} showFooter={false}>
-            <div className="min-h-screen bg-gray-50">
-                <div className="max-w-[640px] mx-auto bg-gray-50 min-h-screen pb-24">
-                    {/* Sticky Header */}
-                    <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm z-20 border-b border-gray-100">
+        <AppLayout showTopNav={false} showBottomNav={false} showFooter={false}>
+            <div className="min-h-screen bg-[#f5f7fd]">
+                <div className="max-w-[640px] mx-auto bg-[#f5f7fd] min-h-screen pb-24">
+                    
+                    {/* Header - Exactly like Calendar */}
+                    <div className="sticky top-0 bg-white z-20 border-b border-[#edf1f7]">
                         <div className="px-4 py-4">
                             <div className="flex items-center gap-3">
                                 <button 
                                     onClick={() => router.visit("/")} 
-                                    className="w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"
+                                    className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm transition active:scale-95"
                                 >
                                     <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
                                 </button>
-                                <h1 className="text-xl font-bold text-gray-900">Notifications</h1>
+                                <h1 className="text-xl font-bold text-[#081c4b]">Notifications</h1>
                             </div>
                         </div>
 
-                        {/* Tabs */}
+                        {/* Tabs - Same style as Calendar Events/Tasks tabs */}
                         <div className="px-4 pb-3">
-                            <div className="flex gap-2 bg-gray-100/80 p-1 rounded-xl">
+                            <div className="flex gap-2 bg-[#f5f7fd] p-1 rounded-xl">
                                 {tabs.map(tab => (
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`
-                                            relative flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                                            flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                                             ${activeTab === tab.id 
-                                                ? 'bg-white text-gray-900 shadow-sm' 
-                                                : 'text-gray-500 hover:text-gray-700'
+                                                ? 'bg-[#001B5E] text-white shadow-md' 
+                                                : 'text-gray-600 hover:text-gray-900'
                                             }
                                         `}
                                     >
@@ -171,9 +165,9 @@ export default function NotificationsPage() {
                                             <span>{tab.label}</span>
                                             {tab.count > 0 && (
                                                 <span className={`
-                                                    text-xs px-2 py-0.5 rounded-full font-medium
+                                                    text-xs px-2 py-0.5 rounded-full
                                                     ${activeTab === tab.id 
-                                                        ? 'bg-gray-100 text-gray-700' 
+                                                        ? 'bg-white/20 text-white' 
                                                         : 'bg-gray-200 text-gray-600'
                                                     }
                                                 `}>
@@ -181,110 +175,116 @@ export default function NotificationsPage() {
                                                 </span>
                                             )}
                                         </div>
-                                        {activeTab === tab.id && (
-                                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-blue-500 rounded-full"></div>
-                                        )}
                                     </button>
                                 ))}
                             </div>
                         </div>
                     </div>
 
-                    {/* Notifications List */}
-                    <div className="px-4 py-3 space-y-3">
+                    {/* Notifications List - Same card style as Calendar */}
+                    <div className="p-4 space-y-3">
                         {filteredNotifications.length > 0 ? (
-                            filteredNotifications.map((notification) => {
-                                const type = getNotificationType(notification.title);
-                                return (
-                                    <div
-                                        key={notification.id}
-                                        onClick={() => !notification.is_read && markAsRead(notification.id)}
-                                        className={`
-                                            bg-white rounded-2xl p-4 shadow-sm transition-all duration-200 active:scale-[0.98]
+                            filteredNotifications.map((notification) => (
+                                <div
+                                    key={notification.id}
+                                    onClick={() => !notification.is_read && markAsRead(notification.id)}
+                                    className={`
+                                        bg-white rounded-2xl border p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer
+                                        ${!notification.is_read 
+                                            ? 'border-l-4 border-l-[#001B5E] border-[#edf1f7]' 
+                                            : 'border-[#edf1f7]'
+                                        }
+                                    `}
+                                >
+                                    <div className="flex gap-3">
+                                        {/* Icon - Same style as Calendar */}
+                                        <div className={`
+                                            flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center
                                             ${!notification.is_read 
-                                                ? 'border-l-4 border-l-blue-500 cursor-pointer hover:shadow-md' 
-                                                : 'border border-gray-100 hover:border-gray-200 hover:shadow-md'
+                                                ? 'bg-blue-50' 
+                                                : 'bg-gray-50'
                                             }
-                                        `}
-                                    >
-                                        <div className="flex gap-3">
-                                            {/* Icon */}
-                                            <div className={`
-                                                flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center
-                                                ${!notification.is_read 
-                                                    ? 'bg-gradient-to-br from-blue-500 to-indigo-500' 
-                                                    : 'bg-gradient-to-br from-gray-100 to-gray-200'
-                                                }
-                                            `}>
-                                                <Bell className={`
-                                                    w-6 h-6
-                                                    ${!notification.is_read ? 'text-white' : 'text-gray-500'}
-                                                `} />
-                                            </div>
+                                        `}>
+                                            <Bell className={`
+                                                w-6 h-6
+                                                ${!notification.is_read ? 'text-[#001B5E]' : 'text-gray-400'}
+                                            `} />
+                                        </div>
 
-                                            {/* Content */}
-                                            <div className="flex-1 min-w-0">
-                                                <div className="flex items-start justify-between gap-2 mb-1">
-                                                    <h3 className={`
-                                                        text-sm font-medium
-                                                        ${!notification.is_read ? 'text-gray-900 font-semibold' : 'text-gray-700'}
-                                                    `}>
-                                                        {notification.title}
-                                                    </h3>
-                                                    {!notification.is_read && (
-                                                        <div className="flex-shrink-0">
-                                                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                                        </div>
-                                                    )}
-                                                    {notification.is_read && (
-                                                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                                    )}
-                                                </div>
-
-                                                <p className="text-sm text-gray-600 leading-relaxed mb-2">
-                                                    {notification.body}
-                                                </p>
-
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-xs text-gray-400">
-                                                        {formatRelativeTime(notification.created_at)}
-                                                    </span>
-                                                    {!notification.is_read && (
-                                                        <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
-                                                            New
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                {/* Admin vs User Tag */}
-                                                {notification.title?.includes('Admin') || notification.title?.includes('Broadcast') ? (
-                                                    <div className="mt-2">
-                                                        <span className="text-[10px] font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                                                            Admin
-                                                        </span>
-                                                    </div>
-                                                ) : (
-                                                    <div className="mt-2">
-                                                        <span className="text-[10px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
-                                                            Reminder
-                                                        </span>
+                                        {/* Content */}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-start justify-between gap-2 mb-1">
+                                                <h3 className={`
+                                                    font-semibold text-[#081c4b] text-base
+                                                    ${!notification.is_read ? 'font-bold' : ''}
+                                                `}>
+                                                    {notification.title}
+                                                </h3>
+                                                {!notification.is_read && (
+                                                    <div className="flex-shrink-0">
+                                                        <div className="w-2 h-2 bg-[#001B5E] rounded-full"></div>
                                                     </div>
                                                 )}
+                                                {notification.is_read && (
+                                                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                                                )}
                                             </div>
+
+                                            <p className="text-sm text-gray-500 leading-relaxed mb-2">
+                                                {notification.body}
+                                            </p>
+
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-xs text-gray-400">
+                                                    {formatRelativeTime(notification.created_at)}
+                                                </span>
+                                                {!notification.is_read && (
+                                                    <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-blue-100 text-[#001B5E]">
+                                                        New
+                                                    </span>
+                                                )}
+                                            </div>
+
+                                            {/* Admin vs User Tag - Same style as Calendar type tags */}
+                                            {(notification.title?.includes('Admin') || notification.title?.includes('Broadcast')) ? (
+                                                <div className="mt-2">
+                                                    <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-purple-100 text-[#001B5E]">
+                                                        Admin
+                                                    </span>
+                                                </div>
+                                            ) : notification.title?.includes('Event') || notification.title?.includes('📅') ? (
+                                                <div className="mt-2">
+                                                    <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-blue-100 text-[#001B5E]">
+                                                        Event
+                                                    </span>
+                                                </div>
+                                            ) : notification.title?.includes('Task') || notification.title?.includes('✅') ? (
+                                                <div className="mt-2">
+                                                    <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-yellow-100 text-[#001B5E]">
+                                                        Task
+                                                    </span>
+                                                </div>
+                                            ) : (
+                                                <div className="mt-2">
+                                                    <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                                                        Reminder
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                );
-                            })
-                        ) : (
-                            /* Empty State */
-                            <div className="flex flex-col items-center justify-center py-16 px-4">
-                                <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
-                                    <Bell className="w-12 h-12 text-gray-400" />
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                            ))
+                        ) : (
+                            /* Empty State - Same as Calendar */
+                            <div className="flex flex-col items-center justify-center py-20 px-4">
+                                <div className="w-24 h-24 bg-[#f5f7fd] rounded-full flex items-center justify-center mb-4">
+                                    <Bell className="w-12 h-12 text-[#001B5E]/40" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-700 mb-1">
                                     No notifications
                                 </h3>
-                                <p className="text-sm text-gray-500 text-center max-w-xs">
+                                <p className="text-sm text-gray-500 text-center">
                                     {activeTab === "all" 
                                         ? "You don't have any notifications yet" 
                                         : activeTab === "unread"
@@ -294,9 +294,9 @@ export default function NotificationsPage() {
                                 {activeTab === "unread" && notifications.filter(n => !n.is_read).length === 0 && notifications.length > 0 && (
                                     <button 
                                         onClick={() => setActiveTab("all")}
-                                        className="mt-4 text-sm text-blue-600 font-medium"
+                                        className="mt-4 px-6 py-2.5 bg-[#001B5E] text-white rounded-xl text-sm font-medium hover:bg-[#002a8a] transition active:scale-95"
                                     >
-                                        View all notifications →
+                                        View all notifications
                                     </button>
                                 )}
                             </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, Calendar, CheckSquare, Clock, Bell } from "lucide-react";
+import { ArrowLeft, Calendar, CheckSquare, Clock, Bell, Plus } from "lucide-react";
 import { router } from "@inertiajs/react";
 import api from "@/api";
+import AddEventModal from "../../Components/Calendar/AddEventModal";
 import AppLayout from "@/Layouts/AppLayout";
 
 export default function MyCalendarPage() {
@@ -9,10 +10,12 @@ export default function MyCalendarPage() {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("events");
+    const [openModal, setOpenModal] = useState(false);
 
     useEffect(() => {
         fetchData();
     }, []);
+    
 
     const fetchData = async () => {
         try {
@@ -55,9 +58,9 @@ export default function MyCalendarPage() {
     if (loading) {
         return (
             <AppLayout showTopNav={false} showBottomNav={false} showFooter={false}>
-                <div className="min-h-screen bg-gray-50">
-                    <div className="max-w-[640px] mx-auto bg-gray-50 min-h-screen">
-                        <div className="px-4 py-4 sticky top-0 bg-gray-50 z-20 border-b border-gray-100">
+                <div className="min-h-screen bg-[#f5f7fd]">
+                    <div className="max-w-[640px] mx-auto bg-[#f5f7fd] min-h-screen">
+                        <div className="px-4 py-4 sticky top-0 bg-white z-20 border-b border-[#edf1f7]">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
                                 <div className="h-7 w-32 bg-gray-200 rounded animate-pulse"></div>
@@ -65,7 +68,7 @@ export default function MyCalendarPage() {
                         </div>
                         <div className="p-4 space-y-3">
                             {[1, 2, 3].map(i => (
-                                <div key={i} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm animate-pulse">
+                                <div key={i} className="bg-white rounded-xl border border-[#edf1f7] p-4 shadow-sm animate-pulse">
                                     <div className="flex gap-3">
                                         <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
                                         <div className="flex-1 space-y-2">
@@ -84,31 +87,32 @@ export default function MyCalendarPage() {
 
     return (
         <AppLayout showTopNav={false} showBottomNav={false} showFooter={false}>
-            <div className="min-h-screen bg-gray-50">
-                <div className="max-w-[640px] mx-auto bg-gray-50 min-h-screen pb-24">
+            <div className="min-h-screen bg-[#f5f7fd]">
+                <div className="max-w-[640px] mx-auto bg-[#f5f7fd] min-h-screen pb-24">
+                    
                     {/* Header */}
-                    <div className="sticky top-0 bg-gray-50/95 backdrop-blur-sm z-20 border-b border-gray-100">
+                    <div className="sticky top-0 bg-white z-20 border-b border-[#edf1f7]">
                         <div className="px-4 py-4">
                             <div className="flex items-center gap-3">
                                 <button 
                                     onClick={() => window.history.back()}
-                                    className="w-10 h-10 rounded-full flex items-center justify-center transition active:scale-95"
+                                    className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm transition active:scale-95"
                                 >
                                     <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
                                 </button>
-                                <h1 className="text-xl font-bold text-gray-900">My Calendar</h1>
+                                <h1 className="text-xl font-bold text-[#081c4b]">My Calendar</h1>
                             </div>
                         </div>
 
                         {/* Tabs - Events & Tasks */}
                         <div className="px-4 pb-3">
-                            <div className="flex gap-2 bg-gray-100/80 p-1 rounded-xl">
+                            <div className="flex gap-2 bg-[#f5f7fd] p-1 rounded-xl">
                                 <button
                                     onClick={() => setActiveTab("events")}
                                     className={`
                                         flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                                         ${activeTab === "events" 
-                                            ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md' 
+                                            ? 'bg-[#001B5E] text-white shadow-md' 
                                             : 'text-gray-600 hover:text-gray-900'
                                         }
                                     `}
@@ -132,7 +136,7 @@ export default function MyCalendarPage() {
                                     className={`
                                         flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                                         ${activeTab === "tasks" 
-                                            ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-md' 
+                                            ? 'bg-[#001B5E] text-white shadow-md' 
                                             : 'text-gray-600 hover:text-gray-900'
                                         }
                                     `}
@@ -155,6 +159,14 @@ export default function MyCalendarPage() {
                         </div>
                     </div>
 
+                    {/* Modal */}
+                    {openModal && (
+                        <AddEventModal 
+                            onClose={() => setOpenModal(false)} 
+                            onSuccess={fetchData} 
+                        />
+                    )}
+
                     {/* List Content */}
                     <div className="p-4 space-y-3">
                         {currentCount > 0 ? (
@@ -162,21 +174,21 @@ export default function MyCalendarPage() {
                                 <div
                                     key={item.id}
                                     onClick={() => router.visit("/tools/calendar")}
-                                    className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
+                                    className="bg-white rounded-2xl border border-[#edf1f7] p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer"
                                 >
                                     <div className="flex gap-3">
                                         {/* Icon */}
                                         <div className={`
                                             flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center
                                             ${item.type === "event" 
-                                                ? 'bg-gradient-to-br from-blue-100 to-blue-200' 
-                                                : 'bg-gradient-to-br from-yellow-100 to-yellow-200'
+                                                ? 'bg-blue-50' 
+                                                : 'bg-yellow-50'
                                             }
                                         `}>
                                             {item.type === "event" ? (
-                                                <Calendar className="w-6 h-6 text-blue-600" />
+                                                <Calendar className="w-6 h-6 text-[#001B5E]" />
                                             ) : (
-                                                <CheckSquare className="w-6 h-6 text-yellow-600" />
+                                                <CheckSquare className="w-6 h-6 text-[#001B5E]" />
                                             )}
                                         </div>
 
@@ -186,8 +198,8 @@ export default function MyCalendarPage() {
                                                 <span className={`
                                                     text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full
                                                     ${item.type === "event" 
-                                                        ? 'bg-blue-100 text-blue-700' 
-                                                        : 'bg-yellow-100 text-yellow-700'
+                                                        ? 'bg-blue-100 text-[#001B5E]' 
+                                                        : 'bg-yellow-100 text-[#001B5E]'
                                                     }
                                                 `}>
                                                     {item.type === "event" ? "EVENT" : "TASK"}
@@ -199,7 +211,7 @@ export default function MyCalendarPage() {
                                                 )}
                                             </div>
 
-                                            <h3 className="font-semibold text-gray-900 text-base mb-1">
+                                            <h3 className="font-semibold text-[#081c4b] text-base mb-1">
                                                 {item.title}
                                             </h3>
 
@@ -238,14 +250,14 @@ export default function MyCalendarPage() {
                         ) : (
                             /* Empty State */
                             <div className="flex flex-col items-center justify-center py-20 px-4">
-                                <div className="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
+                                <div className="w-24 h-24 bg-[#f5f7fd] rounded-full flex items-center justify-center mb-4">
                                     {activeTab === "events" ? (
-                                        <Calendar className="w-12 h-12 text-gray-400" />
+                                        <Calendar className="w-12 h-12 text-[#001B5E]/40" />
                                     ) : (
-                                        <CheckSquare className="w-12 h-12 text-gray-400" />
+                                        <CheckSquare className="w-12 h-12 text-[#001B5E]/40" />
                                     )}
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                                <h3 className="text-lg font-semibold text-gray-700 mb-1">
                                     No {activeTab === "events" ? "Events" : "Tasks"} yet
                                 </h3>
                                 <p className="text-sm text-gray-500 text-center">
@@ -253,7 +265,7 @@ export default function MyCalendarPage() {
                                 </p>
                                 <button
                                     onClick={() => router.visit("/tools/calendar")}
-                                    className="mt-4 px-6 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-medium hover:bg-blue-600 transition active:scale-95"
+                                    className="mt-4 px-6 py-2.5 bg-[#001B5E] text-white rounded-xl text-sm font-medium hover:bg-[#002a8a] transition active:scale-95"
                                 >
                                     + Create {activeTab === "events" ? "Event" : "Task"}
                                 </button>
@@ -262,6 +274,16 @@ export default function MyCalendarPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Plus Button */}
+            {!openModal && (
+                <button
+                    onClick={() => setOpenModal(true)}
+                    className="fixed bottom-6 right-4 w-14 h-14 rounded-full bg-[#001B5E] text-white flex items-center justify-center shadow-lg hover:bg-[#002a8a] transition active:scale-95 z-50"
+                >
+                    <Plus size={24} />
+                </button>
+            )}
         </AppLayout>
     );
 }

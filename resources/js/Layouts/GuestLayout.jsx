@@ -10,10 +10,17 @@ export default function GuestLayout({ children }) {
   }, []);
 
   return (
-    <div className="min-h-screen flex justify-center bg-gray-100">
-  <div className="w-full max-w-sm min-h-screen bg-white shadow-md">
-    {children}
-  </div>
-</div>
+    <div
+      className="fixed inset-0 bg-gray-100 flex justify-center overflow-hidden"
+    >
+      <div
+        className="w-full max-w-sm bg-white overflow-hidden"
+        style={{
+          height: "100%",
+        }}
+      >
+        {children}
+      </div>
+    </div>
   );
 }
