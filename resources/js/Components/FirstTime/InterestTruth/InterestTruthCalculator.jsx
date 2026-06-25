@@ -107,7 +107,7 @@ export default function InterestTruthCalculator() {
           </h2>
           <p className="text-gray-500 text-xs sm:text-sm mt-1">Breaking the EMI illusion. Visualizing the true cost of borrowing.</p>
         </div>
-        <div className="text-right">
+        <div className="text-left">
           <div className="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Total Interest Burn</div>
           <div className={`text-xl font-bold text-red-600 ${blurClass}`}>{formatCurrency(totalInterest)}</div>
         </div>

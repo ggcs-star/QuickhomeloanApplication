@@ -170,8 +170,8 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-[#f5f7fd] pb-20">
 
       {/* HEADER */}
-      <div className="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100 px-4 py-3">
-        <div className="flex items-center gap-3">
+      <div className="px-4 pt-5 pb-2">
+          <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}
             className="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center shadow-sm active:scale-95 transition"

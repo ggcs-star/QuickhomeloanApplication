@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Play, Clock, Headphones, X } from "lucide-react";
+import { Play, Clock, Headphones, X, ArrowLeft } from "lucide-react";
 import api from "@/api";
 import AppLayout from "@/Layouts/AppLayout";
 
@@ -85,19 +85,25 @@ export default function PodcastPage() {
             <div className="min-h-screen bg-white">
                 <div className="max-w-[640px] mx-auto bg-white min-h-screen pb-24">
                     {/* Header */}
-                    <div className="px-4 py-4 sticky top-0 bg-white z-20 border-b border-gray-100">
-                        <div className="flex items-center gap-3">
-                            <button 
-                                onClick={() => window.history.back()} 
-                                className="p-1 -ml-1 rounded-full hover:bg-gray-100 transition"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </button>
-                            <h1 className="text-2xl font-bold text-gray-900">Podcast</h1>
-                        </div>
-                    </div>
+                    {/* HEADER - Same as Community Page */}
+<div className="px-4 pt-5 bg-white">
+    <div className="flex items-center gap-3">
+        <button 
+            onClick={() => window.history.back()} 
+            className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm"
+        >
+            <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+        </button>
+        <div>
+            <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">
+                Podcast
+            </h1>
+            <p className="text-[12px] text-gray-500 mt-[2px]">
+                Listen and learn from expert insights
+            </p>
+        </div>
+    </div>
+</div>
 
                     {/* Hero Section */}
                     {/* <div className="relative h-56 bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center">

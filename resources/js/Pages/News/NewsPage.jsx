@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Heart, MessageCircle, Bookmark, Eye } from "lucide-react";
 import newsApi from "@/newsApi";
-import AppLayout from "@/Layouts/AppLayout"; // AppLayout इम्पोर्ट किया गया है
+import AppLayout from "@/Layouts/AppLayout"; 
 
 const IMAGE_BASE_URL = "https://news.quickhomeloan.in/";
 

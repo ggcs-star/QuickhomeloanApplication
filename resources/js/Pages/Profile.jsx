@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import AppLayout from "../Layouts/AppLayout";
 
 export default function Profile() {
@@ -24,11 +25,11 @@ export default function Profile() {
 
         {/* Back */}
         <button
-          onClick={() => window.history.back()}
-          className="mb-4 text-sm"
-        >
-          ← Back
-        </button>
+              onClick={() => window.history.back()}
+              className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm"
+          >
+              <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+          </button>
 
         {/* Profile Card */}
         <div className="p-4 bg-white rounded-2xl shadow border flex justify-between items-center mb-6">

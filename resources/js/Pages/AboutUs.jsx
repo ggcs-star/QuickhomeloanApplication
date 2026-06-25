@@ -54,7 +54,7 @@ export default function AboutUs() {
     <div className="min-h-screen bg-[#f5f7fd] pb-24">
 
       {/* HEADER */}
-      <div className="sticky top-0 z-20 bg-white border-b border-[#edf1f7] px-4 py-4">
+      <div className="px-4 pt-5 pb-2">
         <div className="flex items-center gap-3">
           <button
             onClick={() => window.history.back()}

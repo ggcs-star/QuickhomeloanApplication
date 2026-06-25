@@ -190,7 +190,7 @@ export default function OfferDecoderCalculator() {
           </h2>
           <p className="text-gray-500 text-xs sm:text-sm mt-1">Identify hidden bias in PSU, Private Bank, or NBFC loan offers.</p>
         </div>
-        <div className="text-right">
+        <div className="text-left">
           <div className="text-[10px] uppercase text-gray-500 font-bold tracking-widest">True Cost Index</div>
           <div className={`text-xl font-bold text-blue-600 ${blurClass}`}>{decodedOffer.tci.toFixed(1)}%</div>
         </div>

@@ -40,7 +40,7 @@ const tools = [
 export default function Tools() {
   return (
     <AppLayout showTopNav={false} showBottomNav={true}>
-      <div className="min-h-screen bg-[#f5f7fd] pb-4">
+      <div className="bg-[#f5f7fd] pb-4">
 
         {/* HEADER */}
         <div className="px-4 pt-5">
@@ -251,7 +251,7 @@ export default function Tools() {
           })}
 
         </div>
-
+<div className="h-20"></div>
       </div>
     </AppLayout>
   );

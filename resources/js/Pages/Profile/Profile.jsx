@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PageSkeleton from "@/components/Skeleton/PageSkeleton";
 import { router } from "@inertiajs/react";
 import { useAuth } from "@/Context/AuthContext";
+
 import api from "@/api";
 import AppLayout from "@/Layouts/AppLayout";
 
@@ -37,11 +38,13 @@ function ProfileContent() {
 
   const [postCount, setPostCount] = useState(0);
   const [commentCount, setCommentCount] = useState(0);
+  const [savedCount, setSavedCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchMyPosts();
     fetchMyComments();
+    fetchSavedCount();
   }, []);
 
   const fetchMyPosts = async () => {
@@ -63,6 +66,15 @@ function ProfileContent() {
       setLoading(false);
     }
   };
+  const fetchSavedCount = async () => {
+    try {
+        const res = await api.get("/community/saved");
+        const savedPosts = res?.data?.data?.data || [];
+        setSavedCount(savedPosts.length);
+    } catch (error) {
+        console.log("Saved Count Error", error);
+    }
+};
 
   if (loading) {
     return (
@@ -101,12 +113,12 @@ function ProfileContent() {
     <div className="bg-[#f3f4f6] min-h-screen px-5 pt-6 pb-12 font-sans">
 
       {/* HEADER */}
-      <div className="mb-6">
-        <ArrowLeft
-          className="w-6 h-6 text-gray-800 cursor-pointer active:scale-95"
+      <button
           onClick={() => window.history.back()}
-        />
-      </div>
+          className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm active:scale-95 transition"
+        >
+          <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+        </button>
 
       {/* PROFILE INFO */}
       <div className="flex flex-col items-center mb-8">
@@ -228,7 +240,7 @@ function ProfileContent() {
   label="History"
   onClick={() => router.visit("/payment-history")}
 />
-        <ListItem icon={Mic} label="Followed Shows" />
+        {/* <ListItem icon={Mic} label="Followed Shows" /> */}
       </SectionCard>
 
       {/* COMMUNITY */}
@@ -249,9 +261,10 @@ function ProfileContent() {
 />
 
        <ListItem
-  icon={Star}
-  label="Saved Discussions"
-  onClick={() => router.visit("/saved-discussions")}
+    icon={Star}
+    label="Saved Discussions"
+    rightText={savedCount}
+    onClick={() => router.visit("/saved-discussions")}
 />
 
       </SectionCard>

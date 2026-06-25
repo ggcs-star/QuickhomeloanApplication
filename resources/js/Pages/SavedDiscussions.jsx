@@ -89,17 +89,17 @@ export default function SavedDiscussions() {
   }
 
   return (
-    <AppLayout>
-      <div className="p-4 pb-24">
+    <AppLayout showTopNav={false} showBottomNav={false}>
+      <div className="bg-[#f5f7fd] pb-24 min-h-screen p-4">
         
         {/* Header with Back Button */}
         <div className="flex items-center gap-3 mb-5">
           <button
-            onClick={() => window.history.back()}
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center"
-          >
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
-          </button>
+                onClick={() => window.history.back()}
+                className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm"
+            >
+                <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
+            </button>
           <h1 className="text-2xl font-bold">Saved Discussions</h1>
         </div>
 

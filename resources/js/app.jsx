@@ -7,6 +7,8 @@ import { GlobalAudioProvider } from "@/Context/GlobalAudioContext";
 import { GlobalVideoProvider } from "@/Context/GlobalVideoContext";
 import { AuthProvider } from "@/Context/AuthContext"; 
 
+
+
 setTimeout(function() {
     if (window.AndroidPHP && window.AndroidPHP.requestNotificationPermission) {
         window.AndroidPHP.requestNotificationPermission();

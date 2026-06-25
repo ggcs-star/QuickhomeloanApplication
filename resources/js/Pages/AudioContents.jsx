@@ -99,16 +99,14 @@ export default function AudioContents() {
             <div className="min-h-screen bg-gray-100 px-4 py-5 pb-28 ">
                 <button
                     onClick={() => {
-                        // Audio band karo
                         if (window.globalAudioElement) {
                             window.globalAudioElement.pause();
                         }
-                        // Back jao
                         window.history.back();
                     }}
-                    className="mb-4 text-gray-700 mt-4"
+                    className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm active:scale-95 transition mb-4 mt-4"
                 >
-                    <FaArrowLeft size={18} />
+                    <FaArrowLeft className="w-5 h-5 text-[#081c4b]" />
                 </button>
 
                 {loading && (

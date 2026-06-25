@@ -22,9 +22,7 @@ export default function LearnLayout({ slug }) {
   ];
 
   return (
-    <div className="bg-[#f5f7fb] min-h-screen px-4 py-6">
-
-      {/* SCREEN CONTAINER */}
+    <div className="px-4 py-6">
       <div className="max-w-md mx-auto space-y-4">
 
         {cards.map((card, i) => (

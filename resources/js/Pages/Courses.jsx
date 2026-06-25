@@ -28,11 +28,17 @@ export default function Courses() {
 
         {/* HEADER */}
         <div className="flex items-center gap-3 mt-4">
-          <button onClick={() => window.history.back()}>
-            <ArrowLeft size={22} />
+          <button
+              onClick={() => window.history.back()}
+              className="w-10 h-10 rounded-full bg-white border border-[#edf1f7] flex items-center justify-center shadow-sm active:scale-95 transition"
+          >
+              <ArrowLeft className="w-5 h-5 text-[#081c4b]" />
           </button>
-          <h2 className="text-xl font-semibold">Courses</h2>
-        </div>
+          <div>
+              <h1 className="text-[24px] font-black tracking-[-0.5px] text-[#081c4b] leading-tight">Courses</h1>
+              <p className="text-[12px] text-gray-500 mt-[2px]">Learn and grow with expert courses</p>
+          </div>
+      </div>
 
         {/* LOADER */}
         {loading &&
